@@ -16,7 +16,7 @@ export const Breadcrumbs: React.FC<Props> = ({ items }) => {
       <Link to="/help" className="hover:text-primary-600 transition-colors">String</Link>
       {items.map((item, index) => (
         <React.Fragment key={index}>
-          <span className="mx-2 text-slate-300 transform rtl:rotate-180">{isRtl ? '/' : '/'}</span>
+          <span className="mx-2 text-slate-300">{'/'}</span>
           {index === items.length - 1 ? (
             <span className="font-medium text-slate-900 truncate max-w-[200px]">{item.label}</span>
           ) : (

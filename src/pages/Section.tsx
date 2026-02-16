@@ -83,7 +83,7 @@ export default function SectionPage() {
 
                {/* Mobile Section Nav (Visible only on mobile) */}
                <div className="lg:hidden mb-8">
-                  <details className="group border border-slate-200 rounded-lg bg-white">
+                  <details className="group border border-slate-200 rounded-lg bg-transparent">
                       <summary className="flex items-center justify-between px-4 py-3 font-medium text-slate-900 cursor-pointer list-none">
                          <span>Navigate: {section.title}</span>
                          <svg className="w-5 h-5 text-slate-400 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
@@ -123,7 +123,7 @@ export default function SectionPage() {
                  </div>
                ) : (
                  /* Fallback for sections without groups */
-                 <div className="bg-white rounded-lg border border-slate-200 shadow-sm">
+                 <div className="bg-transparent rounded-lg border border-slate-200 shadow-sm">
                     <ul className="divide-y divide-slate-100">
                       {ungroupedArticles.map(article => (
                         <li key={article.id}>

@@ -1,36 +1,50 @@
 import React, { useState } from 'react';
-import { useParams, Link, Navigate, useNavigate } from 'react-router-dom';
+import { useParams, Link, Navigate, NavLink, useNavigate } from 'react-router-dom';
 import { Layout } from '../components/Layout';
 import { ArticleGroup } from '../components/ArticleGroup';
 import { useI18n } from '../lib/i18n';
+import { FEATURE_CATEGORIES, ROLE_CATEGORY_MAP } from '../data';
 import {
-  getCategoryBySlug,
-  getSectionBySlug,
+  getCategoryById,
+  getSectionById,
   getGroupsBySectionId,
   getArticlesByGroupId,
   getArticlesBySectionId,
-  getSectionsByCategoryId
 } from '../lib/api';
 import { scrollToHash } from '../lib/utils';
 
-export default function HelpSectionLandingPage() {
+export default function RoleFeaturePage() {
   const { t, localize } = useI18n();
-  const { categorySlug, sectionSlug } = useParams();
+  const { role, featureSlug } = useParams();
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
 
-  const category = getCategoryBySlug(categorySlug || '');
-  const section = getSectionBySlug(sectionSlug || '');
+  const feature = FEATURE_CATEGORIES.find(
+    fc => fc.slug === featureSlug && fc.roles.includes(role as 'teacher' | 'student')
+  );
 
-  if (!category || !section) {
+  const categoryId = role ? ROLE_CATEGORY_MAP[role] : undefined;
+  const category = categoryId ? getCategoryById(categoryId) : undefined;
+
+  if (!feature || !category) {
+    return <Navigate to="/404" replace />;
+  }
+
+  const section = getSectionById(feature.sectionId);
+
+  if (!section) {
     return <Navigate to="/404" replace />;
   }
 
   // Data loading
   const groups = getGroupsBySectionId(section.id);
-  const siblingSections = getSectionsByCategoryId(category.id);
   const hasGroups = groups.length > 0;
   const ungroupedArticles = !hasGroups ? getArticlesBySectionId(section.id) : [];
+
+  // Sidebar: all feature categories for this role
+  const siblingFeatures = FEATURE_CATEGORIES.filter(
+    fc => fc.roles.includes(role as 'teacher' | 'student')
+  );
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -39,8 +53,7 @@ export default function HelpSectionLandingPage() {
     }
   };
 
-  // Search Strip
-  const SearchStrip = (
+  const PurpleSearchStrip = (
     <div className="w-full py-10">
       <div className="container mx-auto px-4 md:px-6 flex justify-center">
         <form onSubmit={handleSearch} className="relative w-full max-w-2xl glass-search">
@@ -60,7 +73,7 @@ export default function HelpSectionLandingPage() {
   );
 
   return (
-    <Layout hero={SearchStrip}>
+    <Layout hero={PurpleSearchStrip}>
       <div className="glass-bg pb-20">
 
         {/* Breadcrumbs */}
@@ -70,7 +83,7 @@ export default function HelpSectionLandingPage() {
             <span className="text-slate-300 text-xs">›</span>
             <Link to={`/help/category/${category.slug}`} className="hover:text-purple-600 transition-colors">{localize(category, 'title')}</Link>
             <span className="text-slate-300 text-xs">›</span>
-            <span className="text-slate-900 font-medium">{localize(section, 'title')}</span>
+            <span className="text-slate-900 font-medium">{localize(feature, 'title')}</span>
           </nav>
         </div>
 
@@ -81,18 +94,18 @@ export default function HelpSectionLandingPage() {
             {/* Left Sidebar Navigation */}
             <aside className="hidden lg:block">
               <div className="glass-sidebar p-6 sticky top-24" style={{ background: '#fff' }}>
-                <h3 className="text-[15px] font-bold text-slate-900 mb-5">{localize(section, 'title')}</h3>
+                <h3 className="text-[15px] font-bold text-slate-900 mb-5">{localize(category, 'title')}</h3>
                 <nav className="text-[15px]">
                   <ul className="space-y-1">
-                    {siblingSections.map(sibSection => {
-                      const isActive = sibSection.id === section.id;
+                    {siblingFeatures.map(fc => {
+                      const isActive = fc.slug === feature.slug;
 
                       if (isActive) {
                         return (
-                          <li key={sibSection.id}>
+                          <li key={fc.slug}>
                             <div className="sidebar-active flex items-center gap-2.5 font-bold text-slate-900 py-2.5 px-3 rounded-lg cursor-default mb-1">
                               <svg className="w-3 h-3 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M19 9l-7 7-7-7" /></svg>
-                              {localize(sibSection, 'title')}
+                              {localize(fc, 'title')}
                             </div>
                             {hasGroups && (
                               <ul className="ml-5 mt-1 space-y-0.5 border-l-2 border-primary-200/60 pl-4 mb-3">
@@ -117,14 +130,14 @@ export default function HelpSectionLandingPage() {
                       }
 
                       return (
-                        <li key={sibSection.id}>
-                          <Link
-                            to={`/help/category/${category.slug}/section/${sibSection.slug}`}
+                        <li key={fc.slug}>
+                          <NavLink
+                            to={`/help/${role}/${fc.slug}`}
                             className="flex items-center gap-2.5 py-2.5 px-3 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-white/40 transition-all group"
                           >
                             <svg className="w-3 h-3 text-slate-400 group-hover:text-slate-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" /></svg>
-                            {localize(sibSection, 'title')}
-                          </Link>
+                            {localize(fc, 'title')}
+                          </NavLink>
                         </li>
                       );
                     })}
@@ -133,78 +146,62 @@ export default function HelpSectionLandingPage() {
               </div>
             </aside>
 
-            {/* Right Main Content — pure link list */}
+            {/* Right Main Content */}
             <main className="min-w-0">
-              <header className="mb-8">
-                <h1 className="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">
-                  {localize(section, 'title')}
-                </h1>
-                {localize(section, 'description') && (
-                  <p className="text-base text-slate-500 mt-2 leading-relaxed max-w-2xl">
-                    {localize(section, 'description')}
-                  </p>
-                )}
+              <header className="mb-12">
+                <h1 className="text-4xl font-extrabold text-slate-900 tracking-tight leading-tight">{localize(feature, 'title')}</h1>
               </header>
 
               {/* Mobile Nav */}
-              <div className="lg:hidden mb-8 border border-slate-200/50 rounded-xl p-4 bg-transparent">
-                <div className="font-bold mb-2 text-slate-700 text-sm">{t('sectionMenu')}</div>
+              <div className="lg:hidden mb-8 border border-slate-200 rounded p-4 bg-slate-50">
+                <div className="font-bold mb-2 text-slate-700">{localize(category, 'title')}</div>
                 <select
-                  className="w-full p-2.5 border border-slate-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-primary-300/50"
+                  className="w-full p-2 border border-slate-300 rounded"
+                  value={`/help/${role}/${feature.slug}`}
                   onChange={(e) => {
                     const path = e.target.value;
-                    if (path) window.location.hash = path;
+                    if (path) navigate(path);
                   }}
                 >
-                  <option value="">{t('jumpToTopic')}</option>
-                  {groups.map(g => <option key={g.id} value={`#/help/category/${category.slug}/section/${section.slug}#group-${g.id}`}>{localize(g, 'title')}</option>)}
+                  {siblingFeatures.map(fc => (
+                    <option key={fc.slug} value={`/help/${role}/${fc.slug}`}>
+                      {fc.title}
+                    </option>
+                  ))}
                 </select>
               </div>
 
-              {/* Link list — grouped */}
+              {/* Article list */}
               {hasGroups ? (
-                <div className="space-y-10">
+                <div className="w-full divide-y divide-slate-200/70">
                   {groups.map((group) => {
                     const groupArticles = getArticlesByGroupId(group.id);
                     return (
-                      <ArticleGroup
-                        key={group.id}
-                        id={`group-${group.id}`}
-                        group={group}
-                        articles={groupArticles}
-                      />
+                      <div key={group.id} className="py-8 first:pt-0">
+                        <ArticleGroup
+                          id={`group-${group.id}`}
+                          group={group}
+                          articles={groupArticles}
+                        />
+                      </div>
                     );
                   })}
                 </div>
               ) : ungroupedArticles.length > 0 ? (
-                <div className="link-list">
-                  {ungroupedArticles.map((article, idx) => (
-                    <Link
-                      key={article.id}
-                      to={`/help/article/${article.slug}`}
-                      className={`link-list-item group${idx < ungroupedArticles.length - 1 ? ' border-b border-slate-200/50' : ''}`}
-                    >
-                      <div className="min-w-0 flex-1">
-                        <h3 className="text-[15px] font-semibold text-primary-600 group-hover:text-primary-700 transition-colors leading-snug">
-                          {localize(article, 'title')}
-                        </h3>
-                        {localize(article, 'summary') && (
-                          <p className="text-[13px] text-slate-400 mt-1 leading-relaxed truncate">
-                            {localize(article, 'summary')}
-                          </p>
-                        )}
-                      </div>
-                      <svg
-                        className="w-4 h-4 text-slate-300 group-hover:text-primary-400 flex-shrink-0 transition-all duration-200 group-hover:translate-x-0.5"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth={2}
-                        viewBox="0 0 24 24"
-                      >
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
-                      </svg>
-                    </Link>
-                  ))}
+                <div className="bg-transparent rounded-lg border border-slate-200 shadow-sm">
+                  <ul className="divide-y divide-slate-100">
+                    {ungroupedArticles.map(article => (
+                      <li key={article.id}>
+                        <Link
+                          to={`/help/article/${article.slug}`}
+                          className="block p-6 hover:bg-slate-50 transition-colors"
+                        >
+                          <h3 className="text-lg font-semibold text-primary-600 mb-1">{localize(article, 'title')}</h3>
+                          <p className="text-slate-500 text-sm">{localize(article, 'summary')}</p>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               ) : (
                 <div className="text-slate-500 py-8">

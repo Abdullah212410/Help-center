@@ -6,7 +6,7 @@ import { SearchResult } from '../types';
 import { useI18n } from '../lib/i18n';
 
 export default function SearchPage() {
-  const { t } = useI18n();
+  const { t, localize } = useI18n();
   const [searchParams] = useSearchParams();
   const query = searchParams.get('q') || '';
   const [results, setResults] = React.useState<SearchResult[]>([]);
@@ -49,7 +49,7 @@ export default function SearchPage() {
                     <div key={article.id} className="block group">
                         <Link to={`/help/article/${article.slug}`}>
                             <h2 className="text-xl font-semibold text-primary-600 group-hover:underline mb-1">
-                                {article.title}
+                                {localize(article, 'title')}
                             </h2>
                         </Link>
                         <div className="flex gap-2 mb-2">
@@ -59,7 +59,7 @@ export default function SearchPage() {
                                 </span>
                             ))}
                         </div>
-                        <p className="text-slate-600 text-sm mb-2">{article.summary}</p>
+                        <p className="text-slate-600 text-sm mb-2">{localize(article, 'summary')}</p>
                         {matches.length > 0 && (
                             <p className="text-xs text-slate-400 italic">{t('matchedIn')}: {matches.slice(0, 3).join(', ')}</p>
                         )}

@@ -34,7 +34,7 @@ export const TopUtilityBar: React.FC<TopUtilityBarProps> = ({ onOpenRequest }) =
                 className="flex items-center gap-2 text-slate-600 hover:text-primary-600 transition-colors font-medium"
               >
                   <span>{t('stringWebsite')}</span>
-                  <svg className={`w-3 h-3 ${isRtl ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
               </a>
           </div>
 

@@ -1,106 +1,363 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { Layout } from '../components/Layout';
 import { useI18n } from '../lib/i18n';
 
+/* ═══════════════════════════════════════════════════════
+   Category cards configuration
+   ═══════════════════════════════════════════════════════ */
+const mainCategories = [
+  {
+    slug: 'for-families',
+    titleKey: 'forFamilies' as const,
+    descKey: 'forFamiliesDesc' as const,
+    gradient: 'from-cyan-500 to-blue-500',
+    iconBg: 'bg-gradient-to-br from-cyan-50 to-sky-100',
+    iconColor: 'text-cyan-600',
+    accentColor: '#06b6d4',
+    icon: (
+      <svg className="w-7 h-7" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+      </svg>
+    ),
+  },
+  {
+    slug: 'for-students',
+    titleKey: 'forStudents' as const,
+    descKey: 'forStudentsDesc' as const,
+    gradient: 'from-blue-500 to-indigo-500',
+    iconBg: 'bg-gradient-to-br from-blue-50 to-indigo-100',
+    iconColor: 'text-blue-600',
+    accentColor: '#3b82f6',
+    icon: (
+      <svg className="w-7 h-7" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 0v-3.675A55.378 55.378 0 0 1 12 8.443m-7.007 11.55A5.981 5.981 0 0 0 6.75 15.75v-1.5" />
+      </svg>
+    ),
+  },
+  {
+    slug: 'for-teachers',
+    titleKey: 'forTeachers' as const,
+    descKey: 'forTeachersDesc' as const,
+    gradient: 'from-amber-400 to-orange-500',
+    iconBg: 'bg-gradient-to-br from-amber-50 to-orange-100',
+    iconColor: 'text-amber-600',
+    accentColor: '#f59e0b',
+    icon: (
+      <svg className="w-7 h-7" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+      </svg>
+    ),
+  },
+  {
+    slug: 'for-schools-and-districts',
+    titleKey: 'forSchoolsDistricts' as const,
+    descKey: 'forSchoolsDistrictsDesc' as const,
+    gradient: 'from-violet-500 to-purple-600',
+    iconBg: 'bg-gradient-to-br from-violet-50 to-purple-100',
+    iconColor: 'text-violet-600',
+    accentColor: '#8b5cf6',
+    icon: (
+      <svg className="w-7 h-7" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21" />
+      </svg>
+    ),
+  },
+];
+
 export default function Home() {
   const { t } = useI18n();
+  const navigate = useNavigate();
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/help/search?q=${encodeURIComponent(searchQuery.trim())}`);
+    }
+  };
 
   return (
     <Layout>
-      {/* Hero Banner */}
-      <div className="relative w-full h-64 md:h-80 bg-gradient-to-r from-primary-900 via-primary-700 to-primary-500 overflow-hidden flex items-center justify-center">
-        {/* Abstract shapes overlay */}
-        <div className="absolute inset-0 opacity-10">
-             <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="w-full h-full">
-                <path d="M0 100 C 20 0 50 0 100 100 Z" fill="white" />
-             </svg>
-        </div>
-        <div className="absolute -left-10 -top-10 w-40 h-40 bg-yellow-400 rounded-full mix-blend-overlay filter blur-3xl opacity-50 animate-pulse"></div>
-        <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-pink-400 rounded-full mix-blend-overlay filter blur-3xl opacity-50 animate-pulse" style={{ animationDelay: '1s' }}></div>
-        
-        <h1 className="relative z-10 text-3xl md:text-5xl font-bold text-white text-center drop-shadow-md px-4">
-          String {t('helpCenter')}
-        </h1>
-      </div>
+      {/* ══════════════════════════════════════════════════════
+          HERO — Modern aurora mesh gradient with search
+          ══════════════════════════════════════════════════════ */}
+      <section className="relative w-full overflow-hidden hero-mesh">
+        {/* Animated aurora orbs */}
+        <div
+          className="aurora-orb aurora-orb-1"
+          style={{ width: 400, height: 400, top: '-10%', left: '-5%', background: 'rgba(99,102,241,0.2)' }}
+          aria-hidden="true"
+        />
+        <div
+          className="aurora-orb aurora-orb-2"
+          style={{ width: 350, height: 350, top: '10%', right: '-8%', background: 'rgba(139,92,246,0.18)' }}
+          aria-hidden="true"
+        />
+        <div
+          className="aurora-orb aurora-orb-3"
+          style={{ width: 300, height: 300, bottom: '5%', left: '30%', background: 'rgba(59,130,246,0.12)' }}
+          aria-hidden="true"
+        />
 
-      <div className="container mx-auto px-4 md:px-6 -mt-16 relative z-20 pb-20">
-        
-        {/* Main Category Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto mb-16">
-          {/* For Families Card */}
-          <Link 
-            to="/help/category/for-families"
-            className="group bg-white rounded-2xl shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 p-8 flex flex-col items-center text-center border border-slate-100"
+        {/* Subtle grid pattern overlay */}
+        <div
+          className="absolute inset-0 opacity-[0.03]"
+          style={{
+            backgroundImage: 'radial-gradient(circle, #6366f1 1px, transparent 1px)',
+            backgroundSize: '32px 32px',
+          }}
+          aria-hidden="true"
+        />
+
+        {/* Bottom fade to white */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background: 'linear-gradient(to bottom, transparent 60%, rgba(255,255,255,0.5) 80%, #ffffff 100%)',
+          }}
+          aria-hidden="true"
+        />
+
+        {/* Hero content */}
+        <div className="relative z-10 mx-auto px-6 text-center max-w-[720px] pt-16 md:pt-20 xl:pt-24 pb-48 md:pb-56 xl:pb-64">
+          {/* Badge */}
+          <div
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full mb-6 fade-up"
+            style={{
+              background: 'rgba(99,102,241,0.08)',
+              border: '1px solid rgba(99,102,241,0.12)',
+              animationDelay: '0s',
+            }}
           >
-            <div className="w-24 h-24 mb-6 relative">
-               {/* Custom Illustration for Families */}
-               <svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-lg" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="50" cy="50" r="45" fill="#e0f2fe" />
-                  <path d="M35 70 L35 45 L50 30 L65 45 L65 70 Z" fill="#0ea5e9" stroke="#0369a1" strokeWidth="2" strokeLinejoin="round" />
-                  <rect x="45" y="55" width="10" height="15" fill="#0369a1" />
-                  <circle cx="50" cy="50" r="5" fill="#fef08a" />
-               </svg>
-            </div>
-            <h2 className="text-2xl font-bold text-slate-900 group-hover:text-primary-600 mb-2">For Families</h2>
-            <p className="text-slate-500 font-medium">I’m a parent, guardian, grandparent, etc.</p>
-          </Link>
+            <span
+              className="accent-dot stat-pulse"
+              style={{ background: '#6366f1' }}
+            />
+            <span className="text-xs font-semibold tracking-wide uppercase" style={{ color: '#6366f1' }}>
+              {t('welcomeTo')}
+            </span>
+          </div>
 
-          {/* For Schools Card */}
-          <Link 
-            to="/help/category/for-schools-and-districts"
-            className="group bg-white rounded-2xl shadow-xl hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 p-8 flex flex-col items-center text-center border border-slate-100"
+          {/* Title */}
+          <h1
+            className="text-4xl md:text-[56px] font-extrabold tracking-tight fade-up"
+            style={{ lineHeight: 1.1, marginBottom: 16, animationDelay: '0.1s' }}
           >
-            <div className="w-24 h-24 mb-6 relative">
-               {/* Custom Illustration for Schools */}
-               <svg viewBox="0 0 100 100" className="w-full h-full drop-shadow-lg" xmlns="http://www.w3.org/2000/svg">
-                  <circle cx="50" cy="50" r="45" fill="#fef9c3" />
-                  <rect x="25" y="40" width="50" height="30" fill="#fbbf24" stroke="#d97706" strokeWidth="2" />
-                  <polygon points="25,40 50,20 75,40" fill="#d97706" stroke="#b45309" strokeWidth="2" />
-                  <rect x="45" y="55" width="10" height="15" fill="#b45309" />
-                  <rect x="30" y="45" width="8" height="8" fill="#fff" />
-                  <rect x="62" y="45" width="8" height="8" fill="#fff" />
-                  <line x1="50" y1="20" x2="50" y2="5" stroke="#b45309" strokeWidth="2" />
-                  <path d="M50 5 L65 10 L50 15 Z" fill="#ef4444" />
-               </svg>
-            </div>
-            <h2 className="text-2xl font-bold text-slate-900 group-hover:text-primary-600 mb-2">For Schools and Districts</h2>
-            <p className="text-slate-500 font-medium">I’m a teacher, principal, district leader, etc.</p>
-          </Link>
-        </div>
+            <span className="text-slate-900">String </span>
+            <span className="gradient-text">{t('helpCenter')}</span>
+          </h1>
 
-        {/* Secondary Help Section */}
+          {/* Subtitle */}
+          <p
+            className="text-base md:text-lg font-normal mx-auto fade-up leading-relaxed"
+            style={{ color: '#64748b', maxWidth: 520, animationDelay: '0.2s', marginBottom: 32 }}
+          >
+            {t('heroSubtitle')}
+          </p>
+
+          {/* Search bar */}
+          <form
+            onSubmit={handleSearch}
+            className="fade-up"
+            style={{ animationDelay: '0.3s' }}
+          >
+            <div
+              className="relative mx-auto search-glow"
+              style={{
+                maxWidth: 560,
+                borderRadius: 16,
+                border: '1px solid rgba(226,232,240,0.55)',
+              }}
+            >
+              <div className="flex items-center">
+                <div className="pl-5 text-slate-400">
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                  </svg>
+                </div>
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder={t('searchPlaceholder')}
+                  className="w-full py-4 px-4 bg-transparent text-slate-900 placeholder-slate-400 text-[15px] focus:outline-none"
+                />
+                {searchQuery && (
+                  <button
+                    type="submit"
+                    className="mr-3 px-5 py-2 rounded-xl text-sm font-semibold text-white transition-all"
+                    style={{
+                      background: 'linear-gradient(135deg, #6366f1, #8b5cf6)',
+                      boxShadow: '0 2px 8px rgba(99,102,241,0.3)',
+                    }}
+                  >
+                    Search
+                  </button>
+                )}
+              </div>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════════════
+          CATEGORY CARDS — overlapping hero
+          ══════════════════════════════════════════════════════ */}
+      <section
+        className="relative card-overlap"
+        style={{ zIndex: 20, marginTop: -100, paddingBottom: 16 }}
+      >
+        <style>{`
+          @media (min-width: 768px)  { .card-overlap { margin-top: -130px !important; } }
+          @media (min-width: 1280px) { .card-overlap { margin-top: -150px !important; } }
+        `}</style>
+
+        <div
+          className="relative z-10 mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4"
+          style={{ maxWidth: 1200, gap: 20 }}
+        >
+          {mainCategories.map((cat, idx) => (
+            <Link
+              key={cat.slug}
+              to={`/help/category/${cat.slug}`}
+              className="group card-modern flex flex-col text-left fade-up"
+              style={{
+                padding: 0,
+                minHeight: 260,
+                animationDelay: `${0.1 + idx * 0.08}s`,
+              }}
+            >
+              {/* Gradient accent bar */}
+              <div
+                className={`w-full h-1 bg-gradient-to-r ${cat.gradient}`}
+                style={{ borderRadius: '20px 20px 0 0' }}
+              />
+
+              <div style={{ padding: '24px 24px 28px' }}>
+                {/* Icon */}
+                <div
+                  className={`flex items-center justify-center rounded-2xl ${cat.iconBg} ${cat.iconColor} transition-all duration-300 group-hover:scale-110 group-hover:shadow-lg`}
+                  style={{
+                    width: 56,
+                    height: 56,
+                    marginBottom: 18,
+                  }}
+                >
+                  {cat.icon}
+                </div>
+
+                {/* Title */}
+                <h2
+                  className="text-lg font-bold text-slate-900 group-hover:text-primary-600 transition-colors duration-200"
+                  style={{ marginBottom: 8, lineHeight: 1.3 }}
+                >
+                  {t(cat.titleKey)}
+                </h2>
+
+                {/* Description */}
+                <p className="text-sm leading-relaxed" style={{ color: '#64748b' }}>
+                  {t(cat.descKey)}
+                </p>
+
+                {/* Arrow indicator */}
+                <div className="mt-5 flex items-center gap-2 text-sm font-medium text-primary-500 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-x-0 group-hover:translate-x-1">
+                  <span>Explore</span>
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                  </svg>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* ══════════════════════════════════════════════════════
+          NEED MORE HELP?
+          ══════════════════════════════════════════════════════ */}
+      <section
+        className="mx-auto px-6"
+        style={{ maxWidth: 1200, paddingTop: 48, paddingBottom: 80 }}
+      >
         <div className="max-w-4xl mx-auto">
-           <h3 className="text-xl md:text-2xl font-semibold text-slate-900 mb-10 text-center">Also get help with:</h3>
-           
-           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {/* Safety and Privacy */}
-              <Link 
-                to="/help/category/safety-and-privacy"
-                className="flex flex-col items-center text-center group"
+          {/* Section header */}
+          <div className="flex items-center gap-5 mb-10">
+            <div className="flex-1 h-px shimmer-line" style={{ height: 1 }} />
+            <h3
+              className="text-lg font-bold text-slate-800 whitespace-nowrap flex items-center gap-3"
+            >
+              <span
+                className="inline-flex items-center justify-center w-8 h-8 rounded-lg"
+                style={{ background: 'rgba(99,102,241,0.08)' }}
               >
-                  <div className="w-16 h-16 mb-4 flex items-center justify-center bg-white rounded-full shadow-md group-hover:shadow-lg group-hover:scale-110 transition-all border border-slate-100">
-                     <span className="text-3xl">🛡️</span>
-                  </div>
-                  <h4 className="text-lg font-bold text-slate-900 group-hover:text-primary-600 mb-1">Safety and Privacy</h4>
-                  <p className="text-sm text-slate-500 max-w-xs">Learn how String keeps school communities safe.</p>
-              </Link>
+                <svg className="w-4 h-4 text-primary-500" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 5.25h.008v.008H12v-.008Z" />
+                </svg>
+              </span>
+              {t('needMoreHelp')}
+            </h3>
+            <div className="flex-1 h-px shimmer-line" style={{ height: 1 }} />
+          </div>
 
-              {/* String Tutor */}
-              <Link 
-                to="/help/category/string-tutor"
-                className="flex flex-col items-center text-center group"
+          {/* Help cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2" style={{ gap: 20 }}>
+            {/* Safety & Privacy */}
+            <Link
+              to="/help/category/safety-and-privacy"
+              className="group card-modern flex items-center gap-5"
+              style={{ padding: '22px 24px' }}
+            >
+              <div
+                className="flex-shrink-0 flex items-center justify-center rounded-2xl bg-gradient-to-br from-emerald-50 to-green-100 text-emerald-600 transition-all duration-300 group-hover:scale-110 group-hover:shadow-lg"
+                style={{ width: 56, height: 56 }}
               >
-                  <div className="w-16 h-16 mb-4 flex items-center justify-center bg-white rounded-full shadow-md group-hover:shadow-lg group-hover:scale-110 transition-all border border-slate-100">
-                     <span className="text-3xl">🎓</span>
-                  </div>
-                  <h4 className="text-lg font-bold text-slate-900 group-hover:text-primary-600 mb-1">String Tutor</h4>
-                  <p className="text-sm text-slate-500 max-w-xs">Learn how one-to-one support helps kids flourish.</p>
-              </Link>
-           </div>
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75m-3-7.036A11.959 11.959 0 0 1 3.598 6 11.99 11.99 0 0 0 3 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285Z" />
+                </svg>
+              </div>
+              <div className="flex-1 min-w-0">
+                <h4 className="text-[15px] font-bold text-slate-900 group-hover:text-primary-600 transition-colors duration-200" style={{ marginBottom: 4 }}>
+                  {t('safetyPrivacy')}
+                </h4>
+                <p className="text-sm" style={{ color: '#64748b', lineHeight: 1.5 }}>
+                  {t('safetyPrivacyDesc')}
+                </p>
+              </div>
+              <svg className="w-5 h-5 text-slate-300 group-hover:text-primary-400 transition-all duration-300 flex-shrink-0 translate-x-0 group-hover:translate-x-1" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+              </svg>
+            </Link>
+
+            {/* String Tutor */}
+            <Link
+              to="/help/category/string-tutor"
+              className="group card-modern flex items-center gap-5"
+              style={{ padding: '22px 24px' }}
+            >
+              <div
+                className="flex-shrink-0 flex items-center justify-center rounded-2xl bg-gradient-to-br from-violet-50 to-purple-100 text-violet-600 transition-all duration-300 group-hover:scale-110 group-hover:shadow-lg"
+                style={{ width: 56, height: 56 }}
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
+                </svg>
+              </div>
+              <div className="flex-1 min-w-0">
+                <h4 className="text-[15px] font-bold text-slate-900 group-hover:text-primary-600 transition-colors duration-200" style={{ marginBottom: 4 }}>
+                  {t('stringTutor')}
+                </h4>
+                <p className="text-sm" style={{ color: '#64748b', lineHeight: 1.5 }}>
+                  {t('stringTutorDesc')}
+                </p>
+              </div>
+              <svg className="w-5 h-5 text-slate-300 group-hover:text-primary-400 transition-all duration-300 flex-shrink-0 translate-x-0 group-hover:translate-x-1" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+              </svg>
+            </Link>
+          </div>
         </div>
-
-      </div>
+      </section>
     </Layout>
   );
 }

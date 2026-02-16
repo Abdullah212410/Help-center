@@ -72,4 +72,37 @@ export const ar = {
   btnCopySummary: "نسخ الملخص",
   errorRequired: "هذا الحقل مطلوب",
   errorEmail: "يرجى إدخال بريد إلكتروني صالح",
+
+  // Section page
+  sectionMenu: "قائمة القسم",
+  jumpToTopic: "انتقل إلى موضوع...",
+  noContent: "لا يوجد محتوى متاح لهذا القسم.",
+  tableOfContents: "جدول المحتويات",
+  lastUpdated: "آخر تحديث",
+  menu: "القائمة",
+  articles: "المقالات",
+
+  // Home
+  welcomeTo: "مرحباً بك في",
+  heroSubtitle: "ابحث عن الإجابات والأدلة والموارد لمجتمعك المدرسي.",
+  forFamilies: "للعائلات",
+  forFamiliesDesc: "أنا والد، ولي أمر، جد، إلخ.",
+  forSchools: "للمدارس والمناطق التعليمية",
+  forSchoolsDesc: "أنا معلم، مدير، قائد منطقة تعليمية، إلخ.",
+  alsoGetHelp: "احصل أيضاً على مساعدة في:",
+  safetyPrivacy: "السلامة والخصوصية",
+  safetyPrivacyDesc: "تعرف على كيفية حفاظ سترينج على أمان المجتمعات المدرسية.",
+  stringTutor: "معلم سترينج",
+  stringTutorDesc: "تعرف على كيف يساعد الدعم الفردي الأطفال على الازدهار.",
+
+  forStudents: "للطلاب",
+  forStudentsDesc: "نصائح وموارد للطلاب.",
+  forTeachers: "للمعلمين",
+  forTeachersDesc: "مقالات مفيدة للمعلمين والمربين.",
+  forSchoolsDistricts: "للمدارس والمناطق التعليمية",
+  forSchoolsDistrictsDesc: "موارد لقادة المدارس والإداريين.",
+  needMoreHelp: "تحتاج مساعدة إضافية؟",
+
+  // Breadcrumbs
+  stringHelpCenter: "مركز مساعدة سترينج",
 };

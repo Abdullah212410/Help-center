@@ -2,9 +2,11 @@ export interface Category {
   id: string;
   slug: string;
   title: string;
+  title_ar?: string;
   description: string;
+  description_ar?: string;
   order: number;
-  icon: string; // Emoji or generic icon name
+  icon: string;
 }
 
 export interface Section {
@@ -12,28 +14,39 @@ export interface Section {
   categoryId: string;
   slug: string;
   title: string;
+  title_ar?: string;
   description: string;
+  description_ar?: string;
   order: number;
-  icon?: string; // Emoji or SVG path
+  icon?: string;
+  /** When present, the section renders as a single article page instead of an article list. */
+  bodyMarkdown?: string;
+  bodyMarkdown_ar?: string;
+  updatedAt?: string;
 }
 
 export interface Group {
   id: string;
   sectionId: string;
   title: string;
+  title_ar?: string;
   description?: string;
+  description_ar?: string;
   order: number;
 }
 
 export interface Article {
   id: string;
   sectionId: string;
-  groupId?: string; // Optional grouping
+  groupId?: string;
   slug: string;
   title: string;
+  title_ar?: string;
   summary: string;
+  summary_ar?: string;
   bodyMarkdown: string;
-  updatedAt: string; // ISO Date string
+  bodyMarkdown_ar?: string;
+  updatedAt: string;
   tags: string[];
   isTop?: boolean;
   isFeatured?: boolean;

@@ -4,26 +4,38 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { Layout } from '../components/Layout';
 import { Breadcrumbs } from '../components/Breadcrumbs';
-import { 
-  getArticleBySlug, 
-  getSectionById, 
-  getCategoryById, 
-  getGroupsBySectionId, 
+import { useI18n } from '../lib/i18n';
+import {
+  getArticleBySlug,
+  getSectionById,
+  getCategoryById,
+  getGroupsBySectionId,
   getArticlesByGroupId,
   getArticlesBySectionId
 } from '../lib/api';
-import { formatDate } from '../lib/utils';
+import { formatDate, uniqueSlugIds, scrollToHash } from '../lib/utils';
 import { Section, Category, Group, Article } from '../types';
 
+// ── Stable references (defined outside component to prevent re-renders) ──
+const REMARK_PLUGINS = [remarkGfm];
+const MARKDOWN_COMPONENTS = {
+  h2: ({node, ...props}: any) => <h2 className="text-2xl font-bold mt-8 mb-4 scroll-mt-32" {...props} />,
+  h3: ({node, ...props}: any) => <h3 className="text-xl font-semibold mt-6 mb-3 scroll-mt-32" {...props} />,
+  ul: ({node, ...props}: any) => <ul className="list-disc pl-5 space-y-2 mb-4" {...props} />,
+  li: ({node, ...props}: any) => <li className="text-slate-700 leading-relaxed" {...props} />,
+  p: ({node, ...props}: any) => <p className="mb-4 text-slate-700 leading-relaxed" {...props} />,
+};
+
 export default function ArticlePage() {
+  const { t, localize } = useI18n();
   const { articleSlug } = useParams();
   const article = getArticleBySlug(articleSlug || '');
-  
+
   // Data State
   const [section, setSection] = useState<Section | undefined>(undefined);
   const [category, setCategory] = useState<Category | undefined>(undefined);
   const [sectionGroups, setSectionGroups] = useState<Group[]>([]);
-  
+
   // Navigation State
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileTocOpen, setMobileTocOpen] = useState(false);
@@ -32,6 +44,11 @@ export default function ArticlePage() {
   const [toc, setToc] = useState<{ id: string; text: string; level: number }[]>([]);
   const [activeId, setActiveId] = useState<string>('');
   const observer = useRef<IntersectionObserver | null>(null);
+
+  // Scroll to top when article changes
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
+  }, [article?.id]);
 
   // Load Context Data
   useEffect(() => {
@@ -48,16 +65,18 @@ export default function ArticlePage() {
   // Generate TOC & Set up Observer
   useEffect(() => {
     if (!article) return;
-    
+
     // Give Markdown a tick to render
     setTimeout(() => {
       const headings = Array.from(document.querySelectorAll('.markdown-body h2, .markdown-body h3'));
+      const texts = headings.map(h => h.textContent || '');
+      const ids = uniqueSlugIds(texts);
+
       const tocData = headings.map((h, i) => {
-        const id = h.id || `heading-${i}`;
-        h.id = id; // Ensure ID exists
+        h.id = ids[i]; // Assign stable slugified ID
         return {
-          id,
-          text: h.textContent || '',
+          id: ids[i],
+          text: texts[i],
           level: h.tagName === 'H2' ? 2 : 3
         };
       });
@@ -65,7 +84,7 @@ export default function ArticlePage() {
 
       // Setup Intersection Observer for Highlight
       if (observer.current) observer.current.disconnect();
-      
+
       observer.current = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
@@ -75,7 +94,7 @@ export default function ArticlePage() {
       }, { rootMargin: '-80px 0px -60% 0px' });
 
       headings.forEach((h) => observer.current?.observe(h));
-    }, 150);
+    }, 200);
 
     return () => observer.current?.disconnect();
   }, [article?.id]); // Re-run when article changes
@@ -85,34 +104,17 @@ export default function ArticlePage() {
     return null; // Loading
   }
 
-  // --- Render Helpers ---
-
-  // Custom H2/H3 for ReactMarkdown to ensure IDs are stable if we wanted to auto-gen them there, 
-  // but we are doing DOM-based ID assignment in useEffect for simplicity with the existing content.
-  const MarkdownComponents = {
-    h2: ({node, ...props}: any) => <h2 className="text-2xl font-bold mt-8 mb-4 scroll-mt-32" {...props} />,
-    h3: ({node, ...props}: any) => <h3 className="text-xl font-semibold mt-6 mb-3 scroll-mt-32" {...props} />,
-    ul: ({node, ...props}: any) => <ul className="list-disc pl-5 space-y-2 mb-4" {...props} />,
-    li: ({node, ...props}: any) => <li className="text-slate-700 leading-relaxed" {...props} />,
-    p: ({node, ...props}: any) => <p className="mb-4 text-slate-700 leading-relaxed" {...props} />,
-  };
-
   return (
     <Layout>
-      {/* VERIFICATION LABEL */}
-      <div className="bg-purple-600 text-white text-xs font-bold text-center py-1 uppercase tracking-widest sticky top-16 z-[60]">
-        NEW ARTICLE LAYOUT ACTIVE
-      </div>
+      <div className="glass-bg min-h-screen">
+        <div className="container mx-auto px-4 md:px-6 max-w-[1280px]">
 
-      <div className="bg-white min-h-screen">
-        <div className="container mx-auto px-4 md:px-6 max-w-[1400px]">
-          
           {/* Breadcrumbs (Desktop) */}
           <div className="hidden lg:block pt-6 pb-2">
             <Breadcrumbs items={[
-              { label: 'Help Center', path: '/help' },
-              { label: category.title, path: `/help/category/${category.slug}` },
-              { label: section.title, path: `/help/category/${category.slug}/section/${section.slug}` }
+              { label: t('helpCenter'), path: '/help' },
+              { label: localize(category, 'title'), path: `/help/category/${category.slug}` },
+              { label: localize(section, 'title'), path: `/help/category/${category.slug}/section/${section.slug}` }
             ]} />
           </div>
 
@@ -125,22 +127,22 @@ export default function ArticlePage() {
             `}>
               {/* Mobile Close Button */}
               <div className="lg:hidden p-4 border-b flex justify-between items-center bg-slate-50">
-                 <span className="font-bold text-slate-900">Articles</span>
+                 <span className="font-bold text-slate-900">{t('articles')}</span>
                  <button onClick={() => setMobileMenuOpen(false)}>
                    <svg className="w-6 h-6 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
                  </button>
               </div>
 
-              <div className="p-4 lg:p-0 lg:sticky lg:top-24 lg:max-h-[calc(100vh-8rem)] lg:overflow-y-auto custom-scrollbar">
-                
+              <div className="p-4 lg:p-6 lg:sticky lg:top-24 lg:max-h-[calc(100vh-8rem)] lg:overflow-y-auto custom-scrollbar glass-sidebar" style={{ background: '#fff' }}>
+
                 {/* Section Title */}
-                <div className="mb-4">
-                  <Link 
+                <div className="mb-5">
+                  <Link
                     to={`/help/category/${category.slug}/section/${section.slug}`}
-                    className="flex items-center gap-2 font-bold text-slate-900 hover:text-purple-600 transition-colors"
+                    className="flex items-center gap-2.5 font-bold text-slate-900 hover:text-primary-600 transition-colors text-[15px]"
                   >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
-                    {section.title}
+                    <svg className="w-3.5 h-3.5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" /></svg>
+                    {localize(section, 'title')}
                   </Link>
                 </div>
 
@@ -150,30 +152,30 @@ export default function ArticlePage() {
                     // Check if this group contains the current article
                     const groupArticles = getArticlesByGroupId(group.id);
                     const isCurrentGroup = group.id === article.groupId;
-                    
+
                     if (isCurrentGroup) {
                       // Expanded State
                       return (
                         <div key={group.id} className="mb-2">
-                           <div className="flex items-center gap-2 px-2 py-1.5 text-sm font-bold text-slate-800">
-                             <svg className="w-3 h-3 text-slate-400 rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
-                             {group.title}
+                           <div className="flex items-center gap-2.5 ml-1 py-2 text-sm font-bold text-slate-800">
+                             <svg className="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" /></svg>
+                             {localize(group, 'title')}
                            </div>
-                           <div className="ml-2 pl-3 border-l border-slate-200 space-y-1 mt-1">
+                           <div className="ml-2 pl-3 border-l-2 border-primary-200/60 space-y-1 mt-1">
                               {groupArticles.map(a => {
                                 const isCurrentArticle = a.id === article.id;
                                 return (
                                   <Link
                                     key={a.id}
                                     to={`/help/article/${a.slug}`}
-                                    className={`block text-[13px] py-1.5 pl-3 pr-2 rounded-r-md leading-snug transition-colors ${
-                                      isCurrentArticle 
-                                      ? 'text-purple-700 font-semibold bg-purple-50 border-l-2 border-purple-600 -ml-[1px]' 
-                                      : 'text-slate-600 hover:text-purple-600 hover:bg-slate-50'
+                                    className={`block text-[13px] leading-snug transition-colors ${
+                                      isCurrentArticle
+                                      ? 'text-primary-700 font-semibold sidebar-active-pill'
+                                      : 'text-slate-500 hover:text-primary-600 hover:bg-white/40 py-1.5 pl-3 pr-2'
                                     }`}
                                     onClick={() => setMobileMenuOpen(false)}
                                   >
-                                    {a.title}
+                                    {localize(a, 'title')}
                                   </Link>
                                 );
                               })}
@@ -184,22 +186,14 @@ export default function ArticlePage() {
                       // Collapsed State
                       return (
                         <div key={group.id}>
-                          <button 
-                             className="w-full flex items-center gap-2 px-2 py-1.5 text-sm font-medium text-slate-600 hover:text-purple-600 hover:bg-slate-50 rounded-md transition-colors text-left"
-                             onClick={() => {
-                               // Normally this might toggle, but per screenshot/requirement it seems simpler to just link or have them collapsed. 
-                               // If we want to navigate to that group, we'd need an anchor or route. 
-                               // For now, let's just assume we want to scroll to it on section page or expand it here.
-                               // Let's redirect to the first article of that group for simplicity or just expand in place (requires state).
-                               // Given requirement "Clicking any item navigates to that article", let's link to the first article of the group.
-                               if (groupArticles.length > 0) {
-                                  window.location.hash = `/help/article/${groupArticles[0].slug}`;
-                               }
-                             }}
+                          <Link
+                             to={groupArticles.length > 0 ? `/help/article/${groupArticles[0].slug}` : '#'}
+                             className="flex items-center gap-2.5 ml-1 py-2 text-sm font-medium text-slate-500 hover:text-primary-600 rounded-lg transition-colors"
+                             onClick={() => setMobileMenuOpen(false)}
                           >
-                             <svg className="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
-                             {group.title}
-                          </button>
+                             <svg className="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" /></svg>
+                             {localize(group, 'title')}
+                          </Link>
                         </div>
                       );
                     }
@@ -212,7 +206,7 @@ export default function ArticlePage() {
                         to={`/help/article/${a.slug}`}
                         className={`block text-sm py-1.5 px-2 rounded-md ${a.id === article.id ? 'bg-purple-50 text-purple-700 font-bold' : 'text-slate-600 hover:bg-slate-50'}`}
                       >
-                        {a.title}
+                        {localize(a, 'title')}
                      </Link>
                   ))}
                 </div>
@@ -221,20 +215,20 @@ export default function ArticlePage() {
 
             {/* --- MOBILE NAV TOGGLES --- */}
             <div className="lg:hidden col-span-1 flex gap-2 mb-4">
-              <button 
+              <button
                 onClick={() => setMobileMenuOpen(true)}
                 className="flex-1 flex items-center justify-center gap-2 bg-white border border-slate-200 p-3 rounded-lg shadow-sm text-slate-700 font-medium"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h7" /></svg>
-                Menu
+                {t('menu')}
               </button>
               {toc.length > 0 && (
-                <button 
+                <button
                   onClick={() => setMobileTocOpen(!mobileTocOpen)}
                   className="flex-1 flex items-center justify-center gap-2 bg-white border border-slate-200 p-3 rounded-lg shadow-sm text-slate-700 font-medium"
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
-                  On this page
+                  {t('onThisPage')}
                 </button>
               )}
             </div>
@@ -244,14 +238,18 @@ export default function ArticlePage() {
               {/* Mobile TOC Dropdown */}
               {mobileTocOpen && toc.length > 0 && (
                  <div className="lg:hidden mb-6 bg-purple-50 rounded-lg p-4 border border-purple-100">
-                    <h4 className="font-bold text-purple-900 mb-2 text-sm uppercase">Table of Contents</h4>
+                    <h4 className="font-bold text-purple-900 mb-2 text-sm uppercase">{t('tableOfContents')}</h4>
                     <ul className="space-y-2">
                        {toc.map(item => (
                          <li key={item.id}>
-                           <a 
-                             href={`#${item.id}`} 
+                           <a
+                             href={`#${item.id}`}
                              className="block text-sm text-purple-700 hover:underline"
-                             onClick={() => setMobileTocOpen(false)}
+                             onClick={(e) => {
+                               e.preventDefault();
+                               setMobileTocOpen(false);
+                               scrollToHash(item.id);
+                             }}
                            >
                              {item.text}
                            </a>
@@ -262,56 +260,48 @@ export default function ArticlePage() {
               )}
 
               <article className="prose prose-slate max-w-none prose-headings:text-slate-900 prose-a:text-purple-600 prose-a:no-underline hover:prose-a:underline">
-                 <h1 className="text-4xl font-bold text-slate-900 mb-6 leading-tight">{article.title}</h1>
-                 
+                 <h1 className="text-4xl font-extrabold text-slate-900 mb-5 leading-tight tracking-tight">{localize(article, 'title')}</h1>
+
                  {/* Intro / Summary */}
-                 <p className="text-lg text-slate-600 leading-relaxed mb-8 border-b border-slate-100 pb-8">
-                   {article.summary}
+                 <p className="text-lg text-slate-500 leading-relaxed mb-10 border-b border-slate-200/50 pb-10">
+                   {localize(article, 'summary')}
                  </p>
 
                  {/* Main Markdown Body */}
                  <div className="markdown-body">
-                   <ReactMarkdown remarkPlugins={[remarkGfm]} components={MarkdownComponents}>
-                     {article.bodyMarkdown}
+                   <ReactMarkdown remarkPlugins={REMARK_PLUGINS} components={MARKDOWN_COMPONENTS}>
+                     {localize(article, 'bodyMarkdown')}
                    </ReactMarkdown>
                  </div>
               </article>
 
               <div className="mt-16 pt-8 border-t border-slate-200 text-sm text-slate-500 flex justify-between items-center">
-                 <span>Last updated: {formatDate(article.updatedAt)}</span>
+                 <span>{t('lastUpdated')}: {formatDate(article.updatedAt)}</span>
               </div>
             </main>
 
             {/* --- RIGHT SIDEBAR: TABLE OF CONTENTS --- */}
             <aside className="hidden lg:block">
-              <div className="sticky top-24 pl-4">
-                 <h4 className="font-bold text-slate-900 mb-4 text-sm uppercase tracking-wide">Table of Contents</h4>
-                 <nav className="relative">
-                   {/* Vertical line track */}
-                   <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-slate-100 rounded-full"></div>
-                   
-                   <ul className="space-y-0 relative">
+              <div className="sticky top-24 glass-sidebar p-5" style={{ background: '#fff' }}>
+                 <h4 className="font-bold text-slate-900 mb-4 text-sm uppercase tracking-wide">{t('tableOfContents')}</h4>
+                 <nav>
+                   <ul className="space-y-1">
                       {toc.map(item => {
                         const isActive = activeId === item.id;
                         return (
-                          <li key={item.id} className="relative">
-                             {/* Active Indicator Line */}
-                             {isActive && (
-                               <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-purple-600 rounded-full z-10 transition-all duration-300"></div>
-                             )}
-                             
-                             <a 
+                          <li key={item.id}>
+                             <a
                                href={`#${item.id}`}
                                className={`
-                                 block py-1.5 pl-4 text-sm transition-all duration-200
-                                 ${item.level === 3 ? 'ml-2' : ''}
-                                 ${isActive 
-                                   ? 'text-purple-700 font-bold bg-purple-50 rounded-r-md' 
-                                   : 'text-slate-500 hover:text-purple-600 hover:bg-slate-50 rounded-r-md'}
+                                 block py-1.5 text-sm transition-all duration-200
+                                 ${item.level === 3 ? 'pl-3 text-[13px]' : ''}
+                                 ${isActive
+                                   ? 'text-primary-700 font-semibold'
+                                   : 'text-slate-400 hover:text-primary-600'}
                                `}
                                onClick={(e) => {
                                  e.preventDefault();
-                                 document.getElementById(item.id)?.scrollIntoView({ behavior: 'smooth' });
+                                 scrollToHash(item.id);
                                }}
                              >
                                {item.text}
@@ -320,9 +310,9 @@ export default function ArticlePage() {
                         );
                       })}
                    </ul>
-                   
+
                    {toc.length === 0 && (
-                     <p className="text-xs text-slate-400 pl-4 italic">No sections detected.</p>
+                     <p className="text-xs text-slate-400 italic">{t('noSubsections')}</p>
                    )}
                  </nav>
               </div>

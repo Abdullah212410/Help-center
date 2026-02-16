@@ -72,4 +72,37 @@ export const en = {
   btnCopySummary: "Copy summary",
   errorRequired: "This field is required",
   errorEmail: "Please enter a valid email",
+
+  // Section page
+  sectionMenu: "Section Menu",
+  jumpToTopic: "Jump to topic...",
+  noContent: "No content available for this section.",
+  tableOfContents: "Table of Contents",
+  lastUpdated: "Last updated",
+  menu: "Menu",
+  articles: "Articles",
+
+  // Home
+  welcomeTo: "Welcome to",
+  heroSubtitle: "Find answers, guides, and resources for your school community.",
+  forFamilies: "For Families",
+  forFamiliesDesc: "I'm a parent, guardian, grandparent, etc.",
+  forSchools: "For Schools and Districts",
+  forSchoolsDesc: "I'm a teacher, principal, district leader, etc.",
+  alsoGetHelp: "Also get help with:",
+  safetyPrivacy: "Safety and Privacy",
+  safetyPrivacyDesc: "Learn how String keeps school communities safe.",
+  stringTutor: "String Tutor",
+  stringTutorDesc: "Learn how one-to-one support helps kids flourish.",
+
+  forStudents: "For Students",
+  forStudentsDesc: "Tips and resources for students.",
+  forTeachers: "For Teachers",
+  forTeachersDesc: "Helpful articles for teachers and educators.",
+  forSchoolsDistricts: "For Schools & Districts",
+  forSchoolsDistrictsDesc: "Resources for school leaders and administrators.",
+  needMoreHelp: "Need more help?",
+
+  // Breadcrumbs
+  stringHelpCenter: "String Help Center",
 };

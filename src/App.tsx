@@ -7,6 +7,7 @@ import CategoryPage from './pages/Category';
 import HelpSectionLandingPage from './pages/HelpSectionLandingPage';
 import ArticlePage from './pages/Article';
 import SearchPage from './pages/Search';
+import RoleFeaturePage from './pages/RoleFeaturePage';
 import NotFound from './pages/NotFound';
 
 function App() {
@@ -27,6 +28,9 @@ function App() {
           <Route path="/help/category/:categorySlug/section/:sectionSlug" element={<HelpSectionLandingPage />} />
           
           <Route path="/help/article/:articleSlug" element={<ArticlePage />} />
+
+          {/* Role-based feature pages: /help/teacher/*, /help/student/* */}
+          <Route path="/help/:role/:featureSlug" element={<RoleFeaturePage />} />
 
           {/* Fallback */}
           <Route path="/404" element={<NotFound />} />
