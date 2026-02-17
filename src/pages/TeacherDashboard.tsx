@@ -47,7 +47,7 @@ export default function TeacherDashboard() {
   const [previewMaterial, setPreviewMaterial] = useState<Material | null>(null);
 
   useEffect(() => {
-    if (!isTeacher) navigate('/teacher/login', { replace: true });
+    if (!isTeacher) navigate('/login', { replace: true });
   }, [isTeacher, navigate]);
 
   const refreshMaterials = useCallback(() => {
@@ -195,7 +195,12 @@ export default function TeacherDashboard() {
                 <button
                   id="upload-btn"
                   onClick={() => { setEditingMaterial(null); setIsUploadOpen(true); }}
-                  className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-white font-medium bg-gradient-to-r from-amber-500 to-orange-500 shadow-md hover:from-amber-600 hover:to-orange-600 hover:shadow-lg transition-all duration-200 whitespace-nowrap"
+                  className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-white font-medium transition-all duration-200 whitespace-nowrap active:scale-[0.97]"
+                  style={{ background: '#ED3B91', boxShadow: '0 6px 18px rgba(237,59,145,0.25)' }}
+                  onMouseEnter={(e) => { e.currentTarget.style.background = '#d92f82'; e.currentTarget.style.boxShadow = '0 8px 22px rgba(237,59,145,0.35)'; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.background = '#ED3B91'; e.currentTarget.style.boxShadow = '0 6px 18px rgba(237,59,145,0.25)'; }}
+                  onMouseDown={(e) => { e.currentTarget.style.background = '#c72573'; }}
+                  onMouseUp={(e) => { e.currentTarget.style.background = '#d92f82'; }}
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />

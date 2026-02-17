@@ -1,11 +1,18 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
 import { Layout } from '../components/Layout';
 import { useAuth } from '../lib/auth';
-import { blogStore } from '../lib/blog';
+import { blogStore, BlogAuthError } from '../lib/blog';
 import type { BlogComment } from '../types';
+
+// ─── Sanitize HTML to prevent XSS ───────────────────────────────────────────
+
+function sanitizeHtml(html: string): string {
+  return html
+    .replace(/<script[\s\S]*?<\/script>/gi, '')
+    .replace(/on\w+="[^"]*"/gi, '')
+    .replace(/on\w+='[^']*'/gi, '');
+}
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
 
@@ -72,9 +79,10 @@ const CommentItem: React.FC<{
 export default function BlogPostDetail() {
   const { postId } = useParams<{ postId: string }>();
   const navigate = useNavigate();
-  const { user, isAdmin } = useAuth();
+  const { user, isAdmin, canWriteBlog } = useAuth();
 
   const [post, setPost] = useState(() => postId ? blogStore.getById(postId) : undefined);
+  const canModify = post ? blogStore.canModifyPost(user, post) : false;
   const [comments, setComments] = useState<BlogComment[]>(() =>
     postId ? blogStore.getComments(postId) : []
   );
@@ -89,37 +97,53 @@ export default function BlogPostDetail() {
 
   const handleLike = useCallback(() => {
     if (!user || !postId) return;
-    const isNowLiked = blogStore.toggleLike(postId, user.id);
-    setLiked(isNowLiked);
-    setLikeCount((prev) => (isNowLiked ? prev + 1 : Math.max(0, prev - 1)));
+    try {
+      const isNowLiked = blogStore.toggleLike(user, postId);
+      setLiked(isNowLiked);
+      setLikeCount((prev) => (isNowLiked ? prev + 1 : Math.max(0, prev - 1)));
+    } catch (e) {
+      if (e instanceof BlogAuthError) alert(e.message);
+    }
   }, [user, postId]);
 
   const handleComment = useCallback(
     (e: React.FormEvent) => {
       e.preventDefault();
       if (!user || !postId || !commentText.trim()) return;
-      const newComment = blogStore.addComment(postId, user.id, user.name, commentText.trim());
-      setComments((prev) => [...prev, newComment]);
-      setCommentText('');
-      setPost((prev) => (prev ? { ...prev, comments: prev.comments + 1 } : prev));
+      try {
+        const newComment = blogStore.addComment(user, postId, commentText.trim());
+        setComments((prev) => [...prev, newComment]);
+        setCommentText('');
+        setPost((prev) => (prev ? { ...prev, comments: prev.comments + 1 } : prev));
+      } catch (e) {
+        if (e instanceof BlogAuthError) alert(e.message);
+      }
     },
     [user, postId, commentText],
   );
 
   const handleDeleteComment = useCallback(
     (commentId: string) => {
-      blogStore.deleteComment(commentId);
-      setComments((prev) => prev.filter((c) => c.id !== commentId));
-      setPost((prev) => (prev ? { ...prev, comments: Math.max(0, prev.comments - 1) } : prev));
+      try {
+        blogStore.deleteComment(user, commentId);
+        setComments((prev) => prev.filter((c) => c.id !== commentId));
+        setPost((prev) => (prev ? { ...prev, comments: Math.max(0, prev.comments - 1) } : prev));
+      } catch (e) {
+        if (e instanceof BlogAuthError) alert(e.message);
+      }
     },
-    [],
+    [user],
   );
 
   const handleDeletePost = useCallback(() => {
     if (!postId) return;
-    blogStore.remove(postId);
-    navigate('/blog', { replace: true });
-  }, [postId, navigate]);
+    try {
+      blogStore.remove(user, postId);
+      navigate('/blog', { replace: true });
+    } catch (e) {
+      if (e instanceof BlogAuthError) alert(e.message);
+    }
+  }, [user, postId, navigate]);
 
   // ── Not found ──
   if (!post) {
@@ -142,8 +166,8 @@ export default function BlogPostDetail() {
     );
   }
 
-  // ── Draft guard: only admin can see drafts ──
-  if (post.status === 'draft' && !isAdmin) {
+  // ── Draft guard: only author or admin can see drafts ──
+  if (post.status === 'draft' && !canModify) {
     return (
       <Layout>
         <div className="min-h-[60vh] flex items-center justify-center px-4 py-16">
@@ -219,8 +243,8 @@ export default function BlogPostDetail() {
             )}
           </div>
 
-          {/* Admin actions */}
-          {isAdmin && (
+          {/* Author/Admin actions */}
+          {canModify && (
             <div className="flex items-center gap-3 mt-5">
               <Link
                 to={`/blog/${post.id}/edit`}
@@ -273,10 +297,11 @@ export default function BlogPostDetail() {
 
       {/* ── Article body ── */}
       <article className="mx-auto px-6 py-10" style={{ maxWidth: 780 }}>
-        {/* Markdown content */}
-        <div className="prose prose-slate max-w-none prose-headings:font-bold prose-headings:text-slate-900 prose-p:text-slate-600 prose-p:leading-relaxed prose-a:text-[#ED3B91] prose-a:no-underline hover:prose-a:underline prose-strong:text-slate-800 prose-li:text-slate-600 prose-blockquote:border-l-[#ED3B91] prose-blockquote:text-slate-500 prose-hr:border-slate-100">
-          <ReactMarkdown remarkPlugins={[remarkGfm]}>{post.body}</ReactMarkdown>
-        </div>
+        {/* Post content */}
+        <div
+          className="blog-prose"
+          dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.body) }}
+        />
 
         {/* ── Engagement bar ── */}
         <div
@@ -300,7 +325,7 @@ export default function BlogPostDetail() {
             </button>
           ) : (
             <Link
-              to="/help/teacher/teacher-login"
+              to="/login"
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium transition-all duration-200"
               style={{ background: '#f8fafc', color: '#94a3b8', border: '1px solid #e2e8f0' }}
               title="Sign in to like this post"
@@ -360,7 +385,7 @@ export default function BlogPostDetail() {
             <div className="mb-6 p-5 rounded-xl bg-slate-50 border border-slate-100 text-center">
               <p className="text-sm text-slate-500 mb-3">Please sign in to join the conversation.</p>
               <Link
-                to="/help/teacher/teacher-login"
+                to="/login"
                 className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#ED3B91] hover:underline"
               >
                 Sign In

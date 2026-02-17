@@ -21,6 +21,7 @@ import ForgotPassword from './pages/ForgotPassword';
 import Register from './pages/Register';
 import AccountSettings from './pages/AccountSettings';
 import { AdminRoute } from './components/AdminRoute';
+import { BlogWriteRoute } from './components/BlogWriteRoute';
 import { PrivateRoute } from './components/PrivateRoute';
 
 function App() {
@@ -47,9 +48,9 @@ function App() {
 
           {/* Blog */}
           <Route path="/blog" element={<BlogFeed />} />
-          <Route path="/blog/new" element={<AdminRoute><BlogEditor /></AdminRoute>} />
+          <Route path="/blog/new" element={<BlogWriteRoute><BlogEditor /></BlogWriteRoute>} />
           <Route path="/blog/:postId" element={<BlogPostDetail />} />
-          <Route path="/blog/:postId/edit" element={<AdminRoute><BlogEditor /></AdminRoute>} />
+          <Route path="/blog/:postId/edit" element={<BlogWriteRoute><BlogEditor /></BlogWriteRoute>} />
 
           {/* Authentication routes */}
           <Route path="/login" element={<Login />} />

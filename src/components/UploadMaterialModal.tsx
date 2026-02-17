@@ -186,7 +186,7 @@ export const UploadMaterialModal: React.FC<UploadMaterialModalProps> = ({
                 </label>
                 <input
                   type="text"
-                  className={`w-full rounded-lg border px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-amber-300 outline-none transition-shadow ${errors.title ? 'border-red-400' : 'border-slate-200'}`}
+                  className={`w-full rounded-lg border px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-[#ED3B91]/30 outline-none transition-shadow ${errors.title ? 'border-red-400' : 'border-slate-200'}`}
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   placeholder={t('materialTitlePlaceholder')}
@@ -201,7 +201,7 @@ export const UploadMaterialModal: React.FC<UploadMaterialModalProps> = ({
                 </label>
                 <textarea
                   rows={2}
-                  className="w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-amber-300 outline-none transition-shadow"
+                  className="w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-[#ED3B91]/30 outline-none transition-shadow"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   placeholder={t('materialDescriptionPlaceholder')}
@@ -215,7 +215,7 @@ export const UploadMaterialModal: React.FC<UploadMaterialModalProps> = ({
                     {t('materialCategory')} <span className="text-red-400">*</span>
                   </label>
                   <select
-                    className={`w-full rounded-lg border px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-amber-300 outline-none transition-shadow bg-white ${errors.category ? 'border-red-400' : 'border-slate-200'}`}
+                    className={`w-full rounded-lg border px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-[#ED3B91]/30 outline-none transition-shadow bg-white ${errors.category ? 'border-red-400' : 'border-slate-200'}`}
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
                   >
@@ -234,7 +234,7 @@ export const UploadMaterialModal: React.FC<UploadMaterialModalProps> = ({
                     {t('materialGrade')}
                   </label>
                   <select
-                    className="w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-amber-300 outline-none transition-shadow bg-white"
+                    className="w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-[#ED3B91]/30 outline-none transition-shadow bg-white"
                     value={grade}
                     onChange={(e) => setGrade(e.target.value)}
                   >
@@ -254,8 +254,8 @@ export const UploadMaterialModal: React.FC<UploadMaterialModalProps> = ({
                   {t('materialFile')}
                 </label>
                 {fileName ? (
-                  <div className="flex items-center gap-3 p-3 rounded-lg bg-amber-50 border border-amber-100">
-                    <svg className="w-5 h-5 text-amber-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="flex items-center gap-3 p-3 rounded-lg bg-pink-50 border border-pink-100">
+                    <svg className="w-5 h-5 text-[#ED3B91] flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>
                     <span className="text-sm text-slate-700 flex-1 truncate">{fileName}</span>
@@ -272,9 +272,9 @@ export const UploadMaterialModal: React.FC<UploadMaterialModalProps> = ({
                 ) : (
                   <div
                     onClick={() => fileInputRef.current?.click()}
-                    className="flex flex-col items-center justify-center p-6 border-2 border-dashed border-slate-200 rounded-xl hover:border-amber-300 hover:bg-amber-50/30 transition-colors cursor-pointer"
+                    className="flex flex-col items-center justify-center p-6 border-2 border-dashed border-slate-200 rounded-xl hover:border-[#ED3B91]/40 hover:bg-pink-50/30 transition-colors cursor-pointer"
                   >
-                    <svg className="w-8 h-8 text-slate-300 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-8 h-8 text-[#ED3B91] mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
                     </svg>
                     <p className="text-sm text-slate-500">{t('materialFileHint')}</p>
@@ -297,7 +297,7 @@ export const UploadMaterialModal: React.FC<UploadMaterialModalProps> = ({
                 </label>
                 <input
                   type="url"
-                  className={`w-full rounded-lg border px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-amber-300 outline-none transition-shadow ${errors.link ? 'border-red-400' : 'border-slate-200'}`}
+                  className={`w-full rounded-lg border px-3.5 py-2.5 text-sm focus:ring-2 focus:ring-[#ED3B91]/30 outline-none transition-shadow ${errors.link ? 'border-red-400' : 'border-slate-200'}`}
                   value={link}
                   onChange={(e) => setLink(e.target.value)}
                   placeholder={t('materialLinkPlaceholder')}
@@ -310,7 +310,10 @@ export const UploadMaterialModal: React.FC<UploadMaterialModalProps> = ({
               <div className="pt-3 flex gap-3">
                 <button
                   type="submit"
-                  className="flex-1 inline-flex items-center justify-center px-5 py-2.5 rounded-xl text-white font-medium bg-gradient-to-r from-amber-500 to-orange-500 shadow-md hover:from-amber-600 hover:to-orange-600 hover:shadow-lg transition-all duration-200"
+                  className="flex-1 inline-flex items-center justify-center px-5 py-2.5 rounded-xl text-white font-medium transition-all duration-200"
+                  style={{ background: '#ED3B91', boxShadow: '0 2px 8px rgba(237,59,145,0.25)' }}
+                  onMouseEnter={(e) => { e.currentTarget.style.background = '#d92f82'; e.currentTarget.style.boxShadow = '0 4px 14px rgba(237,59,145,0.35)'; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.background = '#ED3B91'; e.currentTarget.style.boxShadow = '0 2px 8px rgba(237,59,145,0.25)'; }}
                 >
                   {isEdit ? t('materialUpdate') : t('materialSave')}
                 </button>

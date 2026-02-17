@@ -6,7 +6,7 @@ import { useAuth } from '../lib/auth';
 
 export default function TeacherLogin() {
   const { t, dir } = useI18n();
-  const { login, isTeacher } = useAuth();
+  const { login, user } = useAuth();
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -14,8 +14,8 @@ export default function TeacherLogin() {
   const [errors, setErrors] = useState<Record<string, string>>({});
 
   useEffect(() => {
-    if (isTeacher) navigate('/teacher/dashboard', { replace: true });
-  }, [isTeacher, navigate]);
+    if (user) navigate('/teacher/dashboard', { replace: true });
+  }, [user, navigate]);
 
   const validate = () => {
     const e: Record<string, string> = {};

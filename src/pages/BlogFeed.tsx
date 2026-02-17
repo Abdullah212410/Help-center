@@ -177,18 +177,18 @@ const TopicsWidget: React.FC<{
 // ─── Main feed page ─────────────────────────────────────────────────────────
 
 export default function BlogFeed() {
-  const { user, isAdmin } = useAuth();
+  const { user, isAdmin, canWriteBlog } = useAuth();
   const [activeTopic, setActiveTopic] = useState<string | null>(null);
   const [showDrafts, setShowDrafts] = useState(false);
 
   const published = useMemo(() => blogStore.getPublished(), []);
-  const drafts = useMemo(() => blogStore.getDrafts(), []);
+  const drafts = useMemo(() => blogStore.getDrafts(user), [user]);
 
   const displayPosts = useMemo(() => {
-    const base = showDrafts && isAdmin ? drafts : published;
+    const base = showDrafts && canWriteBlog ? drafts : published;
     if (!activeTopic) return base;
     return base.filter((p) => p.tags?.includes(activeTopic));
-  }, [published, drafts, activeTopic, showDrafts, isAdmin]);
+  }, [published, drafts, activeTopic, showDrafts, canWriteBlog]);
 
   return (
     <Layout>
@@ -211,7 +211,7 @@ export default function BlogFeed() {
               </p>
             </div>
             <div className="flex items-center gap-3">
-              {isAdmin && (
+              {canWriteBlog && (
                 <Link
                   to="/blog/new"
                   className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-white transition-all duration-200"
@@ -231,7 +231,7 @@ export default function BlogFeed() {
           </div>
 
           {/* Admin tabs: Published / Drafts */}
-          {isAdmin && (
+          {canWriteBlog && (
             <div className="flex gap-1 mt-6 bg-white/60 rounded-xl p-1 w-fit border border-slate-100">
               <button
                 onClick={() => setShowDrafts(false)}
