@@ -30,16 +30,18 @@ export default function RoleFeaturePage() {
     return <Navigate to="/404" replace />;
   }
 
-  const section = getSectionById(feature.sectionId);
+  const resolvedSectionId = (role && feature.sectionIdByRole?.[role as 'teacher' | 'student'])
+    || feature.sectionId;
+  const section = getSectionById(resolvedSectionId);
 
   if (!section) {
     return <Navigate to="/404" replace />;
   }
 
-  // Data loading
+  // Data loading — pass role for article filtering
   const groups = getGroupsBySectionId(section.id);
   const hasGroups = groups.length > 0;
-  const ungroupedArticles = !hasGroups ? getArticlesBySectionId(section.id) : [];
+  const ungroupedArticles = !hasGroups ? getArticlesBySectionId(section.id, role) : [];
 
   // Sidebar: all feature categories for this role
   const siblingFeatures = FEATURE_CATEGORIES.filter(
@@ -175,7 +177,7 @@ export default function RoleFeaturePage() {
               {hasGroups ? (
                 <div className="w-full divide-y divide-slate-200/70">
                   {groups.map((group) => {
-                    const groupArticles = getArticlesByGroupId(group.id);
+                    const groupArticles = getArticlesByGroupId(group.id, role);
                     return (
                       <div key={group.id} className="py-8 first:pt-0">
                         <ArticleGroup

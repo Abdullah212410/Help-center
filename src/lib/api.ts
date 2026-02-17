@@ -9,14 +9,24 @@ export const getCategoryById = (id: string) => categories.find(c => c.id === id)
 // Sections
 export const getSectionsByCategoryId = (catId: string) => sections.filter(s => s.categoryId === catId).sort((a, b) => a.order - b.order);
 export const getSectionBySlug = (slug: string) => sections.find(s => s.slug === slug);
+export const getSectionBySlugAndCategoryId = (slug: string, categoryId: string) =>
+  sections.find(s => s.slug === slug && s.categoryId === categoryId);
 export const getSectionById = (id: string) => sections.find(s => s.id === id);
 
 // Groups
 export const getGroupsBySectionId = (secId: string) => groups.filter(g => g.sectionId === secId).sort((a, b) => a.order - b.order);
 
+// Role-based article filter helper: returns true if the article is visible for the given role
+const isArticleVisibleForRole = (article: Article, role?: string): boolean => {
+  if (!role || !article.role) return true; // No role filter or no role tag = visible to all
+  return article.role.includes(role);
+};
+
 // Articles
-export const getArticlesBySectionId = (secId: string) => articles.filter(a => a.sectionId === secId);
-export const getArticlesByGroupId = (groupId: string) => articles.filter(a => a.groupId === groupId);
+export const getArticlesBySectionId = (secId: string, role?: string) =>
+  articles.filter(a => a.sectionId === secId && isArticleVisibleForRole(a, role));
+export const getArticlesByGroupId = (groupId: string, role?: string) =>
+  articles.filter(a => a.groupId === groupId && isArticleVisibleForRole(a, role));
 export const getArticleBySlug = (slug: string) => articles.find(a => a.slug === slug);
 export const getPopularArticles = (limit = 5) => articles.filter(a => a.isTop).slice(0, limit);
 export const getRelatedArticles = (currentArticleId: string, sectionId: string, limit = 3) => {

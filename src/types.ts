@@ -50,6 +50,8 @@ export interface Article {
   tags: string[];
   isTop?: boolean;
   isFeatured?: boolean;
+  /** Target audience roles for filtering (e.g., ['student'], ['teacher', 'admin']). Undefined = visible to all. */
+  role?: string[];
 }
 
 export interface SearchResult {
@@ -61,4 +63,21 @@ export interface SearchResult {
 export interface BreadcrumbItem {
   label: string;
   path: string;
+}
+
+export interface Material {
+  id: string;
+  title: string;
+  description: string;
+  category: string;
+  grade: string;
+  /** Base64 data URL for uploaded files */
+  fileData?: string;
+  fileName?: string;
+  fileType?: string;
+  /** External link URL */
+  link?: string;
+  createdAt: string;
+  updatedAt: string;
+  teacherId: string;
 }

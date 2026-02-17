@@ -5,7 +5,7 @@ import { ArticleGroup } from '../components/ArticleGroup';
 import { useI18n } from '../lib/i18n';
 import {
   getCategoryBySlug,
-  getSectionBySlug,
+  getSectionBySlugAndCategoryId,
   getGroupsBySectionId,
   getArticlesByGroupId,
   getArticlesBySectionId,
@@ -20,7 +20,9 @@ export default function HelpSectionLandingPage() {
   const [searchQuery, setSearchQuery] = useState('');
 
   const category = getCategoryBySlug(categorySlug || '');
-  const section = getSectionBySlug(sectionSlug || '');
+  const section = category
+    ? getSectionBySlugAndCategoryId(sectionSlug || '', category.id)
+    : undefined;
 
   if (!category || !section) {
     return <Navigate to="/404" replace />;

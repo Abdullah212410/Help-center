@@ -167,10 +167,14 @@ OLD_BODY_END */
   { id: 'stu_gs', categoryId: 'c9', slug: 'getting-started', title: 'Getting Started', title_ar: 'البدء', description: 'Log in to your student account, explore your dashboard, and set up your profile.', description_ar: 'سجّل الدخول إلى حسابك الطلابي واستكشف لوحة القيادة وأعد ملفك الشخصي.', order: 1 },
   { id: 'stu_tools', categoryId: 'c9', slug: 'learning-tools', title: 'Learning Tools', title_ar: 'أدوات التعلم', description: 'Use digital portfolios, access class materials, and participate in interactive activities.', description_ar: 'استخدم الملفات الرقمية واطلع على مواد الفصل وشارك في الأنشطة التفاعلية.', order: 2 },
   { id: 'stu_safety', categoryId: 'c9', slug: 'online-safety', title: 'Online Safety', title_ar: 'الأمان عبر الإنترنت', description: 'Stay safe on String — learn about digital citizenship, reporting tools, and protecting your information.', description_ar: 'ابقَ آمنًا على سترينج — تعرف على المواطنة الرقمية وأدوات الإبلاغ وحماية معلوماتك.', order: 3 },
+  { id: 'stu_acct', categoryId: 'c9', slug: 'student-account', title: 'Student Account', title_ar: 'حساب الطالب', description: 'Learn how to create, verify, and manage your student account on String.', description_ar: 'تعرّف على كيفية إنشاء حسابك الطلابي والتحقق منه وإدارته على سترينج.', order: 4 },
   // For Teachers
   { id: 'tch_gs', categoryId: 'c10', slug: 'getting-started', title: 'Getting Started', title_ar: 'البدء', description: 'Set up your teacher profile, create your first class, and invite families to connect.', description_ar: 'أعد ملفك الشخصي كمعلم وأنشئ فصلك الأول وادعُ العائلات للتواصل.', order: 1 },
   { id: 'tch_class', categoryId: 'c10', slug: 'classroom-management', title: 'Classroom Management', title_ar: 'إدارة الفصل', description: 'Organize students into groups, set up behavior points, and manage class rosters throughout the year.', description_ar: 'نظّم الطلاب في مجموعات وأعد نقاط السلوك وأدر قوائم الفصل طوال العام.', order: 2 },
   { id: 'tch_comm', categoryId: 'c10', slug: 'communication', title: 'Communication', title_ar: 'التواصل', description: 'Write effective messages, schedule announcements, and communicate with multilingual families.', description_ar: 'اكتب رسائل فعّالة وجدول الإعلانات وتواصل مع العائلات متعددة اللغات.', order: 3 },
+  { id: 'tch_materials', categoryId: 'c10', slug: 'uploading-materials', title: 'Uploading Materials', title_ar: 'رفع المواد التعليمية', description: 'Learn how to upload, organize, and manage teaching materials on String.', description_ar: 'تعرّف على كيفية رفع وتنظيم وإدارة المواد التعليمية على سترينج.', order: 4 },
+  // String Tutor — FAQ
+  { id: 'st_faq', categoryId: 'c8', slug: 'frequently-asked-questions', title: 'Frequently Asked Questions', title_ar: 'الأسئلة الشائعة', description: 'Quick answers to common questions about using String Tutor.', description_ar: 'إجابات سريعة على الأسئلة الشائعة حول استخدام معلم سترينج.', order: 1 },
 ];
 
 export const groups: Group[] = [
@@ -3640,6 +3644,7 @@ const generateArticles = (): Article[] => {
         updatedAt: new Date().toISOString(),
         tags: groupId.startsWith('g_am') ? ['guide', 'account-management', 'string-app'] : ['guide', 'getting-started', 'string-app'],
         isTop: index === 0,
+        role: ['teacher', 'admin'],
       });
     });
   });
@@ -3663,9 +3668,11 @@ const generateArticles = (): Article[] => {
     'stu_gs': 'البدء',
     'stu_tools': 'أدوات التعلم',
     'stu_safety': 'الأمان عبر الإنترنت',
+    'stu_acct': 'حساب الطالب',
     'tch_gs': 'البدء',
     'tch_class': 'إدارة الفصل',
     'tch_comm': 'التواصل',
+    'tch_materials': 'رفع المواد التعليمية',
     's_acct': 'إدارة حسابك',
     's_billing': 'الخطط والفوترة',
   };
@@ -8137,6 +8144,306 @@ Sharing personal information online can lead to:
 2. **غيّر كلمة المرور** على الفور.
 3. **أبلغ عن المحتوى** على سترينج ليتم مراجعته وإزالته.` },
     ],
+    'stu_acct': [
+      { title: 'How to Create a Student Account', title_ar: 'كيفية إنشاء حساب طالب', summary: 'Step-by-step guide to creating your student account on String, verifying it, and logging in for the first time.', summary_ar: 'دليل خطوة بخطوة لإنشاء حسابك الطلابي على سترينج والتحقق منه وتسجيل الدخول لأول مرة.', body: `## Requirements
+
+Before you begin, make sure you have the following:
+
+- A valid **email address** or **phone number** (your school email is recommended).
+- A **class code** provided by your teacher (e.g., ABC-1234). This is optional during sign-up but required to join a class.
+- A device with internet access — String works on computers, tablets, and smartphones.
+
+> **Note:** If your school uses Single Sign-On (SSO) with Google or Microsoft, you may be able to skip manual registration entirely. Ask your teacher if SSO is available.
+
+## Step-by-Step Sign Up
+
+Follow these steps to create your student account:
+
+1. Open your web browser and go to **string.education/signup**.
+2. Select **I'm a Student**.
+3. Enter your **first name** and **last name** as they appear in your school records.
+4. Provide your **email address** or **phone number**.
+5. Create a **strong password** — use at least 8 characters with a mix of letters, numbers, and symbols.
+6. If your teacher gave you a **class code**, enter it now. You can also add it later from your dashboard.
+7. Review the **Terms of Service** and **Privacy Policy**, then check the agreement box.
+8. Click **Create Account**.
+
+> **Tip:** Write your password down and keep it in a safe place until you have it memorized. Never share your password with other students.
+
+## Verify Your Account
+
+After signing up, you need to verify your account:
+
+1. Check your **email inbox** (or text messages if you used a phone number) for a verification message from String.
+2. Open the message and click the **Verify My Account** button or enter the **6-digit code** provided.
+3. Once verified, you will be redirected to your dashboard.
+
+If you do not see the verification message:
+
+- Check your **spam or junk folder**.
+- Make sure you entered the correct email address or phone number.
+- Click **Resend Verification** on the login page.
+- Ask your teacher or school IT team for help if the problem persists.
+
+## Logging In
+
+Once your account is verified, you can log in at any time:
+
+1. Go to **string.education/login**.
+2. Enter your **email address** (or phone number) and **password**.
+3. Click **Sign In**.
+4. You will be taken to your student dashboard where you can view your classes, portfolio, and messages.
+
+> **Tip:** Check the **Remember me** box on your personal device so you do not have to enter your credentials every time.
+
+## Common Issues and Fixes
+
+Here are solutions to the most common problems students encounter:
+
+- **"Email already in use"** — You may already have an account. Try the **Forgot Password** link on the login page to recover access.
+- **"Invalid class code"** — Class codes are case-sensitive and may expire. Ask your teacher for a fresh code.
+- **"Verification email not received"** — Check your spam folder. If still missing, click **Resend Verification** or ask your teacher for help.
+- **"Password too weak"** — Make sure your password is at least 8 characters and includes a mix of letters, numbers, and symbols.
+- **"Cannot log in after verification"** — Clear your browser cache and try again, or use a different browser.
+- **Account locked** — If you enter the wrong password too many times, your account may be temporarily locked. Wait 15 minutes and try again, or contact your teacher.
+
+## Privacy and Safety Tips
+
+Your safety online is important. Follow these tips to protect your account:
+
+- **Keep your password private** — never share it with friends or classmates.
+- **Log out on shared devices** — always sign out when using a school computer, library computer, or a friend's device.
+- **Use your real name** — use the name your school has on file so your teacher can find you.
+- **Do not share personal information** — never post your home address, phone number, or birthday in messages or portfolio entries.
+- **Report suspicious activity** — if someone else is using your account or you notice something strange, tell your teacher immediately and change your password.
+
+> **Remember:** String is designed to be a safe learning space. If anything ever makes you uncomfortable, talk to a trusted adult right away.`, body_ar: `## المتطلبات
+
+قبل البدء، تأكد من توفر التالي:
+
+- **بريد إلكتروني** أو **رقم هاتف** صالح (يُفضّل بريد المدرسة).
+- **رمز الفصل** الذي أعطاك إياه معلمك (مثل: ABC-1234). وهو اختياري عند التسجيل لكنه مطلوب للانضمام إلى فصل.
+- جهاز متصل بالإنترنت — يعمل سترينج على أجهزة الكمبيوتر والأجهزة اللوحية والهواتف الذكية.
+
+> **ملاحظة:** إذا كانت مدرستك تستخدم تسجيل الدخول الموحد (SSO) عبر Google أو Microsoft، فقد تتمكن من تخطي التسجيل اليدوي. اسأل معلمك إذا كان SSO متاحًا.
+
+## خطوات التسجيل
+
+اتبع هذه الخطوات لإنشاء حسابك الطلابي:
+
+1. افتح متصفح الويب وانتقل إلى **string.education/signup**.
+2. اختر **أنا طالب**.
+3. أدخل **اسمك الأول** و**اسم العائلة** كما يظهران في سجلات المدرسة.
+4. أدخل **بريدك الإلكتروني** أو **رقم هاتفك**.
+5. أنشئ **كلمة مرور قوية** — استخدم 8 أحرف على الأقل مع مزيج من الأحرف والأرقام والرموز.
+6. إذا أعطاك معلمك **رمز فصل**، أدخله الآن. يمكنك أيضًا إضافته لاحقًا من لوحة القيادة.
+7. راجع **شروط الخدمة** و**سياسة الخصوصية**، ثم ضع علامة في خانة الموافقة.
+8. انقر على **إنشاء حساب**.
+
+> **نصيحة:** اكتب كلمة المرور واحتفظ بها في مكان آمن حتى تحفظها. لا تشارك كلمة المرور مع طلاب آخرين أبدًا.
+
+## تحقق من حسابك
+
+بعد التسجيل، تحتاج إلى التحقق من حسابك:
+
+1. تحقق من **بريدك الإلكتروني** (أو الرسائل النصية إذا استخدمت رقم هاتف) بحثًا عن رسالة تحقق من سترينج.
+2. افتح الرسالة وانقر على زر **تحقق من حسابي** أو أدخل **الرمز المكون من 6 أرقام**.
+3. بمجرد التحقق، سيتم توجيهك إلى لوحة القيادة.
+
+إذا لم تجد رسالة التحقق:
+
+- تحقق من **مجلد البريد العشوائي أو غير المرغوب فيه**.
+- تأكد من إدخال البريد الإلكتروني أو رقم الهاتف الصحيح.
+- انقر على **إعادة إرسال التحقق** في صفحة تسجيل الدخول.
+- اطلب المساعدة من معلمك أو فريق تقنية المعلومات في المدرسة إذا استمرت المشكلة.
+
+## تسجيل الدخول
+
+بمجرد التحقق من حسابك، يمكنك تسجيل الدخول في أي وقت:
+
+1. انتقل إلى **string.education/login**.
+2. أدخل **بريدك الإلكتروني** (أو رقم هاتفك) و**كلمة المرور**.
+3. انقر على **تسجيل الدخول**.
+4. سيتم نقلك إلى لوحة القيادة الطلابية حيث يمكنك عرض فصولك وملفك ورسائلك.
+
+> **نصيحة:** ضع علامة على خيار **تذكرني** على جهازك الشخصي حتى لا تضطر لإدخال بياناتك في كل مرة.
+
+## المشاكل الشائعة وحلولها
+
+إليك حلول لأكثر المشاكل شيوعًا التي يواجهها الطلاب:
+
+- **"البريد الإلكتروني مستخدم بالفعل"** — قد يكون لديك حساب بالفعل. جرّب رابط **نسيت كلمة المرور** في صفحة تسجيل الدخول.
+- **"رمز الفصل غير صالح"** — رموز الفصل حساسة لحالة الأحرف وقد تنتهي صلاحيتها. اطلب من معلمك رمزًا جديدًا.
+- **"لم يتم استلام بريد التحقق"** — تحقق من مجلد البريد العشوائي. إذا لم تجده، انقر على **إعادة إرسال التحقق** أو اطلب المساعدة من معلمك.
+- **"كلمة المرور ضعيفة جدًا"** — تأكد من أن كلمة المرور تتكون من 8 أحرف على الأقل وتتضمن مزيجًا من الأحرف والأرقام والرموز.
+- **"لا يمكن تسجيل الدخول بعد التحقق"** — امسح ذاكرة التخزين المؤقت للمتصفح وحاول مرة أخرى، أو استخدم متصفحًا مختلفًا.
+- **الحساب مقفل** — إذا أدخلت كلمة المرور الخاطئة عدة مرات، قد يتم قفل حسابك مؤقتًا. انتظر 15 دقيقة وحاول مرة أخرى، أو تواصل مع معلمك.
+
+## نصائح الخصوصية والأمان
+
+سلامتك عبر الإنترنت مهمة. اتبع هذه النصائح لحماية حسابك:
+
+- **احتفظ بكلمة المرور خاصة** — لا تشاركها مع أصدقائك أو زملائك أبدًا.
+- **سجّل الخروج من الأجهزة المشتركة** — سجّل الخروج دائمًا عند استخدام كمبيوتر المدرسة أو المكتبة أو جهاز صديق.
+- **استخدم اسمك الحقيقي** — استخدم الاسم المسجل في مدرستك حتى يتمكن معلمك من العثور عليك.
+- **لا تشارك معلومات شخصية** — لا تنشر عنوان منزلك أو رقم هاتفك أو تاريخ ميلادك في الرسائل أو إدخالات الملف.
+- **أبلغ عن النشاط المشبوه** — إذا كان شخص آخر يستخدم حسابك أو لاحظت شيئًا غريبًا، أخبر معلمك فورًا وغيّر كلمة المرور.
+
+> **تذكر:** سترينج مصمم ليكون مساحة تعلم آمنة. إذا جعلك أي شيء غير مرتاح، تحدث إلى شخص بالغ تثق به على الفور.` },
+      { title: 'DNA', title_ar: 'اختبار DNA للشخصية', summary: 'DNA is a 96-question personality assessment designed to help students understand their strengths, learning style, and personal traits.', summary_ar: 'اختبار DNA هو تقييم شخصية مكوّن من 96 سؤالاً مصمم لمساعدة الطلاب على فهم نقاط قوتهم وأسلوب تعلمهم وسماتهم الشخصية.', body: `## What Is DNA?
+
+DNA is a structured **96-question personality assessment** built into the String Tutor platform. It is designed to help students discover their unique personality patterns, strengths, communication style, and learning preferences.
+
+- DNA is **not** a school exam — there are no right or wrong answers.
+- There is **no pass or fail** — every result is valuable.
+- DNA stands for your personal blueprint — it maps out what makes you, *you*.
+
+> **Important:** DNA is a self-discovery tool, not a test of intelligence or academic ability. Every personality type has its own strengths.
+
+## How Does the DNA Test Work?
+
+The DNA assessment is simple and straightforward:
+
+1. Log in to your String Tutor account and navigate to the **DNA** section.
+2. You will be presented with **96 multiple-choice questions**. Each question has a set of options — choose the one that best describes you.
+3. Questions are grouped into categories that measure different aspects of your personality:
+   - **Behavior patterns** — how you act in everyday situations.
+   - **Decision-making style** — how you approach choices and solve problems.
+   - **Teamwork preferences** — how you collaborate and interact with peers.
+   - **Creativity and expression** — how you think, imagine, and share ideas.
+   - **Focus and motivation** — what drives you and how you manage your attention.
+4. Once you complete all 96 questions, your results are **calculated automatically**.
+5. A **personal profile** is generated and saved to your account.
+
+> **Tip:** Answer honestly — there are no right or wrong answers. The more truthful you are, the more accurate and helpful your results will be.
+
+## What Do the Results Show?
+
+Your DNA profile provides a detailed overview of who you are as a learner and individual. Results typically include:
+
+- **Personality type** — a clear description of your dominant personality traits.
+- **Key strengths** — the areas where you naturally excel (e.g., leadership, empathy, analytical thinking, creativity).
+- **Areas for improvement** — skills and habits you can develop further.
+- **Recommended learning strategies** — study methods, tools, and approaches that align with your personality.
+- **Career interests** — fields and professions that may be a good fit for someone with your profile (if supported by your school's configuration).
+
+Your results are presented in an easy-to-read format with visual charts and personalized descriptions.
+
+## Why Is DNA Important?
+
+The DNA assessment offers lasting benefits for both students and educators:
+
+- **Self-understanding** — helps you learn who you are, what motivates you, and how you work best.
+- **Better communication** — understanding your style helps you communicate more effectively with classmates and teachers.
+- **Personalized learning** — teachers can use aggregated DNA insights to adapt their teaching methods and create a more supportive classroom.
+- **Growth mindset** — knowing your areas for improvement empowers you to set personal goals and track your development.
+- **Career exploration** — gives you an early sense of direction by connecting your traits to potential career paths.
+
+## Is DNA Safe and Private?
+
+Your privacy is a top priority:
+
+- All DNA results are **confidential** and stored securely on the String platform.
+- Results are used **only for educational development** — they help you and your teachers support your learning.
+- **No public sharing** — your results are never shared publicly or with other students without your explicit permission.
+- Only **you**, your **teacher**, and authorized **school staff** can view your DNA profile.
+- DNA data is protected under the same privacy standards as all other data on String, including compliance with **FERPA** and **COPPA**.
+
+> **Remember:** Your DNA profile belongs to you. It is a tool to help you grow, not a label that defines you.
+
+## Frequently Asked Questions
+
+**Q: Is DNA a real exam?**
+A: No. DNA is a personality assessment, not an academic exam. There are no right or wrong answers, and you cannot pass or fail. It is designed to help you understand yourself better.
+
+**Q: How long does it take?**
+A: Most students complete the 96 questions in **15 to 25 minutes**. There is no time limit — take as long as you need to answer thoughtfully.
+
+**Q: Can I retake the test?**
+A: Yes, in most cases your school allows you to retake the DNA assessment. Keep in mind that your personality may evolve over time, so taking it again after a few months can show how you have grown.
+
+**Q: Who can see my results?**
+A: Only you, your teacher, and authorized school staff can see your DNA results. They are never shared with other students or made public without your permission.
+
+**Q: What if I do not understand a question?**
+A: If a question is unclear, choose the answer that feels closest to how you usually think or act. You can also ask your teacher for guidance.`, body_ar: `## ما هو اختبار DNA؟
+
+اختبار DNA هو **تقييم شخصية منظم مكوّن من 96 سؤالاً** مدمج في منصة String Tutor. وهو مصمم لمساعدة الطلاب على اكتشاف أنماط شخصيتهم الفريدة ونقاط قوتهم وأسلوب تواصلهم وتفضيلات التعلم لديهم.
+
+- اختبار DNA **ليس** امتحانًا مدرسيًا — لا توجد إجابات صحيحة أو خاطئة.
+- **لا يوجد نجاح أو رسوب** — كل نتيجة قيّمة.
+- DNA يمثل مخططك الشخصي — يرسم خريطة ما يجعلك *أنت*.
+
+> **مهم:** اختبار DNA هو أداة لاكتشاف الذات، وليس اختبارًا للذكاء أو القدرة الأكاديمية. كل نوع شخصية له نقاط قوته الخاصة.
+
+## كيف يعمل اختبار DNA؟
+
+تقييم DNA بسيط ومباشر:
+
+1. سجّل الدخول إلى حسابك في String Tutor وانتقل إلى قسم **DNA**.
+2. ستُعرض عليك **96 سؤالاً متعدد الخيارات**. كل سؤال يحتوي على مجموعة من الخيارات — اختر الإجابة التي تصفك بشكل أفضل.
+3. الأسئلة مجمّعة في فئات تقيس جوانب مختلفة من شخصيتك:
+   - **أنماط السلوك** — كيف تتصرف في المواقف اليومية.
+   - **أسلوب اتخاذ القرار** — كيف تتعامل مع الخيارات وتحل المشكلات.
+   - **تفضيلات العمل الجماعي** — كيف تتعاون وتتفاعل مع زملائك.
+   - **الإبداع والتعبير** — كيف تفكر وتتخيل وتشارك الأفكار.
+   - **التركيز والدافع** — ما الذي يحفزك وكيف تدير انتباهك.
+4. بمجرد إكمال جميع الأسئلة الـ 96، يتم **حساب نتائجك تلقائيًا**.
+5. يتم إنشاء **ملف شخصي** وحفظه في حسابك.
+
+> **نصيحة:** أجب بصدق — لا توجد إجابات صحيحة أو خاطئة. كلما كنت أكثر صدقًا، كانت نتائجك أكثر دقة وفائدة.
+
+## ماذا تُظهر النتائج؟
+
+يوفر ملفك الشخصي في DNA نظرة تفصيلية عنك كمتعلم وكفرد. تتضمن النتائج عادةً:
+
+- **نوع الشخصية** — وصف واضح لسماتك الشخصية السائدة.
+- **نقاط القوة الرئيسية** — المجالات التي تتفوق فيها بشكل طبيعي (مثل القيادة، التعاطف، التفكير التحليلي، الإبداع).
+- **مجالات التحسين** — المهارات والعادات التي يمكنك تطويرها أكثر.
+- **استراتيجيات التعلم الموصى بها** — طرق الدراسة والأدوات والأساليب التي تتوافق مع شخصيتك.
+- **الاهتمامات المهنية** — المجالات والمهن التي قد تكون مناسبة لشخص بملفك الشخصي (إذا كان مدعومًا من إعدادات مدرستك).
+
+تُقدم نتائجك بتنسيق سهل القراءة مع رسوم بيانية مرئية وأوصاف مخصصة.
+
+## لماذا اختبار DNA مهم؟
+
+يقدم تقييم DNA فوائد دائمة لكل من الطلاب والمعلمين:
+
+- **فهم الذات** — يساعدك على معرفة من أنت، وما الذي يحفزك، وكيف تعمل بشكل أفضل.
+- **تواصل أفضل** — فهم أسلوبك يساعدك على التواصل بشكل أكثر فعالية مع زملائك ومعلميك.
+- **تعلم مخصص** — يمكن للمعلمين استخدام رؤى DNA لتكييف أساليب التدريس وخلق فصل دراسي أكثر دعمًا.
+- **عقلية النمو** — معرفة مجالات التحسين تمكّنك من تحديد أهداف شخصية وتتبع تطورك.
+- **استكشاف المسار المهني** — يمنحك توجيهًا مبكرًا من خلال ربط سماتك بمسارات مهنية محتملة.
+
+## هل اختبار DNA آمن وخاص؟
+
+خصوصيتك هي أولوية قصوى:
+
+- جميع نتائج DNA **سرية** ومخزنة بشكل آمن على منصة سترينج.
+- تُستخدم النتائج **فقط للتطوير التعليمي** — تساعدك أنت ومعلميك في دعم تعلمك.
+- **لا مشاركة عامة** — لا تُشارك نتائجك أبدًا علنيًا أو مع طلاب آخرين دون إذنك الصريح.
+- فقط **أنت** و**معلمك** و**الموظفون المعتمدون** في المدرسة يمكنهم عرض ملفك الشخصي في DNA.
+- بيانات DNA محمية وفق نفس معايير الخصوصية المطبقة على جميع البيانات الأخرى في سترينج، بما في ذلك الامتثال لـ **FERPA** و**COPPA**.
+
+> **تذكر:** ملفك الشخصي في DNA ملكك. إنه أداة لمساعدتك على النمو، وليس وصفًا يحددك.
+
+## الأسئلة الشائعة
+
+**س: هل اختبار DNA امتحان حقيقي؟**
+ج: لا. اختبار DNA هو تقييم شخصية وليس امتحانًا أكاديميًا. لا توجد إجابات صحيحة أو خاطئة، ولا يمكنك النجاح أو الرسوب فيه. إنه مصمم لمساعدتك على فهم نفسك بشكل أفضل.
+
+**س: كم من الوقت يستغرق؟**
+ج: يكمل معظم الطلاب الأسئلة الـ 96 في **15 إلى 25 دقيقة**. لا يوجد حد زمني — خذ وقتك للإجابة بتمعّن.
+
+**س: هل يمكنني إعادة الاختبار؟**
+ج: نعم، في معظم الحالات تسمح مدرستك بإعادة تقييم DNA. ضع في اعتبارك أن شخصيتك قد تتطور مع مرور الوقت، لذا إعادة الاختبار بعد بضعة أشهر يمكن أن تُظهر كيف تطورت.
+
+**س: من يمكنه رؤية نتائجي؟**
+ج: فقط أنت ومعلمك والموظفون المعتمدون في المدرسة يمكنهم رؤية نتائج DNA الخاصة بك. لا تُشارك أبدًا مع طلاب آخرين ولا تُنشر علنيًا دون إذنك.
+
+**س: ماذا لو لم أفهم سؤالاً؟**
+ج: إذا كان السؤال غير واضح، اختر الإجابة الأقرب لطريقة تفكيرك أو تصرفك المعتاد. يمكنك أيضًا طلب المساعدة من معلمك.` },
+    ],
     'tch_gs': [
       { title: 'Setting Up Your Teacher Profile', title_ar: 'إعداد ملفك الشخصي كمعلم', summary: 'Complete your profile with a photo, bio, and contact preferences to welcome families.', summary_ar: 'أكمل ملفك الشخصي بصورة وسيرة ذاتية وتفضيلات اتصال لترحيب العائلات.', body: `## Overview
 
@@ -8805,6 +9112,275 @@ Translation applies to:
 - أبرز التفاصيل المهمة بالخط العريض (التواريخ، الأوقات، المواقع).
 - استعرض الترجمة قبل الإرسال باستخدام **معاينة الترجمة**.` },
     ],
+    'tch_materials': [
+      { title: 'How to Upload Materials', title_ar: 'كيفية رفع المواد التعليمية', summary: 'A complete guide to uploading, categorizing, and managing teaching materials on String.', summary_ar: 'دليل شامل لرفع وتصنيف وإدارة المواد التعليمية على سترينج.', body: `## How to Upload Materials
+
+Teaching materials are an essential part of the String experience. Whether you want to share worksheets, lesson plans, presentations, or reference links with your students and colleagues, String makes it easy to upload, organize, and manage all your resources in one place.
+
+This guide walks you through every step — from uploading your first file to managing your entire materials library.
+
+---
+
+## Steps to Upload a Material
+
+Follow these steps to upload a new material to your String account:
+
+### 1. Open the Materials Section
+
+From your String dashboard, navigate to the **Materials** section. You can find it in the left sidebar under your class or in the top navigation bar.
+
+### 2. Click "Upload Material"
+
+Click the **"Upload Material"** button (usually located at the top-right of the Materials page). This opens the upload form.
+
+### 3. Choose Your File Type
+
+You can either:
+
+- **Upload a file** — Drag and drop or browse to select a file from your device. Supported formats include:
+  - **PDF** documents (.pdf)
+  - **Images** (.jpg, .jpeg, .png, .gif)
+  - **Documents** (.doc, .docx, .ppt, .pptx, .xls, .xlsx)
+  - Maximum file size: **10 MB**
+
+- **Paste an external link** — If your material is hosted online (Google Drive, YouTube, a website, etc.), paste the full URL in the link field instead.
+
+### 4. Add Title, Description, Category, and Grade
+
+Fill in the required details:
+
+| Field | Required? | Description |
+|-------|-----------|-------------|
+| **Title** | Yes | A clear, descriptive name for the material (e.g., "Chapter 5 Worksheet — Fractions") |
+| **Description** | No | An optional short description to help others understand what the material covers |
+| **Category** | Yes | Select a subject category: Mathematics, Science, English, Arabic, History, or Other |
+| **Grade / Level** | No | Optionally select the target grade level: Kindergarten, Grades 1-3, 4-6, 7-9, or 10-12 |
+
+### 5. Save Your Material
+
+Click the **"Save Material"** button. Your material will be saved and immediately appear in your materials list.
+
+> **Tip:** You'll see a success confirmation message once the upload is complete.
+
+---
+
+## Manage Materials
+
+Once you've uploaded materials, you can manage them from the Materials tab on your dashboard.
+
+### Search and Filter
+
+- Use the **search bar** to find materials by title or description.
+- Use the **category filter** dropdown to narrow results by subject (e.g., show only "Science" materials).
+
+### Edit a Material
+
+1. Find the material in your list.
+2. Click the **"Edit"** button (pencil icon).
+3. Update any fields — title, description, category, grade, file, or link.
+4. Click **"Update Material"** to save changes.
+
+### Delete a Material
+
+1. Find the material in your list.
+2. Click the **"Delete"** button (trash icon).
+3. Confirm the deletion when prompted.
+
+> **Warning:** Deleting a material is permanent and cannot be undone.
+
+### Open / Preview a Material
+
+- **Files** — Click **"Open"** to preview the file directly in the browser (images and PDFs) or download it.
+- **Links** — Click **"Open"** to open the external link in a new tab.
+
+### Attach to a Lesson
+
+If your school uses the Lessons feature, you can attach materials to specific lessons:
+
+1. Open a lesson from the **Lessons** tab.
+2. Click **"Attach Material"** and select from your uploaded materials.
+3. Students will see the material linked directly within the lesson.
+
+---
+
+## Troubleshooting
+
+### Upload Fails
+
+- Check your internet connection and try again.
+- Make sure the file is not corrupted — try opening it on your device first.
+- Ensure you are logged in to your String account.
+
+### Unsupported File Format
+
+String currently supports: PDF, JPG, JPEG, PNG, GIF, DOC, DOCX, PPT, PPTX, XLS, XLSX.
+
+If your file is in a different format (e.g., .zip, .mp4), convert it to a supported format or upload it to a cloud service (Google Drive, OneDrive) and paste the sharing link instead.
+
+### File Too Large
+
+The maximum upload size is **10 MB**. If your file exceeds this limit:
+
+- **Compress the file** — Use a PDF compressor for documents or reduce image resolution.
+- **Split the file** — Break large documents into smaller parts.
+- **Use a link instead** — Upload the file to Google Drive or Dropbox and paste the sharing link.
+
+### Slow Upload / Timeout
+
+- Switch to a stable Wi-Fi connection.
+- Close other tabs or applications that may be using bandwidth.
+- Try uploading during off-peak hours.
+- If the problem persists, contact String support.
+
+---
+
+## Frequently Asked Questions
+
+**Q: Can I upload materials for multiple classes at once?**
+
+A: Currently, materials are uploaded to your personal materials library and can be attached to any of your classes. You upload once and reuse across classes.
+
+**Q: What happens to my materials if I leave a school?**
+
+A: Your personal materials remain in your account. Materials shared within a school's shared library may be retained by the school administrator. Contact your school's String admin for details.
+
+**Q: Can students upload materials too?**
+
+A: No, only teachers and school administrators can upload materials. Students can view and download materials shared by their teachers.`, body_ar: `## كيفية رفع المواد التعليمية
+
+المواد التعليمية جزء أساسي من تجربة سترينج. سواء كنت ترغب في مشاركة أوراق عمل أو خطط دروس أو عروض تقديمية أو روابط مرجعية مع طلابك وزملائك، يسهّل سترينج عليك رفع جميع مواردك وتنظيمها وإدارتها في مكان واحد.
+
+يرشدك هذا الدليل خلال كل خطوة — من رفع أول ملف إلى إدارة مكتبة المواد بالكامل.
+
+---
+
+## خطوات رفع مادة تعليمية
+
+اتبع هذه الخطوات لرفع مادة جديدة إلى حسابك على سترينج:
+
+### 1. افتح قسم المواد
+
+من لوحة تحكم سترينج، انتقل إلى قسم **المواد**. يمكنك العثور عليه في الشريط الجانبي تحت فصلك أو في شريط التنقل العلوي.
+
+### 2. اضغط على "رفع مادة"
+
+اضغط على زر **"رفع مادة"** (يقع عادةً في أعلى يسار صفحة المواد). سيفتح هذا نموذج الرفع.
+
+### 3. اختر نوع الملف
+
+يمكنك إما:
+
+- **رفع ملف** — اسحب وأفلت أو تصفح لاختيار ملف من جهازك. التنسيقات المدعومة تشمل:
+  - مستندات **PDF** ‏(.pdf)
+  - **صور** ‏(.jpg, .jpeg, .png, .gif)
+  - **مستندات** ‏(.doc, .docx, .ppt, .pptx, .xls, .xlsx)
+  - الحد الأقصى لحجم الملف: **10 ميجابايت**
+
+- **لصق رابط خارجي** — إذا كانت مادتك مستضافة على الإنترنت (Google Drive أو YouTube أو موقع ويب وغيرها)، الصق الرابط الكامل في حقل الرابط بدلاً من ذلك.
+
+### 4. أضف العنوان والوصف والتصنيف والصف
+
+املأ التفاصيل المطلوبة:
+
+| الحقل | مطلوب؟ | الوصف |
+|-------|--------|-------|
+| **العنوان** | نعم | اسم واضح ووصفي للمادة (مثال: "ورقة عمل الفصل 5 — الكسور") |
+| **الوصف** | لا | وصف مختصر اختياري لمساعدة الآخرين على فهم محتوى المادة |
+| **التصنيف** | نعم | اختر تصنيف المادة: رياضيات، علوم، إنجليزي، عربي، تاريخ، أو أخرى |
+| **الصف / المستوى** | لا | اختر اختيارياً المرحلة الدراسية المستهدفة: الروضة، الصفوف 1-3، 4-6، 7-9، أو 10-12 |
+
+### 5. احفظ المادة
+
+اضغط على زر **"حفظ المادة"**. ستُحفظ مادتك وتظهر فوراً في قائمة المواد.
+
+> **نصيحة:** ستظهر رسالة تأكيد نجاح بمجرد اكتمال الرفع.
+
+---
+
+## إدارة المواد
+
+بمجرد رفع المواد، يمكنك إدارتها من تبويب المواد في لوحة التحكم.
+
+### البحث والتصفية
+
+- استخدم **شريط البحث** للعثور على المواد حسب العنوان أو الوصف.
+- استخدم قائمة **تصفية التصنيف** لتضييق النتائج حسب المادة (مثلاً: عرض مواد "العلوم" فقط).
+
+### تعديل مادة
+
+1. ابحث عن المادة في قائمتك.
+2. اضغط على زر **"تعديل"** (أيقونة القلم).
+3. حدّث أي حقل — العنوان أو الوصف أو التصنيف أو الصف أو الملف أو الرابط.
+4. اضغط **"تحديث المادة"** لحفظ التغييرات.
+
+### حذف مادة
+
+1. ابحث عن المادة في قائمتك.
+2. اضغط على زر **"حذف"** (أيقونة سلة المحذوفات).
+3. أكّد الحذف عند المطالبة.
+
+> **تحذير:** حذف المادة نهائي ولا يمكن التراجع عنه.
+
+### فتح / معاينة مادة
+
+- **الملفات** — اضغط **"فتح"** لمعاينة الملف مباشرة في المتصفح (الصور و PDF) أو تنزيله.
+- **الروابط** — اضغط **"فتح"** لفتح الرابط الخارجي في تبويب جديد.
+
+### إرفاق بدرس
+
+إذا كانت مدرستك تستخدم ميزة الدروس، يمكنك إرفاق مواد بدروس محددة:
+
+1. افتح درساً من تبويب **الدروس**.
+2. اضغط **"إرفاق مادة"** واختر من المواد المرفوعة.
+3. سيرى الطلاب المادة مرتبطة مباشرة بالدرس.
+
+---
+
+## استكشاف الأخطاء وإصلاحها
+
+### فشل الرفع
+
+- تحقق من اتصالك بالإنترنت وحاول مرة أخرى.
+- تأكد من أن الملف غير تالف — حاول فتحه على جهازك أولاً.
+- تأكد من تسجيل دخولك إلى حساب سترينج.
+
+### تنسيق ملف غير مدعوم
+
+يدعم سترينج حالياً: PDF، JPG، JPEG، PNG، GIF، DOC، DOCX، PPT، PPTX، XLS، XLSX.
+
+إذا كان ملفك بتنسيق مختلف (مثل .zip أو .mp4)، حوّله إلى تنسيق مدعوم أو ارفعه على خدمة سحابية (Google Drive أو OneDrive) والصق رابط المشاركة بدلاً من ذلك.
+
+### حجم الملف كبير جداً
+
+الحد الأقصى لحجم الرفع هو **10 ميجابايت**. إذا تجاوز ملفك هذا الحد:
+
+- **اضغط الملف** — استخدم أداة ضغط PDF للمستندات أو قلل دقة الصورة.
+- **قسّم الملف** — قسّم المستندات الكبيرة إلى أجزاء أصغر.
+- **استخدم رابطاً بدلاً من ذلك** — ارفع الملف على Google Drive أو Dropbox والصق رابط المشاركة.
+
+### رفع بطيء / انتهاء المهلة
+
+- انتقل إلى اتصال Wi-Fi مستقر.
+- أغلق التبويبات أو التطبيقات الأخرى التي قد تستخدم النطاق الترددي.
+- حاول الرفع خلال ساعات غير الذروة.
+- إذا استمرت المشكلة، تواصل مع دعم سترينج.
+
+---
+
+## الأسئلة الشائعة
+
+**س: هل يمكنني رفع مواد لعدة فصول في نفس الوقت؟**
+
+ج: حالياً، تُرفع المواد إلى مكتبة المواد الشخصية ويمكن إرفاقها بأي من فصولك. ترفع مرة واحدة وتعيد استخدامها عبر الفصول.
+
+**س: ماذا يحدث لموادي إذا غادرت المدرسة؟**
+
+ج: تبقى موادك الشخصية في حسابك. المواد المشاركة في المكتبة المشتركة للمدرسة قد يحتفظ بها مسؤول المدرسة. تواصل مع مسؤول سترينج في مدرستك للتفاصيل.
+
+**س: هل يمكن للطلاب رفع مواد أيضاً؟**
+
+ج: لا، فقط المعلمون ومسؤولو المدرسة يمكنهم رفع المواد. يمكن للطلاب عرض وتنزيل المواد التي شاركها معلموهم.` },
+    ],
     's_billing': [
       { title: 'Available Plans', title_ar: 'الخطط المتاحة', summary: 'Compare String\'s free and premium plans to find the right fit for your needs.', summary_ar: 'قارن بين خطط سترينج المجانية والمميزة للعثور على الأنسب لاحتياجاتك.', body: `## Overview
 
@@ -9108,10 +9684,20 @@ Refunds for subscriptions purchased through Google Play are handled by Google:
     ],
   };
 
+  // Derive role tags from section ID prefix
+  const getRoleForSection = (sectionId: string): string[] | undefined => {
+    if (sectionId.startsWith('sd')) return ['teacher', 'admin'];
+    if (sectionId.startsWith('stu_')) return ['student'];
+    if (sectionId.startsWith('tch_')) return ['teacher'];
+    if (sectionId.startsWith('fam')) return ['parent'];
+    return undefined; // general/all audiences
+  };
+
   // 2. Generate realistic articles for other sections
   sections.filter(s => s.id !== 'sd1' && s.id !== 'sd2').forEach(sec => {
     const sectionTitleAr = sectionTitleArMap[sec.id] || sec.title;
     const specificArticles = sectionArticles[sec.id];
+    const sectionRole = getRoleForSection(sec.id);
 
     if (specificArticles) {
       specificArticles.forEach((art, index) => {
@@ -9127,13 +9713,14 @@ Refunds for subscriptions purchased through Google Play are handled by Google:
           bodyMarkdown_ar: art.body_ar || stringAppContentAr(art.title_ar),
           updatedAt: new Date().toISOString(),
           tags: ['guide', sec.slug],
+          role: sectionRole,
         });
       });
     } else {
       // Fallback for any section not yet mapped
       for (let i = 1; i <= 3; i++) {
         const title = `${sec.title} Guide ${i}`;
-        const titleAr = `دليل ${sectionTitleAr} ${i}`;
+        const titleAr = `دليل ${sectionTitleArMap[sec.id] || sec.title} ${i}`;
         articles.push({
           id: `gen-${sec.id}-${i}`,
           sectionId: sec.id,
@@ -9141,11 +9728,12 @@ Refunds for subscriptions purchased through Google Play are handled by Google:
           title: title,
           title_ar: titleAr,
           summary: `General documentation for ${sec.title}.`,
-          summary_ar: `وثائق عامة حول ${sectionTitleAr}.`,
+          summary_ar: `وثائق عامة حول ${sectionTitleArMap[sec.id] || sec.title}.`,
           bodyMarkdown: stringAppContent(title),
           bodyMarkdown_ar: stringAppContentAr(titleAr),
           updatedAt: new Date().toISOString(),
           tags: ['general'],
+          role: sectionRole,
         });
       }
     }
@@ -9154,7 +9742,567 @@ Refunds for subscriptions purchased through Google Play are handled by Google:
   return articles;
 };
 
-export const articles: Article[] = generateArticles();
+const faqArticles: Article[] = [
+  {
+    id: 'faq_1',
+    sectionId: 'st_faq',
+    slug: 'how-to-start-a-new-lesson',
+    title: 'How do I start a new lesson in String Tutor?',
+    title_ar: 'كيف أبدأ درسًا جديدًا في معلم سترينج؟',
+    summary: 'Learn how to launch your first lesson, choose a subject, and begin learning with the AI tutor.',
+    summary_ar: 'تعرف على كيفية بدء درسك الأول واختيار المادة والبدء بالتعلم مع المعلم الذكي.',
+    bodyMarkdown: `## Overview
+
+String Tutor provides personalized one-on-one lessons powered by AI. Starting a lesson takes just a few taps whether you are on the web or mobile app.
+
+## Opening the Tutor Dashboard
+
+1. Log in to your String account at **string.education** or open the mobile app.
+2. From the main navigation, click or tap **Tutor** in the top menu bar.
+3. You will see your Tutor Dashboard showing recent sessions, suggested topics, and your progress summary.
+
+> **Tip:** If you do not see the Tutor tab, ask your teacher or school admin to enable String Tutor for your account.
+
+## Choosing a Subject
+
+String Tutor supports multiple subjects. To pick one:
+
+1. On the Tutor Dashboard, click **Start New Lesson**.
+2. Browse the subject list — options include Math, Science, English Language Arts, and more.
+3. Select your subject and then choose a specific topic or let the AI recommend one based on your recent activity.
+
+## Starting the Lesson
+
+Once you have selected a topic:
+
+1. Click **Begin Lesson** to launch the interactive session.
+2. The AI tutor will greet you and present the first question or explanation.
+3. Type your answers or questions in the chat area. The tutor adapts in real time to your responses.
+4. Use the **Hint** button if you get stuck — the tutor will guide you without giving away the answer.
+
+## Resuming a Previous Lesson
+
+If you left a lesson in progress:
+
+1. Go to your Tutor Dashboard.
+2. Under **Recent Sessions**, find the unfinished lesson.
+3. Click **Continue** to pick up exactly where you left off.
+
+## Troubleshooting
+
+- **Lesson won't load:** Refresh the page or restart the app. Check your internet connection.
+- **Subject not available:** Your school may not have enabled all subjects. Contact your teacher.
+- **AI not responding:** Wait a few seconds and try again. If the issue persists, log out and log back in.`,
+    bodyMarkdown_ar: `## نظرة عامة
+
+يقدم معلم سترينج دروسًا فردية مخصصة مدعومة بالذكاء الاصطناعي. بدء الدرس يتطلب بضع نقرات فقط سواء كنت تستخدم الموقع أو التطبيق.
+
+## فتح لوحة المعلم
+
+1. سجل الدخول إلى حسابك في سترينج على **string.education** أو افتح التطبيق.
+2. من شريط التنقل الرئيسي، انقر على **المعلم** في القائمة العلوية.
+3. ستظهر لك لوحة المعلم التي تعرض الجلسات الأخيرة والمواضيع المقترحة وملخص تقدمك.
+
+> **نصيحة:** إذا لم تجد تبويب المعلم، اطلب من معلمك أو مسؤول المدرسة تفعيل معلم سترينج لحسابك.
+
+## اختيار المادة
+
+يدعم معلم سترينج مواد متعددة. لاختيار مادة:
+
+1. في لوحة المعلم، انقر على **بدء درس جديد**.
+2. تصفح قائمة المواد — تشمل الخيارات الرياضيات والعلوم واللغة العربية وغيرها.
+3. اختر المادة ثم اختر موضوعًا محددًا أو اترك الذكاء الاصطناعي يقترح واحدًا بناءً على نشاطك الأخير.
+
+## بدء الدرس
+
+بعد اختيار الموضوع:
+
+1. انقر على **ابدأ الدرس** لتشغيل الجلسة التفاعلية.
+2. سيرحب بك المعلم الذكي ويعرض أول سؤال أو شرح.
+3. اكتب إجاباتك أو أسئلتك في منطقة الدردشة. يتكيف المعلم في الوقت الفعلي مع ردودك.
+4. استخدم زر **تلميح** إذا واجهت صعوبة — سيرشدك المعلم دون إعطائك الإجابة مباشرة.
+
+## استئناف درس سابق
+
+إذا تركت درسًا قيد التنفيذ:
+
+1. اذهب إلى لوحة المعلم.
+2. تحت **الجلسات الأخيرة**، ابحث عن الدرس غير المكتمل.
+3. انقر على **متابعة** للاستكمال من حيث توقفت.
+
+## استكشاف الأخطاء وإصلاحها
+
+- **الدرس لا يُحمّل:** أعد تحميل الصفحة أو أعد تشغيل التطبيق. تحقق من اتصال الإنترنت.
+- **المادة غير متاحة:** قد لا تكون مدرستك قد فعّلت جميع المواد. تواصل مع معلمك.
+- **الذكاء الاصطناعي لا يستجيب:** انتظر بضع ثوانٍ وحاول مجددًا. إذا استمرت المشكلة، سجل الخروج ثم سجل الدخول مرة أخرى.`,
+    updatedAt: '2025-05-10T00:00:00Z',
+    tags: ['faq', 'lessons', 'getting-started', 'string-tutor'],
+  },
+  {
+    id: 'faq_2',
+    sectionId: 'st_faq',
+    slug: 'how-to-track-progress-and-points',
+    title: 'How do I track my progress and points?',
+    title_ar: 'كيف أتابع تقدمي ونقاطي؟',
+    summary: 'Understand where to find your learning progress, earned points, streaks, and performance insights.',
+    summary_ar: 'تعرف على مكان عرض تقدمك التعليمي والنقاط المكتسبة وسلاسل الإنجاز ورؤى الأداء.',
+    bodyMarkdown: `## Overview
+
+String Tutor tracks every lesson you complete and awards points based on accuracy, effort, and consistency. This guide shows you where to find all your progress data.
+
+## Viewing Your Progress Dashboard
+
+1. Navigate to **Tutor > My Progress** from the main menu.
+2. The dashboard displays:
+   - **Total Points** earned across all subjects.
+   - **Current Streak** — the number of consecutive days you have completed at least one lesson.
+   - **Lessons Completed** — a lifetime counter of finished sessions.
+   - **Average Score** — your overall accuracy percentage.
+
+## Understanding Points
+
+Points are awarded after each lesson based on:
+
+- **Correct answers** — 10 points per correct response on the first attempt.
+- **Hint usage** — 5 points if you answer correctly after using a hint.
+- **Completion bonus** — 20 bonus points for finishing an entire lesson without skipping questions.
+- **Streak bonus** — An extra 15 points per lesson when you maintain a 7-day streak.
+
+Points are tallied automatically and appear on your dashboard within seconds of completing a lesson.
+
+## Weekly Progress Report
+
+Every Monday, String Tutor generates a **Weekly Progress Report** that includes:
+
+- Total lessons completed during the previous week.
+- Points earned and comparison to the week before.
+- Strongest and weakest topics based on accuracy.
+- Suggested topics for the upcoming week.
+
+Teachers and linked parents can also view your weekly report from their own dashboards.
+
+## Subject Breakdown
+
+For a per-subject view:
+
+1. Go to **My Progress > Subjects**.
+2. Click any subject to see your topic-level accuracy, time spent, and number of lessons completed.
+3. Topics highlighted in green indicate mastery (above 80% accuracy). Orange topics suggest areas for review.
+
+## Setting Goals
+
+You can set personal goals in **My Progress > Goals**:
+
+1. Click **Add Goal** and choose a target — for example, "Complete 5 math lessons this week."
+2. Track your goal progress via the progress bar on the dashboard.
+3. Completed goals award a **Goal Badge** visible on your profile.`,
+    bodyMarkdown_ar: `## نظرة عامة
+
+يتتبع معلم سترينج كل درس تكمله ويمنحك نقاطًا بناءً على الدقة والجهد والاستمرارية. يوضح هذا الدليل أين تجد جميع بيانات تقدمك.
+
+## عرض لوحة التقدم
+
+1. انتقل إلى **المعلم > تقدمي** من القائمة الرئيسية.
+2. تعرض اللوحة:
+   - **إجمالي النقاط** المكتسبة في جميع المواد.
+   - **السلسلة الحالية** — عدد الأيام المتتالية التي أكملت فيها درسًا واحدًا على الأقل.
+   - **الدروس المكتملة** — عداد إجمالي للجلسات المنتهية.
+   - **متوسط الدرجة** — نسبة الدقة الإجمالية الخاصة بك.
+
+## فهم النقاط
+
+تُمنح النقاط بعد كل درس بناءً على:
+
+- **الإجابات الصحيحة** — 10 نقاط لكل إجابة صحيحة من المحاولة الأولى.
+- **استخدام التلميحات** — 5 نقاط إذا أجبت بشكل صحيح بعد استخدام تلميح.
+- **مكافأة الإكمال** — 20 نقطة إضافية لإنهاء الدرس كاملًا دون تخطي أسئلة.
+- **مكافأة السلسلة** — 15 نقطة إضافية لكل درس عند الحفاظ على سلسلة 7 أيام.
+
+تُحتسب النقاط تلقائيًا وتظهر على لوحتك خلال ثوانٍ من إكمال الدرس.
+
+## تقرير التقدم الأسبوعي
+
+كل يوم اثنين، يُنشئ معلم سترينج **تقرير تقدم أسبوعي** يتضمن:
+
+- إجمالي الدروس المكتملة خلال الأسبوع السابق.
+- النقاط المكتسبة ومقارنتها بالأسبوع الذي قبله.
+- أقوى وأضعف المواضيع بناءً على الدقة.
+- مواضيع مقترحة للأسبوع القادم.
+
+يمكن للمعلمين وأولياء الأمور المرتبطين أيضًا عرض تقريرك الأسبوعي من لوحاتهم.
+
+## تفصيل حسب المادة
+
+للحصول على عرض لكل مادة:
+
+1. اذهب إلى **تقدمي > المواد**.
+2. انقر على أي مادة لمشاهدة دقة مستوى الموضوع والوقت المستغرق وعدد الدروس المكتملة.
+3. المواضيع المميزة بالأخضر تشير إلى الإتقان (أعلى من 80% دقة). المواضيع البرتقالية تقترح مجالات للمراجعة.
+
+## تحديد الأهداف
+
+يمكنك تحديد أهداف شخصية في **تقدمي > الأهداف**:
+
+1. انقر على **إضافة هدف** واختر هدفًا — مثلًا "أكمل 5 دروس رياضيات هذا الأسبوع."
+2. تابع تقدم هدفك عبر شريط التقدم على اللوحة.
+3. الأهداف المكتملة تمنحك **شارة هدف** تظهر على ملفك الشخصي.`,
+    updatedAt: '2025-05-10T00:00:00Z',
+    tags: ['faq', 'progress', 'points', 'reports', 'string-tutor'],
+  },
+  {
+    id: 'faq_3',
+    sectionId: 'st_faq',
+    slug: 'how-to-change-app-language',
+    title: 'How do I change the app language (English/Arabic)?',
+    title_ar: 'كيف أغيّر لغة التطبيق (إنجليزي/عربي)؟',
+    summary: 'Switch between English and Arabic without breaking layout or losing your data.',
+    summary_ar: 'التبديل بين الإنجليزية والعربية دون التأثير على التخطيط أو فقدان بياناتك.',
+    bodyMarkdown: `## Overview
+
+String supports both English and Arabic across the entire platform. Switching languages is instant, preserves all your data, and automatically adjusts the layout direction.
+
+## Changing Language on the Web
+
+1. Look at the **top-right corner** of the navigation bar (or top-left if you are already in Arabic).
+2. Click the **globe icon** or the language label (EN / AR).
+3. Select your preferred language from the dropdown.
+4. The page will refresh instantly in the new language.
+
+Your language preference is saved in your browser and will persist across sessions.
+
+## Changing Language on Mobile
+
+1. Open the String app and tap your **profile icon** in the top corner.
+2. Go to **Settings > Language**.
+3. Tap **English** or **العربية** (Arabic).
+4. The app will reload in the selected language.
+
+## How RTL Layout Works
+
+When you switch to Arabic:
+
+- Text alignment changes from left-to-right to right-to-left.
+- Navigation menus, sidebars, and buttons reposition accordingly.
+- The String logo and header remain in a consistent position.
+- All content — including messages, reports, and lesson text — displays in Arabic if translations are available.
+
+> **Note:** Some technical terms (like "PDF" or "API") remain in English even in Arabic mode.
+
+## Impact on Lessons and Data
+
+Switching languages does **not** affect:
+
+- Your saved progress or points.
+- Lesson history or completion records.
+- Messages sent or received.
+- Any account settings beyond the display language.
+
+All your data is language-independent and stored the same way regardless of your language choice.
+
+## Troubleshooting
+
+- **Language reverts after closing the browser:** Make sure your browser allows localStorage. Clear your cookies and try again.
+- **Some text still in English:** Not all content has Arabic translations yet. The team is continuously adding new translations.
+- **Layout looks broken:** Hard-refresh the page (Ctrl + Shift + R on desktop, or pull down to refresh on mobile).`,
+    bodyMarkdown_ar: `## نظرة عامة
+
+يدعم سترينج كلًا من الإنجليزية والعربية عبر المنصة بأكملها. التبديل بين اللغتين فوري ويحافظ على جميع بياناتك ويعدل اتجاه التخطيط تلقائيًا.
+
+## تغيير اللغة على الويب
+
+1. انظر إلى **الزاوية العلوية اليمنى** من شريط التنقل (أو العلوية اليسرى إذا كنت بالفعل في الوضع العربي).
+2. انقر على **أيقونة الكرة الأرضية** أو تسمية اللغة (EN / AR).
+3. اختر لغتك المفضلة من القائمة المنسدلة.
+4. ستتحدث الصفحة فورًا باللغة الجديدة.
+
+يتم حفظ تفضيل لغتك في المتصفح وسيستمر عبر الجلسات.
+
+## تغيير اللغة على الهاتف
+
+1. افتح تطبيق سترينج وانقر على **أيقونة ملفك الشخصي** في الزاوية العلوية.
+2. اذهب إلى **الإعدادات > اللغة**.
+3. انقر على **English** أو **العربية**.
+4. سيعاد تحميل التطبيق باللغة المحددة.
+
+## كيف يعمل تخطيط RTL
+
+عند التبديل إلى العربية:
+
+- يتغير اتجاه النص من اليسار لليمين إلى اليمين لليسار.
+- تتغير مواضع قوائم التنقل والأشرطة الجانبية والأزرار وفقًا لذلك.
+- يبقى شعار سترينج والرأس في موضع ثابت.
+- يُعرض كل المحتوى — بما في ذلك الرسائل والتقارير ونص الدروس — بالعربية إذا توفرت الترجمات.
+
+> **ملاحظة:** بعض المصطلحات التقنية (مثل "PDF" أو "API") تبقى بالإنجليزية حتى في الوضع العربي.
+
+## التأثير على الدروس والبيانات
+
+تغيير اللغة **لا يؤثر** على:
+
+- تقدمك المحفوظ أو نقاطك.
+- سجل الدروس أو سجلات الإكمال.
+- الرسائل المرسلة أو المستلمة.
+- أي إعدادات حساب بخلاف لغة العرض.
+
+جميع بياناتك مستقلة عن اللغة وتُخزن بنفس الطريقة بغض النظر عن اختيارك للغة.
+
+## استكشاف الأخطاء وإصلاحها
+
+- **اللغة ترجع بعد إغلاق المتصفح:** تأكد أن متصفحك يسمح بالتخزين المحلي. امسح ملفات تعريف الارتباط وحاول مجددًا.
+- **بعض النصوص لا تزال بالإنجليزية:** ليس كل المحتوى يحتوي على ترجمات عربية بعد. الفريق يضيف ترجمات جديدة باستمرار.
+- **التخطيط يبدو معطلًا:** أعد تحميل الصفحة بالكامل (Ctrl + Shift + R على سطح المكتب، أو اسحب للأسفل للتحديث على الهاتف).`,
+    updatedAt: '2025-05-10T00:00:00Z',
+    tags: ['faq', 'language', 'arabic', 'rtl', 'settings', 'string-tutor'],
+  },
+  {
+    id: 'faq_4',
+    sectionId: 'st_faq',
+    slug: 'how-to-download-export-reports',
+    title: 'How do I download or export my reports?',
+    title_ar: 'كيف أحمّل أو أصدّر تقاريري؟',
+    summary: 'Export your progress reports and lesson history as PDF files for printing or sharing.',
+    summary_ar: 'صدّر تقارير تقدمك وسجل دروسك كملفات PDF للطباعة أو المشاركة.',
+    bodyMarkdown: `## Overview
+
+String Tutor allows students, teachers, and parents to download progress reports in PDF format. This is useful for parent-teacher conferences, student portfolios, or personal record keeping.
+
+## Exporting a Progress Report (Students)
+
+1. Go to **Tutor > My Progress**.
+2. Click the **Export** button in the top-right corner of the dashboard.
+3. Choose the date range you want to include (Last Week, Last Month, All Time, or Custom Range).
+4. Select **PDF** as the export format.
+5. Click **Download** — the report will be saved to your device.
+
+The exported PDF includes your total points, lessons completed, accuracy by subject, and weekly trends.
+
+## Exporting Reports (Teachers)
+
+Teachers can export reports for individual students or an entire class:
+
+### Individual Student Report
+
+1. Navigate to **Class > Students** and click on a student's name.
+2. Click **Tutor Progress** to view their String Tutor data.
+3. Click **Export PDF** to download a single student's progress report.
+
+### Class Summary Report
+
+1. Go to **Class > Reports > Tutor Summary**.
+2. Set the desired date range.
+3. Click **Export Class Report** to generate a PDF summarizing all students' tutor activity.
+
+## What the Report Includes
+
+Every exported report contains:
+
+- **Student Information** — name, class, and date range.
+- **Points Summary** — total earned, daily average, and streak information.
+- **Subject Breakdown** — accuracy and completion rates per subject.
+- **Lesson Log** — a table of all lessons with dates, topics, scores, and time spent.
+- **Recommendations** — AI-generated suggestions for topics to review.
+
+## Sharing Reports
+
+After downloading a PDF:
+
+- Email it as an attachment to parents or administrators.
+- Print it for physical student files.
+- Upload it to your school's student information system if supported.
+
+## Troubleshooting
+
+- **Export button is grayed out:** You need at least one completed lesson before reports can be generated.
+- **PDF won't open:** Make sure you have a PDF reader installed (Adobe Reader, browser built-in viewer, etc.).
+- **Data looks incomplete:** Check the date range — it may be filtering out older lessons. Set the range to "All Time" for a complete history.`,
+    bodyMarkdown_ar: `## نظرة عامة
+
+يتيح معلم سترينج للطلاب والمعلمين وأولياء الأمور تحميل تقارير التقدم بصيغة PDF. هذا مفيد لمؤتمرات أولياء الأمور والمعلمين وملفات الطلاب أو السجلات الشخصية.
+
+## تصدير تقرير التقدم (للطلاب)
+
+1. اذهب إلى **المعلم > تقدمي**.
+2. انقر على زر **تصدير** في الزاوية العلوية اليمنى من اللوحة.
+3. اختر النطاق الزمني الذي تريد تضمينه (الأسبوع الماضي، الشهر الماضي، كل الوقت، أو نطاق مخصص).
+4. اختر **PDF** كصيغة التصدير.
+5. انقر على **تحميل** — سيتم حفظ التقرير على جهازك.
+
+يتضمن ملف PDF المُصدّر إجمالي نقاطك والدروس المكتملة والدقة حسب المادة والاتجاهات الأسبوعية.
+
+## تصدير التقارير (للمعلمين)
+
+يمكن للمعلمين تصدير تقارير لطالب فردي أو فصل كامل:
+
+### تقرير طالب فردي
+
+1. انتقل إلى **الفصل > الطلاب** وانقر على اسم الطالب.
+2. انقر على **تقدم المعلم** لعرض بيانات معلم سترينج الخاصة به.
+3. انقر على **تصدير PDF** لتحميل تقرير تقدم الطالب.
+
+### تقرير ملخص الفصل
+
+1. اذهب إلى **الفصل > التقارير > ملخص المعلم**.
+2. حدد النطاق الزمني المطلوب.
+3. انقر على **تصدير تقرير الفصل** لإنشاء PDF يلخص نشاط جميع الطلاب مع المعلم.
+
+## ما يتضمنه التقرير
+
+كل تقرير مُصدّر يحتوي على:
+
+- **معلومات الطالب** — الاسم والفصل والنطاق الزمني.
+- **ملخص النقاط** — الإجمالي المكتسب والمتوسط اليومي ومعلومات السلسلة.
+- **تفصيل حسب المادة** — نسب الدقة والإكمال لكل مادة.
+- **سجل الدروس** — جدول بجميع الدروس مع التواريخ والمواضيع والدرجات والوقت المستغرق.
+- **التوصيات** — اقتراحات مولّدة بالذكاء الاصطناعي للمواضيع التي تحتاج مراجعة.
+
+## مشاركة التقارير
+
+بعد تحميل ملف PDF:
+
+- أرسله كمرفق بالبريد الإلكتروني لأولياء الأمور أو الإداريين.
+- اطبعه لملفات الطلاب المادية.
+- ارفعه إلى نظام معلومات الطلاب في مدرستك إذا كان مدعومًا.
+
+## استكشاف الأخطاء وإصلاحها
+
+- **زر التصدير رمادي:** تحتاج إلى درس واحد مكتمل على الأقل قبل إنشاء التقارير.
+- **ملف PDF لا يُفتح:** تأكد من وجود قارئ PDF مثبت (Adobe Reader، عارض المتصفح المدمج، إلخ).
+- **البيانات تبدو ناقصة:** تحقق من النطاق الزمني — قد يكون يستبعد الدروس القديمة. اضبط النطاق على "كل الوقت" للحصول على سجل كامل.`,
+    updatedAt: '2025-05-10T00:00:00Z',
+    tags: ['faq', 'reports', 'export', 'pdf', 'download', 'string-tutor'],
+  },
+  {
+    id: 'faq_5',
+    sectionId: 'st_faq',
+    slug: 'troubleshooting-common-issues',
+    title: 'What should I do if something isn\'t working?',
+    title_ar: 'ماذا أفعل إذا كان هناك شيء لا يعمل؟',
+    summary: 'Step-by-step troubleshooting for common String Tutor issues like loading errors, frozen screens, and sync problems.',
+    summary_ar: 'خطوات استكشاف الأخطاء وإصلاحها لمشاكل معلم سترينج الشائعة مثل أخطاء التحميل والشاشات المتجمدة ومشاكل المزامنة.',
+    bodyMarkdown: `## Overview
+
+If you encounter a problem in String Tutor, this guide walks you through the most common issues and how to fix them. Most problems can be resolved in a few simple steps.
+
+## The Page Won't Load
+
+If String Tutor shows a blank screen, loading spinner, or an error message:
+
+1. **Check your internet connection** — open another website to confirm you are online.
+2. **Refresh the page** — press F5 or click the refresh button.
+3. **Clear your browser cache** — go to your browser settings and clear cached images and files.
+4. **Try a different browser** — String works best on Chrome, Firefox, Safari, and Edge.
+5. **Disable browser extensions** — ad blockers and privacy extensions can sometimes interfere with String.
+
+## A Lesson is Frozen or Unresponsive
+
+If the AI tutor stops responding during a lesson:
+
+1. Wait **10 seconds** — the AI may be processing a complex response.
+2. Click the **chat input field** and type your answer again. Press Enter.
+3. If still frozen, click the **back arrow** in the top-left corner and reopen the lesson.
+4. Your progress is auto-saved, so you will not lose any completed questions.
+
+## Points Are Not Updating
+
+If your points or streak counter seems incorrect:
+
+1. **Refresh the progress page** — points can take up to 30 seconds to sync.
+2. **Check the date range** — make sure you are viewing the correct time period.
+3. **Log out and log back in** — this forces a fresh sync with the server.
+4. If points are still missing after 5 minutes, **contact your teacher** who can verify from their admin dashboard.
+
+## Audio or Visual Issues
+
+If content does not display correctly:
+
+- **Text is too small:** Use Ctrl + (plus) to zoom in, or adjust text size in Settings.
+- **Images not loading:** Check your internet speed. Slow connections may timeout on large images.
+- **Colors look wrong:** Ensure your device is not in high-contrast or accessibility mode unintentionally.
+
+## The App Crashes on Mobile
+
+If the String app closes unexpectedly:
+
+1. **Force-close the app** and reopen it.
+2. **Update the app** — go to the App Store or Google Play and install the latest version.
+3. **Restart your device** — this clears temporary memory issues.
+4. **Free up storage** — String needs at least 100 MB of free space to run smoothly.
+
+## Getting Further Help
+
+If none of the above steps resolve your issue:
+
+1. Click the **Submit a request** button in the top navigation bar.
+2. Describe the problem in detail — include what you were doing, what happened, and any error messages.
+3. Attach a screenshot if possible.
+4. The String support team typically responds within **24 hours** on business days.
+
+> **Tip:** Include your device type (phone, tablet, computer), browser name, and operating system in your support request to help the team resolve your issue faster.`,
+    bodyMarkdown_ar: `## نظرة عامة
+
+إذا واجهت مشكلة في معلم سترينج، يرشدك هذا الدليل خلال المشاكل الأكثر شيوعًا وكيفية حلها. معظم المشاكل يمكن حلها في بضع خطوات بسيطة.
+
+## الصفحة لا تُحمّل
+
+إذا أظهر معلم سترينج شاشة فارغة أو مؤشر تحميل أو رسالة خطأ:
+
+1. **تحقق من اتصال الإنترنت** — افتح موقعًا آخر لتأكيد أنك متصل.
+2. **أعد تحميل الصفحة** — اضغط F5 أو انقر على زر التحديث.
+3. **امسح ذاكرة التخزين المؤقت للمتصفح** — اذهب إلى إعدادات المتصفح وامسح الصور والملفات المخزنة.
+4. **جرب متصفحًا مختلفًا** — سترينج يعمل بشكل أفضل على Chrome وFirefox وSafari وEdge.
+5. **عطّل إضافات المتصفح** — أدوات حظر الإعلانات وإضافات الخصوصية قد تتداخل أحيانًا مع سترينج.
+
+## الدرس متجمد أو لا يستجيب
+
+إذا توقف المعلم الذكي عن الاستجابة أثناء الدرس:
+
+1. انتظر **10 ثوانٍ** — قد يكون الذكاء الاصطناعي يعالج استجابة معقدة.
+2. انقر على **حقل إدخال الدردشة** واكتب إجابتك مرة أخرى. اضغط Enter.
+3. إذا ظل متجمدًا، انقر على **سهم الرجوع** في الزاوية العلوية اليسرى وأعد فتح الدرس.
+4. يتم حفظ تقدمك تلقائيًا، لذا لن تفقد أي أسئلة مكتملة.
+
+## النقاط لا تتحدث
+
+إذا بدا عداد نقاطك أو سلسلتك غير صحيح:
+
+1. **أعد تحميل صفحة التقدم** — قد تستغرق النقاط حتى 30 ثانية للمزامنة.
+2. **تحقق من النطاق الزمني** — تأكد أنك تعرض الفترة الزمنية الصحيحة.
+3. **سجل الخروج ثم سجل الدخول مرة أخرى** — هذا يفرض مزامنة جديدة مع الخادم.
+4. إذا كانت النقاط لا تزال مفقودة بعد 5 دقائق، **تواصل مع معلمك** الذي يمكنه التحقق من لوحة الإدارة.
+
+## مشاكل الصوت أو العرض
+
+إذا لم يُعرض المحتوى بشكل صحيح:
+
+- **النص صغير جدًا:** استخدم Ctrl + (زائد) للتكبير، أو عدّل حجم النص في الإعدادات.
+- **الصور لا تُحمّل:** تحقق من سرعة الإنترنت. الاتصالات البطيئة قد تنتهي مهلتها عند الصور الكبيرة.
+- **الألوان تبدو خاطئة:** تأكد أن جهازك ليس في وضع التباين العالي أو وضع إمكانية الوصول عن غير قصد.
+
+## التطبيق يتعطل على الهاتف
+
+إذا أُغلق تطبيق سترينج بشكل غير متوقع:
+
+1. **أغلق التطبيق إجباريًا** وأعد فتحه.
+2. **حدّث التطبيق** — اذهب إلى App Store أو Google Play وثبّت أحدث إصدار.
+3. **أعد تشغيل جهازك** — هذا يمسح مشاكل الذاكرة المؤقتة.
+4. **وفّر مساحة تخزين** — يحتاج سترينج إلى 100 ميجابايت على الأقل من المساحة الحرة للعمل بسلاسة.
+
+## الحصول على مساعدة إضافية
+
+إذا لم تحل أي من الخطوات أعلاه مشكلتك:
+
+1. انقر على زر **تقديم طلب** في شريط التنقل العلوي.
+2. صف المشكلة بالتفصيل — تضمن ما كنت تفعله وما حدث وأي رسائل خطأ.
+3. أرفق لقطة شاشة إن أمكن.
+4. فريق دعم سترينج يستجيب عادة خلال **24 ساعة** في أيام العمل.
+
+> **نصيحة:** تضمن نوع جهازك (هاتف، جهاز لوحي، كمبيوتر) واسم المتصفح ونظام التشغيل في طلب الدعم لمساعدة الفريق في حل مشكلتك بشكل أسرع.`,
+    updatedAt: '2025-05-10T00:00:00Z',
+    tags: ['faq', 'troubleshooting', 'errors', 'support', 'string-tutor'],
+  },
+];
+
+export const articles: Article[] = [...generateArticles(), ...faqArticles];
 
 /* ═══════════════════════════════════════════════════════
    Feature Categories — role-based feature grid config
@@ -9166,19 +10314,24 @@ export interface FeatureCategory {
   title_ar: string;
   iconSectionId: string;
   sectionId: string;
+  /** Override sectionId per role for role-specific content */
+  sectionIdByRole?: Partial<Record<'teacher' | 'student', string>>;
   roles: ('teacher' | 'student')[];
 }
 
 export const FEATURE_CATEGORIES: FeatureCategory[] = [
-  { slug: 'getting-started', title: 'Getting Started', title_ar: 'البدء', iconSectionId: 'sd1', sectionId: 'sd1', roles: ['teacher', 'student'] },
-  { slug: 'account-management', title: 'Account Management', title_ar: 'إدارة الحساب', iconSectionId: 'sd2', sectionId: 'sd2', roles: ['teacher', 'student'] },
-  { slug: 'class-setup-and-access', title: 'Class Setup and Access', title_ar: 'إعداد الفصل والوصول', iconSectionId: 'sd3', sectionId: 'sd3', roles: ['teacher', 'student'] },
-  { slug: 'class-messaging', title: 'Class Messaging', title_ar: 'رسائل الفصل', iconSectionId: 'sd4', sectionId: 'sd4', roles: ['teacher', 'student'] },
-  { slug: 'class-story-and-events', title: 'Class Story and Class Events', title_ar: 'قصة الفصل وفعاليات الفصل', iconSectionId: 'sd5', sectionId: 'sd5', roles: ['teacher', 'student'] },
-  { slug: 'class-points-and-reports', title: 'Class Points and Reports', title_ar: 'نقاط الفصل والتقارير', iconSectionId: 'sd6', sectionId: 'sd6', roles: ['teacher', 'student'] },
+  { slug: 'getting-started', title: 'Getting Started', title_ar: 'البدء', iconSectionId: 'sd1', sectionId: 'sd1', sectionIdByRole: { student: 'stu_gs' }, roles: ['teacher', 'student'] },
+  { slug: 'account-management', title: 'Account Management', title_ar: 'إدارة الحساب', iconSectionId: 'sd2', sectionId: 'sd2', roles: ['teacher'] },
+  { slug: 'class-setup-and-access', title: 'Class Setup and Access', title_ar: 'إعداد الفصل والوصول', iconSectionId: 'sd3', sectionId: 'sd3', roles: ['teacher'] },
+  { slug: 'class-messaging', title: 'Class Messaging', title_ar: 'رسائل الفصل', iconSectionId: 'sd4', sectionId: 'sd4', roles: ['teacher'] },
+  { slug: 'class-story-and-events', title: 'Class Story and Class Events', title_ar: 'قصة الفصل وفعاليات الفصل', iconSectionId: 'sd5', sectionId: 'sd5', roles: ['teacher'] },
+  { slug: 'class-points-and-reports', title: 'Class Points and Reports', title_ar: 'نقاط الفصل والتقارير', iconSectionId: 'sd6', sectionId: 'sd6', roles: ['teacher'] },
   { slug: 'district-features', title: 'District Features', title_ar: 'ميزات المنطقة التعليمية', iconSectionId: 'sd7', sectionId: 'sd7', roles: ['teacher'] },
-  { slug: 'student-portfolios', title: 'Student Portfolios', title_ar: 'ملفات الطلاب', iconSectionId: 'sd8', sectionId: 'sd8', roles: ['teacher', 'student'] },
+  { slug: 'student-portfolios', title: 'Student Portfolios', title_ar: 'ملفات الطلاب', iconSectionId: 'sd8', sectionId: 'sd8', roles: ['teacher'] },
   { slug: 'schoolwide-usage', title: 'Schoolwide Usage', title_ar: 'الاستخدام على مستوى المدرسة', iconSectionId: 'sd9', sectionId: 'sd9', roles: ['teacher'] },
+  { slug: 'learning-tools', title: 'Learning Tools', title_ar: 'أدوات التعلم', iconSectionId: 'stu_tools', sectionId: 'stu_tools', roles: ['student'] },
+  { slug: 'online-safety', title: 'Online Safety', title_ar: 'الأمان عبر الإنترنت', iconSectionId: 'stu_safety', sectionId: 'stu_safety', roles: ['student'] },
+  { slug: 'student-account', title: 'Student Account', title_ar: 'حساب الطالب', iconSectionId: 'stu_acct', sectionId: 'stu_acct', roles: ['student'] },
 ];
 
 export const ROLE_SLUG_MAP: Record<string, string> = {

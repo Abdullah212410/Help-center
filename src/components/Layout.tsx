@@ -48,7 +48,6 @@ const LanguageDropdown = () => {
 
 export const Header = ({ onOpenRequest }: { onOpenRequest: () => void }) => {
   const { t, dir } = useI18n();
-  const isRtl = dir === 'rtl';
 
   return (
     <header className="sticky top-0 z-50 w-full glass-header h-[70px]">

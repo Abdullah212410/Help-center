@@ -17,16 +17,16 @@ function App() {
         <Routes>
           {/* Redirect root to help home */}
           <Route path="/" element={<Navigate to="/help" replace />} />
-          
+
           <Route path="/help" element={<Home />} />
           <Route path="/help/search" element={<SearchPage />} />
-          
+
           {/* Dynamic Routes */}
           <Route path="/help/category/:categorySlug" element={<CategoryPage />} />
-          
+
           {/* CRITICAL: Use the new Landing Page for Sections */}
           <Route path="/help/category/:categorySlug/section/:sectionSlug" element={<HelpSectionLandingPage />} />
-          
+
           <Route path="/help/article/:articleSlug" element={<ArticlePage />} />
 
           {/* Role-based feature pages: /help/teacher/*, /help/student/* */}
