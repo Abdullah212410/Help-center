@@ -1,6 +1,7 @@
 import React from 'react';
 import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { I18nProvider } from './lib/i18n';
+import { AuthProvider } from './lib/auth';
 
 import Home from './pages/Home';
 import CategoryPage from './pages/Category';
@@ -10,10 +11,15 @@ import SearchPage from './pages/Search';
 import RoleFeaturePage from './pages/RoleFeaturePage';
 import NotFound from './pages/NotFound';
 import ResourcesPage from './pages/ResourcesPage';
+import BlogFeed from './pages/BlogFeed';
+import BlogPostDetail from './pages/BlogPostDetail';
+import BlogEditor from './pages/BlogEditor';
+import { AdminRoute } from './components/AdminRoute';
 
 function App() {
   return (
     <I18nProvider>
+      <AuthProvider>
       <HashRouter>
         <Routes>
           {/* Redirect root to help home */}
@@ -32,6 +38,12 @@ function App() {
 
           <Route path="/help/resources" element={<ResourcesPage />} />
 
+          {/* Blog */}
+          <Route path="/blog" element={<BlogFeed />} />
+          <Route path="/blog/new" element={<AdminRoute><BlogEditor /></AdminRoute>} />
+          <Route path="/blog/:postId" element={<BlogPostDetail />} />
+          <Route path="/blog/:postId/edit" element={<AdminRoute><BlogEditor /></AdminRoute>} />
+
           {/* Role-based feature pages: /help/teacher/*, /help/student/* */}
           <Route path="/help/:role/:featureSlug" element={<RoleFeaturePage />} />
 
@@ -40,6 +52,7 @@ function App() {
           <Route path="*" element={<Navigate to="/404" replace />} />
         </Routes>
       </HashRouter>
+      </AuthProvider>
     </I18nProvider>
   );
 }

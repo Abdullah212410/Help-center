@@ -81,3 +81,33 @@ export interface Material {
   updatedAt: string;
   teacherId: string;
 }
+
+export interface BlogPost {
+  id: string;
+  title: string;
+  excerpt: string;
+  body: string;
+  coverImage?: string;
+  tags?: string[];
+  authorId: string;
+  authorName: string;
+  publishedAt: string;
+  updatedAt?: string;
+  likes: number;
+  comments: number;
+  status: 'draft' | 'published';
+}
+
+export interface BlogComment {
+  id: string;
+  postId: string;
+  userId: string;
+  userName: string;
+  content: string;
+  createdAt: string;
+}
+
+export interface BlogLike {
+  postId: string;
+  userId: string;
+}

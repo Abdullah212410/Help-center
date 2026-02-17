@@ -206,4 +206,11 @@ export const en = {
   tutorialFinish: "Get Started!",
   tutorialSkip: "Skip Tour",
   tutorialStepOf: "Step {current} of {total}",
+
+  // Blog
+  blogTitle: "String Blog",
+  blogSubtitle: "Latest updates, teaching tips, and product announcements.",
+  blogOpen: "Open Blog",
+  blogWritePost: "Write Post",
+  blogNoArticles: "No articles yet.",
 };

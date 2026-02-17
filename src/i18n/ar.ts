@@ -206,4 +206,11 @@ export const ar = {
   tutorialFinish: "ابدأ الآن!",
   tutorialSkip: "تخطي الجولة",
   tutorialStepOf: "الخطوة {current} من {total}",
+
+  // Blog
+  blogTitle: "مدونة سترينج",
+  blogSubtitle: "آخر التحديثات ونصائح التدريس وإعلانات المنتجات.",
+  blogOpen: "فتح المدونة",
+  blogWritePost: "كتابة منشور",
+  blogNoArticles: "لا توجد مقالات بعد.",
 };
