@@ -173,6 +173,9 @@ OLD_BODY_END */
   { id: 'tch_class', categoryId: 'c10', slug: 'classroom-management', title: 'Classroom Management', title_ar: 'إدارة الفصل', description: 'Organize students into groups, set up behavior points, and manage class rosters throughout the year.', description_ar: 'نظّم الطلاب في مجموعات وأعد نقاط السلوك وأدر قوائم الفصل طوال العام.', order: 2 },
   { id: 'tch_comm', categoryId: 'c10', slug: 'communication', title: 'Communication', title_ar: 'التواصل', description: 'Write effective messages, schedule announcements, and communicate with multilingual families.', description_ar: 'اكتب رسائل فعّالة وجدول الإعلانات وتواصل مع العائلات متعددة اللغات.', order: 3 },
   { id: 'tch_materials', categoryId: 'c10', slug: 'uploading-materials', title: 'Uploading Materials', title_ar: 'رفع المواد التعليمية', description: 'Learn how to upload, organize, and manage teaching materials on String.', description_ar: 'تعرّف على كيفية رفع وتنظيم وإدارة المواد التعليمية على سترينج.', order: 4 },
+  // Safety and Privacy
+  { id: 'sp_privacy', categoryId: 'c7', slug: 'privacy-policy-faqs', title: 'Privacy Policy FAQs', title_ar: 'الأسئلة الشائعة حول سياسة الخصوصية', description: 'Common questions about how String collects, uses, and protects your data.', description_ar: 'أسئلة شائعة حول كيفية جمع سترينج لبياناتك واستخدامها وحمايتها.', order: 1 },
+  { id: 'sp_safety', categoryId: 'c7', slug: 'safety-faqs', title: 'Safety FAQs', title_ar: 'الأسئلة الشائعة حول الأمان', description: 'Learn how String keeps students safe and what to do if something goes wrong.', description_ar: 'تعرف على كيفية حفاظ سترينج على أمان الطلاب وما يجب فعله إذا حدث خطأ ما.', order: 2 },
   // String Tutor — FAQ
   { id: 'st_faq', categoryId: 'c8', slug: 'frequently-asked-questions', title: 'Frequently Asked Questions', title_ar: 'الأسئلة الشائعة', description: 'Quick answers to common questions about using String Tutor.', description_ar: 'إجابات سريعة على الأسئلة الشائعة حول استخدام معلم سترينج.', order: 1 },
 ];
@@ -3675,6 +3678,8 @@ const generateArticles = (): Article[] => {
     'tch_materials': 'رفع المواد التعليمية',
     's_acct': 'إدارة حسابك',
     's_billing': 'الخطط والفوترة',
+    'sp_privacy': 'الأسئلة الشائعة حول سياسة الخصوصية',
+    'sp_safety': 'الأسئلة الشائعة حول الأمان',
   };
 
   // 2. Section-specific realistic articles
@@ -9681,6 +9686,1252 @@ Refunds for subscriptions purchased through Google Play are handled by Google:
 
 - تُصدر المبالغ المستردة إلى طريقة الدفع الأصلية.
 - أوقات المعالجة: بطاقات الائتمان (5-7 أيام)، PayPal (3-5 أيام).` },
+    ],
+
+    // ═══════════════════════════════════════════
+    // Safety & Privacy — Privacy Policy FAQs
+    // ═══════════════════════════════════════════
+    'sp_privacy': [
+      { title: 'What data does String Tutor collect?', title_ar: 'ما البيانات التي يجمعها معلم سترينج؟', summary: 'A detailed overview of the types of personal and usage data String collects from students, teachers, and parents.', summary_ar: 'نظرة تفصيلية على أنواع البيانات الشخصية وبيانات الاستخدام التي يجمعها سترينج من الطلاب والمعلمين وأولياء الأمور.', body: `## Overview
+
+String collects only the data necessary to provide a safe, personalized educational experience. We follow data-minimization principles and never collect more than what is needed.
+
+## Account Information
+
+When you create an account, String collects:
+
+- **Full name** — used to identify you within your school community.
+- **Email address** — used for login, notifications, and account recovery.
+- **Role** — whether you are a student, teacher, parent, or administrator.
+- **School affiliation** — to connect you with the correct school and classes.
+
+## Usage Data
+
+As you use the platform, String automatically collects:
+
+- **Session activity** — pages visited, features used, and time spent on the platform.
+- **Device information** — browser type, operating system, and screen resolution for compatibility.
+- **IP address** — used for security monitoring and approximate location (country/region level only).
+
+## Learning Data
+
+For students using String Tutor, we collect:
+
+- **Lesson progress** — which lessons were started, completed, or skipped.
+- **Assessment scores** — quiz and test results to track academic progress.
+- **DNA personality assessment responses** — used to personalize learning recommendations.
+
+## What We Do NOT Collect
+
+- We do **not** collect biometric data (fingerprints, facial recognition).
+- We do **not** access your device camera or microphone without explicit permission.
+- We do **not** track your activity outside the String platform.
+- We do **not** collect financial information from students.
+
+## Your Rights
+
+You can request a copy of all data we hold about you at any time by contacting support@stringedu.com.`, body_ar: `## نظرة عامة
+
+يجمع سترينج فقط البيانات الضرورية لتوفير تجربة تعليمية آمنة ومخصصة. نتبع مبادئ تقليل البيانات ولا نجمع أبداً أكثر مما هو مطلوب.
+
+## معلومات الحساب
+
+عند إنشاء حساب، يجمع سترينج:
+
+- **الاسم الكامل** — يُستخدم للتعريف بك داخل مجتمعك المدرسي.
+- **عنوان البريد الإلكتروني** — يُستخدم لتسجيل الدخول والإشعارات واستعادة الحساب.
+- **الدور** — سواء كنت طالباً أو معلماً أو ولي أمر أو مسؤولاً.
+- **الانتماء المدرسي** — لربطك بالمدرسة والفصول الصحيحة.
+
+## بيانات الاستخدام
+
+أثناء استخدامك للمنصة، يجمع سترينج تلقائياً:
+
+- **نشاط الجلسة** — الصفحات التي تمت زيارتها والميزات المستخدمة والوقت المستغرق على المنصة.
+- **معلومات الجهاز** — نوع المتصفح ونظام التشغيل ودقة الشاشة للتوافق.
+- **عنوان IP** — يُستخدم لمراقبة الأمان والموقع التقريبي (على مستوى البلد/المنطقة فقط).
+
+## بيانات التعلم
+
+للطلاب الذين يستخدمون معلم سترينج، نجمع:
+
+- **تقدم الدروس** — الدروس التي بُدئت أو أُكملت أو تم تخطيها.
+- **درجات التقييم** — نتائج الاختبارات القصيرة والامتحانات لتتبع التقدم الأكاديمي.
+- **استجابات تقييم DNA للشخصية** — تُستخدم لتخصيص توصيات التعلم.
+
+## ما لا نجمعه
+
+- **لا** نجمع بيانات بيومترية (بصمات الأصابع، التعرف على الوجه).
+- **لا** نصل إلى كاميرا جهازك أو الميكروفون بدون إذن صريح.
+- **لا** نتتبع نشاطك خارج منصة سترينج.
+- **لا** نجمع معلومات مالية من الطلاب.
+
+## حقوقك
+
+يمكنك طلب نسخة من جميع البيانات التي نحتفظ بها عنك في أي وقت عبر التواصل مع support@stringedu.com.` },
+
+      { title: 'How is student data used?', title_ar: 'كيف تُستخدم بيانات الطلاب؟', summary: 'Understand exactly how String uses collected student data to improve learning and maintain platform safety.', summary_ar: 'افهم بالضبط كيف يستخدم سترينج بيانات الطلاب المجمعة لتحسين التعلم والحفاظ على أمان المنصة.', body: `## Overview
+
+Student data is used solely to support educational outcomes and platform safety. String never uses student data for advertising or sells it to third parties.
+
+## Personalizing the Learning Experience
+
+- **Adaptive lessons** — String Tutor adjusts difficulty and content based on a student's performance history.
+- **Recommended topics** — The system suggests subjects or lessons where a student may need more practice.
+- **DNA-based insights** — Personality assessment results help tailor communication and learning styles.
+
+## Academic Progress Tracking
+
+- **Reports for teachers** — Aggregated class data helps teachers identify students who need extra support.
+- **Reports for parents** — Parents can view their child's progress, completed lessons, and achievement milestones.
+- **Student dashboards** — Students see their own scores, streaks, and areas for improvement.
+
+## Platform Safety and Security
+
+- **Abuse detection** — Automated systems monitor for inappropriate content or behavior patterns.
+- **Account security** — Login patterns are analyzed to detect unauthorized access attempts.
+- **Content moderation** — Messages and shared content are screened to maintain a safe environment.
+
+## Research and Improvement
+
+- **Anonymized analytics** — Aggregated, de-identified usage data helps us improve features and fix issues.
+- **No individual profiling** — We never create marketing profiles or behavioral profiles of individual students.
+
+## Legal Compliance
+
+All student data handling complies with:
+
+- **FERPA** (Family Educational Rights and Privacy Act)
+- **COPPA** (Children's Online Privacy Protection Act)
+- **GDPR** (General Data Protection Regulation) for users in the EU
+- **Local education data privacy laws** as applicable`, body_ar: `## نظرة عامة
+
+تُستخدم بيانات الطلاب فقط لدعم النتائج التعليمية وأمان المنصة. لا يستخدم سترينج بيانات الطلاب أبداً للإعلانات ولا يبيعها لأطراف ثالثة.
+
+## تخصيص تجربة التعلم
+
+- **دروس تكيفية** — يضبط معلم سترينج الصعوبة والمحتوى بناءً على تاريخ أداء الطالب.
+- **مواضيع موصى بها** — يقترح النظام مواد أو دروساً قد يحتاج الطالب فيها إلى مزيد من التدريب.
+- **رؤى مبنية على DNA** — تساعد نتائج تقييم الشخصية في تخصيص أساليب التواصل والتعلم.
+
+## تتبع التقدم الأكاديمي
+
+- **تقارير للمعلمين** — تساعد البيانات المجمعة للفصل المعلمين في تحديد الطلاب الذين يحتاجون دعماً إضافياً.
+- **تقارير لأولياء الأمور** — يمكن لأولياء الأمور عرض تقدم أطفالهم والدروس المكتملة ومعالم الإنجاز.
+- **لوحات معلومات الطلاب** — يرى الطلاب درجاتهم وسلاسل إنجازاتهم ومجالات التحسين.
+
+## أمان المنصة وحمايتها
+
+- **كشف الإساءة** — تراقب الأنظمة الآلية المحتوى أو أنماط السلوك غير المناسبة.
+- **أمان الحساب** — يتم تحليل أنماط تسجيل الدخول لاكتشاف محاولات الوصول غير المصرح بها.
+- **إدارة المحتوى** — يتم فحص الرسائل والمحتوى المشترك للحفاظ على بيئة آمنة.
+
+## البحث والتحسين
+
+- **تحليلات مجهولة الهوية** — تساعدنا بيانات الاستخدام المجمعة ومجهولة الهوية في تحسين الميزات وإصلاح المشكلات.
+- **لا تنميط فردي** — لا ننشئ أبداً ملفات تسويقية أو سلوكية للطلاب بشكل فردي.
+
+## الامتثال القانوني
+
+يتوافق التعامل مع جميع بيانات الطلاب مع:
+
+- **FERPA** (قانون حقوق الأسرة التعليمية والخصوصية)
+- **COPPA** (قانون حماية خصوصية الأطفال على الإنترنت)
+- **GDPR** (اللائحة العامة لحماية البيانات) للمستخدمين في الاتحاد الأوروبي
+- **قوانين خصوصية بيانات التعليم المحلية** حسب الاقتضاء` },
+
+      { title: 'Who can see my results?', title_ar: 'من يمكنه رؤية نتائجي؟', summary: 'Learn who has access to your learning data, DNA results, and progress reports on String.', summary_ar: 'تعرف على من يمكنه الوصول إلى بيانات التعلم ونتائج DNA وتقارير التقدم الخاصة بك على سترينج.', body: `## Overview
+
+String follows strict access controls to ensure your data is only visible to the people who need it. Here is exactly who can see what.
+
+## What Students Can See
+
+- Your own progress dashboard, scores, and completed lessons.
+- Your DNA personality assessment results.
+- Messages you have sent and received within your classes.
+
+## What Teachers Can See
+
+- **Class-level data** — Overall class performance, average scores, and lesson completion rates.
+- **Individual student progress** — Scores, lesson history, and areas where a student may be struggling.
+- **DNA results** — Only if the school has enabled this feature and the student has completed the assessment.
+- Teachers **cannot** see private messages between students and parents.
+
+## What Parents Can See
+
+- Their own child's progress reports, scores, and activity log.
+- DNA results for their child (if completed).
+- Messages exchanged with their child's teacher.
+- Parents **cannot** see other students' data.
+
+## What School Administrators Can See
+
+- Aggregated school-wide reports and usage statistics.
+- Individual student or teacher data when necessary for administrative purposes.
+- Administrators **cannot** access private message content unless required by a formal investigation.
+
+## What String (the Company) Can See
+
+- Anonymized, aggregated usage data for platform improvement.
+- Individual account data **only** when required for technical support or legal compliance.
+- String staff access is logged and audited regularly.
+
+## Third Parties
+
+- **No third party** has access to your personal data or results unless you explicitly consent or it is required by law.`, body_ar: `## نظرة عامة
+
+يتبع سترينج ضوابط وصول صارمة لضمان أن بياناتك مرئية فقط للأشخاص الذين يحتاجون إليها. إليك بالضبط من يمكنه رؤية ماذا.
+
+## ما يمكن للطلاب رؤيته
+
+- لوحة التقدم الخاصة بك ودرجاتك والدروس المكتملة.
+- نتائج تقييم DNA لشخصيتك.
+- الرسائل التي أرسلتها واستلمتها داخل فصولك.
+
+## ما يمكن للمعلمين رؤيته
+
+- **بيانات مستوى الفصل** — أداء الفصل العام ومتوسط الدرجات ومعدلات إكمال الدروس.
+- **تقدم الطالب الفردي** — الدرجات وتاريخ الدروس والمجالات التي قد يعاني فيها الطالب.
+- **نتائج DNA** — فقط إذا فعّلت المدرسة هذه الميزة وأكمل الطالب التقييم.
+- **لا يمكن** للمعلمين رؤية الرسائل الخاصة بين الطلاب وأولياء الأمور.
+
+## ما يمكن لأولياء الأمور رؤيته
+
+- تقارير تقدم أطفالهم ودرجاتهم وسجل النشاط.
+- نتائج DNA لأطفالهم (إذا أُكملت).
+- الرسائل المتبادلة مع معلم أطفالهم.
+- **لا يمكن** لأولياء الأمور رؤية بيانات الطلاب الآخرين.
+
+## ما يمكن لمسؤولي المدرسة رؤيته
+
+- تقارير مجمعة على مستوى المدرسة وإحصائيات الاستخدام.
+- بيانات الطلاب أو المعلمين الفردية عند الضرورة لأغراض إدارية.
+- **لا يمكن** للمسؤولين الوصول إلى محتوى الرسائل الخاصة إلا إذا تطلب ذلك تحقيق رسمي.
+
+## ما يمكن لسترينج (الشركة) رؤيته
+
+- بيانات استخدام مجهولة الهوية ومجمعة لتحسين المنصة.
+- بيانات الحسابات الفردية **فقط** عند الحاجة للدعم الفني أو الامتثال القانوني.
+- يتم تسجيل وتدقيق وصول موظفي سترينج بانتظام.
+
+## الأطراف الثالثة
+
+- **لا يملك أي طرف ثالث** حق الوصول إلى بياناتك الشخصية أو نتائجك إلا إذا وافقت صراحة أو كان ذلك مطلوباً بموجب القانون.` },
+
+      { title: 'Do you share data with third parties?', title_ar: 'هل تشاركون البيانات مع أطراف ثالثة؟', summary: 'String\'s policy on third-party data sharing, including service providers, analytics, and legal obligations.', summary_ar: 'سياسة سترينج بشأن مشاركة البيانات مع أطراف ثالثة، بما في ذلك مزودي الخدمات والتحليلات والالتزامات القانونية.', body: `## Overview
+
+String does **not** sell, rent, or trade personal data to any third party for advertising or marketing purposes. Period.
+
+## Service Providers We Work With
+
+String uses a limited number of trusted service providers to operate the platform:
+
+- **Cloud hosting** (e.g., AWS) — Stores data securely in encrypted servers.
+- **Email delivery** — Sends account verification and notification emails.
+- **Error monitoring** — Helps our engineering team detect and fix technical issues quickly.
+
+All service providers are:
+
+1. Bound by strict data processing agreements.
+2. Required to meet the same privacy standards we follow.
+3. Prohibited from using String data for their own purposes.
+
+## Analytics
+
+- We use **anonymized, aggregated** analytics to understand how the platform is used.
+- No individual student data is shared with analytics providers.
+- Analytics data cannot be traced back to any specific person.
+
+## Legal Requirements
+
+String may disclose data if required by:
+
+- A valid court order or legal subpoena.
+- Law enforcement requests that meet applicable legal standards.
+- Regulatory investigations related to child safety.
+
+In such cases, we will:
+
+1. Notify the affected users when legally permitted.
+2. Disclose only the minimum data required.
+3. Document and audit every disclosure.
+
+## School-Directed Sharing
+
+- Schools may request data exports for their own records (e.g., transferring student records).
+- This is done under the school's authority as the data controller.
+- String acts as a data processor following the school's instructions.
+
+## What We Will Never Do
+
+- Sell student data to advertisers.
+- Share data with social media companies.
+- Allow third-party tracking cookies on the platform.
+- Use student data to build marketing profiles.`, body_ar: `## نظرة عامة
+
+**لا** يبيع سترينج البيانات الشخصية أو يؤجرها أو يتاجر بها لأي طرف ثالث لأغراض إعلانية أو تسويقية. نقطة.
+
+## مزودو الخدمات الذين نعمل معهم
+
+يستخدم سترينج عدداً محدوداً من مزودي الخدمات الموثوقين لتشغيل المنصة:
+
+- **استضافة سحابية** (مثل AWS) — تخزن البيانات بشكل آمن في خوادم مشفرة.
+- **تسليم البريد الإلكتروني** — يرسل رسائل التحقق من الحساب والإشعارات.
+- **مراقبة الأخطاء** — تساعد فريقنا الهندسي في اكتشاف المشكلات التقنية وإصلاحها بسرعة.
+
+جميع مزودي الخدمات:
+
+1. ملزمون باتفاقيات معالجة بيانات صارمة.
+2. مطالبون بالالتزام بنفس معايير الخصوصية التي نتبعها.
+3. ممنوعون من استخدام بيانات سترينج لأغراضهم الخاصة.
+
+## التحليلات
+
+- نستخدم تحليلات **مجهولة الهوية ومجمعة** لفهم كيفية استخدام المنصة.
+- لا تتم مشاركة أي بيانات فردية للطلاب مع مزودي التحليلات.
+- لا يمكن تتبع بيانات التحليلات إلى أي شخص محدد.
+
+## المتطلبات القانونية
+
+قد يكشف سترينج عن البيانات إذا تطلب ذلك:
+
+- أمر محكمة صالح أو استدعاء قانوني.
+- طلبات إنفاذ القانون التي تستوفي المعايير القانونية المعمول بها.
+- تحقيقات تنظيمية تتعلق بسلامة الأطفال.
+
+في هذه الحالات، سنقوم بـ:
+
+1. إخطار المستخدمين المتأثرين عندما يكون ذلك مسموحاً قانونياً.
+2. الكشف فقط عن الحد الأدنى من البيانات المطلوبة.
+3. توثيق وتدقيق كل عملية كشف.
+
+## المشاركة الموجهة من المدرسة
+
+- قد تطلب المدارس تصدير البيانات لسجلاتها الخاصة (مثل نقل سجلات الطلاب).
+- يتم ذلك تحت سلطة المدرسة بصفتها المتحكم في البيانات.
+- يعمل سترينج كمعالج بيانات يتبع تعليمات المدرسة.
+
+## ما لن نفعله أبداً
+
+- بيع بيانات الطلاب للمعلنين.
+- مشاركة البيانات مع شركات التواصل الاجتماعي.
+- السماح بملفات تعريف ارتباط تتبع تابعة لأطراف ثالثة على المنصة.
+- استخدام بيانات الطلاب لبناء ملفات تسويقية.` },
+
+      { title: 'How long is data stored?', title_ar: 'كم مدة تخزين البيانات؟', summary: 'Learn about String\'s data retention periods, archival policies, and when data is permanently deleted.', summary_ar: 'تعرف على فترات الاحتفاظ بالبيانات في سترينج وسياسات الأرشفة ومتى يتم حذف البيانات نهائياً.', body: `## Overview
+
+String retains data only as long as necessary to provide educational services and comply with legal requirements. This article explains our retention timelines.
+
+## Active Account Data
+
+While your account is active:
+
+- **Profile information** — Stored as long as your account exists.
+- **Learning progress** — Retained for the duration of your enrollment.
+- **Messages** — Kept for the current and previous academic year.
+
+## After Account Deactivation
+
+When an account is deactivated (e.g., student leaves the school):
+
+1. The account is **soft-deleted** — data is hidden but not yet removed.
+2. After **30 days**, the account enters a grace period where it can be reactivated.
+3. After **90 days**, personal data is permanently deleted from active systems.
+
+## Archived Data
+
+Some data is archived for compliance purposes:
+
+- **Academic records** — May be retained for up to **3 years** after the student leaves, as required by education regulations.
+- **Audit logs** — Security and access logs are kept for **1 year** for compliance.
+- **Aggregated analytics** — Anonymized data (with no personal identifiers) may be kept indefinitely for research.
+
+## Backup Systems
+
+- Backups are encrypted and automatically purged on a **rolling 90-day cycle**.
+- Once data is deleted from active systems, it is removed from backups within 90 days.
+
+## School-Controlled Data
+
+- Schools can request immediate deletion of all data for their institution.
+- Individual student records can be deleted upon a school administrator's written request.
+- Deletion requests are processed within **15 business days**.
+
+## How to Check Your Data Status
+
+1. Log in to your String account.
+2. Navigate to **Settings > Privacy**.
+3. View your data retention status and download a copy of your data.`, body_ar: `## نظرة عامة
+
+يحتفظ سترينج بالبيانات فقط طالما كان ذلك ضرورياً لتقديم الخدمات التعليمية والامتثال للمتطلبات القانونية. يشرح هذا المقال جداولنا الزمنية للاحتفاظ بالبيانات.
+
+## بيانات الحساب النشط
+
+أثناء نشاط حسابك:
+
+- **معلومات الملف الشخصي** — مخزنة طالما كان حسابك موجوداً.
+- **تقدم التعلم** — يُحتفظ به طوال مدة التحاقك.
+- **الرسائل** — تُحفظ للسنة الأكاديمية الحالية والسابقة.
+
+## بعد إلغاء تنشيط الحساب
+
+عند إلغاء تنشيط الحساب (مثلاً عندما يغادر الطالب المدرسة):
+
+1. يتم **حذف الحساب مبدئياً** — البيانات مخفية لكنها لم تُزل بعد.
+2. بعد **30 يوماً**، يدخل الحساب فترة سماح يمكن خلالها إعادة تنشيطه.
+3. بعد **90 يوماً**، تُحذف البيانات الشخصية نهائياً من الأنظمة النشطة.
+
+## البيانات المؤرشفة
+
+يتم أرشفة بعض البيانات لأغراض الامتثال:
+
+- **السجلات الأكاديمية** — قد تُحفظ لمدة تصل إلى **3 سنوات** بعد مغادرة الطالب، وفقاً لما تتطلبه لوائح التعليم.
+- **سجلات التدقيق** — تُحفظ سجلات الأمان والوصول لمدة **سنة واحدة** للامتثال.
+- **التحليلات المجمعة** — قد تُحفظ البيانات مجهولة الهوية (بدون معرفات شخصية) إلى أجل غير مسمى للبحث.
+
+## أنظمة النسخ الاحتياطي
+
+- النسخ الاحتياطية مشفرة ويتم مسحها تلقائياً بدورة **متجددة كل 90 يوماً**.
+- بمجرد حذف البيانات من الأنظمة النشطة، تُزال من النسخ الاحتياطية خلال 90 يوماً.
+
+## البيانات التي تتحكم بها المدرسة
+
+- يمكن للمدارس طلب حذف فوري لجميع بيانات مؤسستها.
+- يمكن حذف سجلات الطلاب الفردية بناءً على طلب كتابي من مسؤول المدرسة.
+- تُعالج طلبات الحذف خلال **15 يوم عمل**.
+
+## كيفية التحقق من حالة بياناتك
+
+1. سجّل الدخول إلى حسابك في سترينج.
+2. انتقل إلى **الإعدادات > الخصوصية**.
+3. اعرض حالة الاحتفاظ ببياناتك وقم بتنزيل نسخة من بياناتك.` },
+
+      { title: 'How can I request deletion or correction of my data?', title_ar: 'كيف يمكنني طلب حذف أو تصحيح بياناتي؟', summary: 'Step-by-step instructions for requesting data deletion, correction, or export from String.', summary_ar: 'تعليمات خطوة بخطوة لطلب حذف البيانات أو تصحيحها أو تصديرها من سترينج.', body: `## Overview
+
+You have the right to request deletion, correction, or export of your personal data at any time. String makes this process straightforward and transparent.
+
+## Requesting Data Correction
+
+If your personal information is incorrect or outdated:
+
+1. **Self-service** — Log in and go to **Settings > Profile** to update your name, email, or other details.
+2. **Contact support** — If you cannot make the change yourself, email **support@stringedu.com** with the subject line "Data Correction Request."
+3. **School administrator** — For student accounts managed by a school, the school admin can update records directly.
+
+Corrections are typically processed within **5 business days**.
+
+## Requesting Data Deletion
+
+To request permanent deletion of your account and associated data:
+
+1. Log in to your String account.
+2. Navigate to **Settings > Privacy > Delete My Account**.
+3. Confirm the deletion request — you will receive a verification email.
+4. Click the confirmation link within **7 days** to finalize.
+
+### Important Notes on Deletion
+
+- Deletion is **irreversible** — all data will be permanently removed.
+- A **30-day grace period** allows you to cancel the request by logging back in.
+- After 30 days, data is removed from active systems. Backups are purged within an additional 90 days.
+
+## Requesting Data Export
+
+To download a copy of all your data:
+
+1. Go to **Settings > Privacy > Export My Data**.
+2. Click **Request Export** — the system will prepare a ZIP file.
+3. You will receive an email with a secure download link within **48 hours**.
+4. The download link expires after **7 days**.
+
+The export includes:
+
+- Profile information
+- Learning progress and scores
+- Messages (if applicable)
+- DNA assessment results (if completed)
+
+## For Parents and Guardians
+
+Parents can submit requests on behalf of their children by:
+
+1. Emailing **support@stringedu.com** from the email address linked to their parent account.
+2. Including the student's name and school name.
+3. Specifying whether you want correction, deletion, or export.
+
+## For Schools
+
+School administrators can submit bulk data requests through the **Admin Dashboard > Data Management** panel or by contacting their String account representative.
+
+## Response Timelines
+
+| Request Type | Processing Time |
+|---|---|
+| Data correction | 5 business days |
+| Account deletion | 30-day grace + 90-day backup purge |
+| Data export | 48 hours |
+| School bulk request | 15 business days |`, body_ar: `## نظرة عامة
+
+لديك الحق في طلب حذف أو تصحيح أو تصدير بياناتك الشخصية في أي وقت. يجعل سترينج هذه العملية بسيطة وشفافة.
+
+## طلب تصحيح البيانات
+
+إذا كانت معلوماتك الشخصية غير صحيحة أو قديمة:
+
+1. **الخدمة الذاتية** — سجّل الدخول وانتقل إلى **الإعدادات > الملف الشخصي** لتحديث اسمك أو بريدك الإلكتروني أو تفاصيل أخرى.
+2. **التواصل مع الدعم** — إذا لم تتمكن من إجراء التغيير بنفسك، أرسل بريداً إلكترونياً إلى **support@stringedu.com** بعنوان "طلب تصحيح بيانات".
+3. **مسؤول المدرسة** — لحسابات الطلاب التي تديرها المدرسة، يمكن لمسؤول المدرسة تحديث السجلات مباشرة.
+
+تُعالج التصحيحات عادة خلال **5 أيام عمل**.
+
+## طلب حذف البيانات
+
+لطلب حذف حسابك والبيانات المرتبطة به نهائياً:
+
+1. سجّل الدخول إلى حسابك في سترينج.
+2. انتقل إلى **الإعدادات > الخصوصية > حذف حسابي**.
+3. أكد طلب الحذف — ستتلقى بريداً إلكترونياً للتحقق.
+4. انقر على رابط التأكيد خلال **7 أيام** لإتمام العملية.
+
+### ملاحظات مهمة حول الحذف
+
+- الحذف **لا رجعة فيه** — ستتم إزالة جميع البيانات نهائياً.
+- **فترة سماح 30 يوماً** تتيح لك إلغاء الطلب بتسجيل الدخول مرة أخرى.
+- بعد 30 يوماً، تُزال البيانات من الأنظمة النشطة. تُمسح النسخ الاحتياطية خلال 90 يوماً إضافياً.
+
+## طلب تصدير البيانات
+
+لتنزيل نسخة من جميع بياناتك:
+
+1. انتقل إلى **الإعدادات > الخصوصية > تصدير بياناتي**.
+2. انقر على **طلب التصدير** — سيُعد النظام ملف ZIP.
+3. ستتلقى بريداً إلكترونياً برابط تنزيل آمن خلال **48 ساعة**.
+4. ينتهي صلاحية رابط التنزيل بعد **7 أيام**.
+
+يتضمن التصدير:
+
+- معلومات الملف الشخصي
+- تقدم التعلم والدرجات
+- الرسائل (إن وُجدت)
+- نتائج تقييم DNA (إن أُكمل)
+
+## لأولياء الأمور والأوصياء
+
+يمكن لأولياء الأمور تقديم طلبات نيابة عن أطفالهم عبر:
+
+1. إرسال بريد إلكتروني إلى **support@stringedu.com** من عنوان البريد الإلكتروني المرتبط بحساب ولي الأمر.
+2. تضمين اسم الطالب واسم المدرسة.
+3. تحديد ما إذا كنت تريد التصحيح أو الحذف أو التصدير.
+
+## للمدارس
+
+يمكن لمسؤولي المدارس تقديم طلبات بيانات جماعية من خلال لوحة **إدارة البيانات > لوحة الإدارة** أو بالتواصل مع ممثل حسابهم في سترينج.
+
+## الجداول الزمنية للاستجابة
+
+| نوع الطلب | وقت المعالجة |
+|---|---|
+| تصحيح البيانات | 5 أيام عمل |
+| حذف الحساب | فترة سماح 30 يوماً + مسح النسخ الاحتياطية 90 يوماً |
+| تصدير البيانات | 48 ساعة |
+| طلب المدرسة الجماعي | 15 يوم عمل |` },
+    ],
+
+    // ═══════════════════════════════════════════
+    // Safety & Privacy — Safety FAQs
+    // ═══════════════════════════════════════════
+    'sp_safety': [
+      { title: 'How do you keep students safe in the app?', title_ar: 'كيف تحافظون على أمان الطلاب في التطبيق؟', summary: 'An overview of the safety measures, content filters, and monitoring systems built into String.', summary_ar: 'نظرة عامة على تدابير الأمان وفلاتر المحتوى وأنظمة المراقبة المدمجة في سترينج.', body: `## Overview
+
+Student safety is the foundation of everything we build at String. The platform includes multiple layers of protection designed specifically for the K-12 education environment.
+
+## Content Filtering
+
+All content shared on String passes through automated filters that:
+
+- **Block inappropriate language** — Profanity, slurs, and harmful terms are automatically flagged and hidden.
+- **Detect sensitive content** — Images and text are scanned for violent, sexual, or otherwise harmful material.
+- **Filter external links** — Links shared in messages are checked against known malicious or inappropriate websites.
+
+## Age-Appropriate Design
+
+- The platform interface is designed for students of all ages, with no ads, pop-ups, or distracting content.
+- Students can only communicate within their assigned classes — there are no public chat rooms or open forums.
+- Profile visibility is limited to within the school network.
+
+## Monitoring and Alerts
+
+- **Real-time monitoring** — Automated systems continuously scan for concerning behavior patterns.
+- **Teacher alerts** — Teachers receive notifications if a student's activity triggers a safety flag.
+- **Admin dashboards** — School administrators can review flagged content and take action.
+
+## Access Controls
+
+- Students cannot message users outside their school.
+- File sharing is restricted to approved file types and sizes.
+- Account permissions are managed by school administrators, not students.
+
+## Regular Security Audits
+
+- String undergoes annual third-party security audits.
+- Penetration testing is conducted quarterly.
+- All findings are documented and resolved within established timelines.
+
+## Compliance
+
+String complies with all major child safety and data protection regulations including COPPA, FERPA, and CIPA.`, body_ar: `## نظرة عامة
+
+أمان الطلاب هو أساس كل ما نبنيه في سترينج. تتضمن المنصة طبقات متعددة من الحماية مصممة خصيصاً لبيئة التعليم من الروضة حتى الصف الثاني عشر.
+
+## فلترة المحتوى
+
+يمر كل المحتوى المشترك على سترينج عبر فلاتر آلية:
+
+- **حجب اللغة غير المناسبة** — يتم تمييز وإخفاء الألفاظ النابية والإهانات والمصطلحات الضارة تلقائياً.
+- **اكتشاف المحتوى الحساس** — يتم فحص الصور والنصوص بحثاً عن مواد عنيفة أو جنسية أو ضارة.
+- **فلترة الروابط الخارجية** — يتم فحص الروابط المشتركة في الرسائل مقابل المواقع الخبيثة أو غير المناسبة المعروفة.
+
+## تصميم مناسب للعمر
+
+- واجهة المنصة مصممة للطلاب من جميع الأعمار، بدون إعلانات أو نوافذ منبثقة أو محتوى مشتت.
+- يمكن للطلاب التواصل فقط داخل فصولهم المعينة — لا توجد غرف دردشة عامة أو منتديات مفتوحة.
+- رؤية الملف الشخصي محدودة داخل شبكة المدرسة.
+
+## المراقبة والتنبيهات
+
+- **مراقبة في الوقت الفعلي** — تفحص الأنظمة الآلية باستمرار أنماط السلوك المثيرة للقلق.
+- **تنبيهات المعلمين** — يتلقى المعلمون إشعارات إذا أثار نشاط طالب علامة أمان.
+- **لوحات معلومات المسؤولين** — يمكن لمسؤولي المدرسة مراجعة المحتوى المُبلَّغ عنه واتخاذ إجراء.
+
+## ضوابط الوصول
+
+- لا يمكن للطلاب مراسلة مستخدمين خارج مدرستهم.
+- مشاركة الملفات مقيدة بأنواع وأحجام ملفات معتمدة.
+- أذونات الحسابات يديرها مسؤولو المدرسة وليس الطلاب.
+
+## تدقيقات أمنية منتظمة
+
+- يخضع سترينج لتدقيقات أمنية سنوية من طرف ثالث.
+- يتم إجراء اختبارات الاختراق كل ربع سنة.
+- يتم توثيق جميع النتائج وحلها ضمن الجداول الزمنية المحددة.
+
+## الامتثال
+
+يلتزم سترينج بجميع لوائح سلامة الأطفال وحماية البيانات الرئيسية بما في ذلك COPPA وFERPA وCIPA.` },
+
+      { title: 'How to report a problem or inappropriate content', title_ar: 'كيفية الإبلاغ عن مشكلة أو محتوى غير لائق', summary: 'Step-by-step guide for students, teachers, and parents on how to report issues on String.', summary_ar: 'دليل خطوة بخطوة للطلاب والمعلمين وأولياء الأمور حول كيفية الإبلاغ عن المشكلات على سترينج.', body: `## Overview
+
+If you see something on String that makes you uncomfortable, seems inappropriate, or violates community guidelines, reporting it is quick and confidential.
+
+## How Students Can Report
+
+1. **Tap the three-dot menu** (⋯) on any message, post, or content item.
+2. Select **Report**.
+3. Choose a reason from the list:
+   - Inappropriate language
+   - Bullying or harassment
+   - Spam or unwanted content
+   - Other concern
+4. Add an optional description explaining the issue.
+5. Tap **Submit Report**.
+
+Your identity is kept confidential — the person you reported will not know who submitted the report.
+
+## How Teachers Can Report
+
+1. Navigate to the content in question.
+2. Click the **flag icon** or the three-dot menu and select **Report to Admin**.
+3. Choose the severity level:
+   - **Low** — Minor guideline violation.
+   - **Medium** — Repeated offense or concerning pattern.
+   - **High** — Immediate safety concern.
+4. Add notes describing the context.
+5. Click **Submit**.
+
+Teachers can also report directly from the **Class Dashboard > Student Activity** view.
+
+## How Parents Can Report
+
+1. Open the String parent app or web portal.
+2. Navigate to **Settings > Report a Concern**.
+3. Describe the issue in the provided form.
+4. Attach screenshots if available.
+5. Submit the report.
+
+Alternatively, parents can email **safety@stringedu.com** at any time.
+
+## What Happens After You Report
+
+1. The report enters a **review queue** monitored by the safety team.
+2. Reports are reviewed within **24 hours** (urgent reports within 4 hours).
+3. Appropriate action is taken — which may include content removal, warnings, or account restrictions.
+4. The reporter receives a confirmation that the report was addressed (without details about disciplinary action).
+
+## Emergency Situations
+
+If a student is in immediate danger, do **not** rely solely on the in-app reporting system. Contact:
+
+- Your school administration directly.
+- Local emergency services (911 in the US).
+- The **Crisis Text Line** — text HOME to 741741.`, body_ar: `## نظرة عامة
+
+إذا رأيت شيئاً على سترينج يجعلك غير مرتاح أو يبدو غير مناسب أو ينتهك إرشادات المجتمع، فإن الإبلاغ عنه سريع وسري.
+
+## كيف يمكن للطلاب الإبلاغ
+
+1. **اضغط على قائمة النقاط الثلاث** (⋯) على أي رسالة أو منشور أو عنصر محتوى.
+2. اختر **إبلاغ**.
+3. اختر سبباً من القائمة:
+   - لغة غير مناسبة
+   - تنمر أو مضايقة
+   - محتوى مزعج أو غير مرغوب
+   - مخاوف أخرى
+4. أضف وصفاً اختيارياً يشرح المشكلة.
+5. اضغط **إرسال البلاغ**.
+
+هويتك تبقى سرية — الشخص الذي أبلغت عنه لن يعرف من قدم البلاغ.
+
+## كيف يمكن للمعلمين الإبلاغ
+
+1. انتقل إلى المحتوى المعني.
+2. انقر على **أيقونة العلم** أو قائمة النقاط الثلاث واختر **إبلاغ المسؤول**.
+3. اختر مستوى الخطورة:
+   - **منخفض** — انتهاك بسيط للإرشادات.
+   - **متوسط** — مخالفة متكررة أو نمط مثير للقلق.
+   - **عالٍ** — مخاوف أمان فورية.
+4. أضف ملاحظات تصف السياق.
+5. انقر **إرسال**.
+
+يمكن للمعلمين أيضاً الإبلاغ مباشرة من عرض **لوحة الفصل > نشاط الطالب**.
+
+## كيف يمكن لأولياء الأمور الإبلاغ
+
+1. افتح تطبيق سترينج لأولياء الأمور أو بوابة الويب.
+2. انتقل إلى **الإعدادات > الإبلاغ عن مشكلة**.
+3. صف المشكلة في النموذج المقدم.
+4. أرفق لقطات شاشة إن توفرت.
+5. قدم البلاغ.
+
+بدلاً من ذلك، يمكن لأولياء الأمور إرسال بريد إلكتروني إلى **safety@stringedu.com** في أي وقت.
+
+## ماذا يحدث بعد الإبلاغ
+
+1. يدخل البلاغ **قائمة المراجعة** التي يراقبها فريق الأمان.
+2. تتم مراجعة البلاغات خلال **24 ساعة** (البلاغات العاجلة خلال 4 ساعات).
+3. يتم اتخاذ الإجراء المناسب — والذي قد يشمل إزالة المحتوى أو التحذيرات أو قيود الحساب.
+4. يتلقى المُبلِّغ تأكيداً بأن البلاغ تمت معالجته (بدون تفاصيل عن الإجراء التأديبي).
+
+## حالات الطوارئ
+
+إذا كان الطالب في خطر فوري، **لا تعتمد** فقط على نظام الإبلاغ داخل التطبيق. تواصل مع:
+
+- إدارة مدرستك مباشرة.
+- خدمات الطوارئ المحلية.
+- **خط الأزمات النصي** — أرسل رسالة نصية للحصول على المساعدة.` },
+
+      { title: 'Account security tips', title_ar: 'نصائح أمان الحساب', summary: 'Best practices for keeping your String account secure, including password tips and recognizing phishing attempts.', summary_ar: 'أفضل الممارسات للحفاظ على أمان حسابك في سترينج، بما في ذلك نصائح كلمة المرور والتعرف على محاولات التصيد.', body: `## Overview
+
+A secure account protects your personal information, learning data, and school community. Follow these best practices to keep your String account safe.
+
+## Creating a Strong Password
+
+Your password should:
+
+- Be at least **8 characters** long.
+- Include a mix of **uppercase letters**, **lowercase letters**, **numbers**, and **symbols**.
+- NOT be a common word, your name, or your school name.
+- NOT be the same password you use for other websites or apps.
+
+**Good examples:** \`Tr33House!2024\`, \`MyStr1ng#Safe\`
+**Bad examples:** \`password123\`, \`string\`, \`abcdefgh\`
+
+## Recognizing Phishing Attempts
+
+Phishing is when someone tries to trick you into sharing your password or personal information. Watch for:
+
+- **Emails that look like String but aren't** — Always check the sender's email address. Official emails come from \`@stringedu.com\`.
+- **Urgent messages** — "Your account will be deleted in 24 hours!" is a common phishing tactic.
+- **Suspicious links** — Hover over links before clicking. The URL should start with \`https://app.stringedu.com\`.
+- **Requests for your password** — String will **never** ask for your password via email, message, or phone.
+
+## What to Do If You Suspect Unauthorized Access
+
+1. **Change your password immediately** — Go to **Settings > Security > Change Password**.
+2. **Check your recent activity** — Look at **Settings > Security > Login History** for unfamiliar logins.
+3. **Report it** — Contact your teacher or school admin, and email **security@stringedu.com**.
+4. **Log out of all devices** — Use the **Log Out Everywhere** button in Settings > Security.
+
+## Additional Security Tips
+
+- **Never share your password** with classmates, friends, or anyone other than a parent/guardian.
+- **Log out after use** on shared or public computers.
+- **Keep your email secure** — Your email is the key to resetting your String password.
+- **Update your password** every 6 months.
+- **Enable login notifications** in Settings to be alerted when someone logs into your account from a new device.
+
+## For Parents and Teachers
+
+- Regularly review your child's or students' account activity.
+- Ensure students understand basic digital security practices.
+- Report any suspicious accounts or messages immediately.`, body_ar: `## نظرة عامة
+
+الحساب الآمن يحمي معلوماتك الشخصية وبيانات التعلم ومجتمعك المدرسي. اتبع أفضل الممارسات هذه للحفاظ على أمان حسابك في سترينج.
+
+## إنشاء كلمة مرور قوية
+
+يجب أن تكون كلمة مرورك:
+
+- بطول **8 أحرف** على الأقل.
+- تتضمن مزيجاً من **أحرف كبيرة** و**أحرف صغيرة** و**أرقام** و**رموز**.
+- **ليست** كلمة شائعة أو اسمك أو اسم مدرستك.
+- **ليست** نفس كلمة المرور التي تستخدمها لمواقع أو تطبيقات أخرى.
+
+## التعرف على محاولات التصيد
+
+التصيد هو عندما يحاول شخص ما خداعك لمشاركة كلمة مرورك أو معلوماتك الشخصية. انتبه لـ:
+
+- **رسائل بريد إلكتروني تبدو مثل سترينج لكنها ليست كذلك** — تحقق دائماً من عنوان البريد الإلكتروني للمرسل. الرسائل الرسمية تأتي من \`@stringedu.com\`.
+- **رسائل عاجلة** — "سيتم حذف حسابك خلال 24 ساعة!" هو أسلوب تصيد شائع.
+- **روابط مشبوهة** — مرر فوق الروابط قبل النقر. يجب أن يبدأ الرابط بـ \`https://app.stringedu.com\`.
+- **طلبات كلمة المرور** — لن يطلب سترينج **أبداً** كلمة مرورك عبر البريد الإلكتروني أو الرسائل أو الهاتف.
+
+## ماذا تفعل إذا اشتبهت في وصول غير مصرح به
+
+1. **غيّر كلمة مرورك فوراً** — انتقل إلى **الإعدادات > الأمان > تغيير كلمة المرور**.
+2. **تحقق من نشاطك الأخير** — انظر إلى **الإعدادات > الأمان > سجل تسجيل الدخول** بحثاً عن عمليات تسجيل دخول غير مألوفة.
+3. **أبلغ عن ذلك** — تواصل مع معلمك أو مسؤول المدرسة وأرسل بريداً إلى **security@stringedu.com**.
+4. **سجّل الخروج من جميع الأجهزة** — استخدم زر **تسجيل الخروج من كل مكان** في الإعدادات > الأمان.
+
+## نصائح أمان إضافية
+
+- **لا تشارك كلمة مرورك أبداً** مع زملاء الدراسة أو الأصدقاء أو أي شخص غير ولي الأمر/الوصي.
+- **سجّل الخروج بعد الاستخدام** على أجهزة الكمبيوتر المشتركة أو العامة.
+- **حافظ على أمان بريدك الإلكتروني** — بريدك الإلكتروني هو مفتاح إعادة تعيين كلمة مرور سترينج.
+- **حدّث كلمة مرورك** كل 6 أشهر.
+- **فعّل إشعارات تسجيل الدخول** في الإعدادات ليتم تنبيهك عند تسجيل الدخول من جهاز جديد.
+
+## لأولياء الأمور والمعلمين
+
+- راجعوا بانتظام نشاط حسابات أطفالكم أو طلابكم.
+- تأكدوا من فهم الطلاب لممارسات الأمان الرقمي الأساسية.
+- أبلغوا فوراً عن أي حسابات أو رسائل مشبوهة.` },
+
+      { title: 'Moderation and rules enforcement', title_ar: 'الإشراف وإنفاذ القواعد', summary: 'How String enforces community guidelines, what happens when rules are broken, and the escalation process.', summary_ar: 'كيف ينفذ سترينج إرشادات المجتمع وماذا يحدث عند انتهاك القواعد وعملية التصعيد.', body: `## Overview
+
+String maintains a safe learning environment through clear community guidelines, automated moderation, and a transparent enforcement process.
+
+## Community Guidelines Summary
+
+All users must:
+
+- **Be respectful** — No bullying, harassment, hate speech, or discriminatory language.
+- **Keep content appropriate** — No violent, sexual, or otherwise harmful content.
+- **Protect privacy** — Do not share other people's personal information without consent.
+- **Use real identities** — Impersonation and fake accounts are prohibited.
+- **Follow school policies** — String's guidelines supplement, not replace, your school's code of conduct.
+
+## How Moderation Works
+
+### Automated Systems
+
+- **Keyword filtering** — Detects and blocks profanity, slurs, and harmful language in real time.
+- **Image screening** — Uploaded images are checked for inappropriate content before they become visible.
+- **Behavior pattern analysis** — Unusual activity patterns (e.g., mass messaging, repeated flagged content) trigger automatic review.
+
+### Human Review
+
+- Flagged content is reviewed by trained safety specialists.
+- Complex cases are escalated to a senior review team.
+- Reviews are completed within 24 hours (urgent cases within 4 hours).
+
+## What Happens When Rules Are Broken
+
+String uses a graduated enforcement approach:
+
+### Level 1 — Warning
+
+- **Trigger:** First minor violation (e.g., mild inappropriate language).
+- **Action:** Content is removed. The user receives a warning notification explaining the violation.
+- **Record:** The warning is logged on the user's account.
+
+### Level 2 — Temporary Restriction
+
+- **Trigger:** Repeated minor violations or a single moderate violation.
+- **Action:** Messaging or posting privileges are suspended for 24–72 hours.
+- **Notification:** The user and their school admin are notified.
+
+### Level 3 — Account Suspension
+
+- **Trigger:** Serious violation or pattern of repeated offenses.
+- **Action:** Account is suspended. The student's teacher and school administrator are notified.
+- **Duration:** Determined by the school in coordination with String's safety team.
+
+### Level 4 — Permanent Removal
+
+- **Trigger:** Severe violations (threats of violence, sexual content involving minors, etc.).
+- **Action:** Account is permanently disabled. School administration and, if required, law enforcement are notified.
+
+## Appeals Process
+
+Users can appeal moderation decisions:
+
+1. Go to **Settings > Account > Appeal a Decision**.
+2. Describe why you believe the action was incorrect.
+3. Appeals are reviewed by a different team member within **48 hours**.
+4. The appeal decision is final.
+
+## School Administrator Controls
+
+School admins can:
+
+- View all flagged content and moderation actions for their school.
+- Override or adjust enforcement levels for specific cases.
+- Set custom content filters for their school.`, body_ar: `## نظرة عامة
+
+يحافظ سترينج على بيئة تعلم آمنة من خلال إرشادات مجتمعية واضحة وإشراف آلي وعملية إنفاذ شفافة.
+
+## ملخص إرشادات المجتمع
+
+يجب على جميع المستخدمين:
+
+- **الاحترام** — لا تنمر أو مضايقة أو خطاب كراهية أو لغة تمييزية.
+- **الحفاظ على محتوى مناسب** — لا محتوى عنيف أو جنسي أو ضار.
+- **حماية الخصوصية** — لا تشارك معلومات الآخرين الشخصية بدون موافقتهم.
+- **استخدام هويات حقيقية** — انتحال الشخصية والحسابات المزيفة ممنوعة.
+- **اتباع سياسات المدرسة** — إرشادات سترينج تكمل قواعد سلوك مدرستك ولا تحل محلها.
+
+## كيف يعمل الإشراف
+
+### الأنظمة الآلية
+
+- **فلترة الكلمات المفتاحية** — تكتشف وتحجب الألفاظ النابية والإهانات واللغة الضارة في الوقت الفعلي.
+- **فحص الصور** — يتم فحص الصور المرفوعة بحثاً عن محتوى غير مناسب قبل أن تصبح مرئية.
+- **تحليل أنماط السلوك** — أنماط النشاط غير العادية تؤدي إلى مراجعة تلقائية.
+
+### المراجعة البشرية
+
+- يتم مراجعة المحتوى المُبلَّغ عنه من قبل متخصصين مدربين في الأمان.
+- يتم تصعيد الحالات المعقدة إلى فريق مراجعة أعلى.
+- تُكمل المراجعات خلال 24 ساعة (الحالات العاجلة خلال 4 ساعات).
+
+## ماذا يحدث عند انتهاك القواعد
+
+يستخدم سترينج نهج إنفاذ تدريجي:
+
+### المستوى 1 — تحذير
+
+- **المحفز:** أول انتهاك بسيط (مثل لغة غير مناسبة خفيفة).
+- **الإجراء:** يُزال المحتوى. يتلقى المستخدم إشعار تحذير يشرح الانتهاك.
+- **السجل:** يُسجل التحذير في حساب المستخدم.
+
+### المستوى 2 — تقييد مؤقت
+
+- **المحفز:** انتهاكات بسيطة متكررة أو انتهاك متوسط واحد.
+- **الإجراء:** تُعلق صلاحيات المراسلة أو النشر لمدة 24-72 ساعة.
+- **الإشعار:** يتم إخطار المستخدم ومسؤول المدرسة.
+
+### المستوى 3 — تعليق الحساب
+
+- **المحفز:** انتهاك خطير أو نمط من المخالفات المتكررة.
+- **الإجراء:** يُعلق الحساب. يتم إخطار معلم الطالب ومسؤول المدرسة.
+- **المدة:** تُحدد من قبل المدرسة بالتنسيق مع فريق الأمان في سترينج.
+
+### المستوى 4 — إزالة دائمة
+
+- **المحفز:** انتهاكات شديدة (تهديدات بالعنف، محتوى جنسي يتضمن قاصرين، إلخ).
+- **الإجراء:** يُعطل الحساب نهائياً. يتم إخطار إدارة المدرسة وجهات إنفاذ القانون إذا لزم الأمر.
+
+## عملية الاستئناف
+
+يمكن للمستخدمين استئناف قرارات الإشراف:
+
+1. انتقل إلى **الإعدادات > الحساب > استئناف قرار**.
+2. صف لماذا تعتقد أن الإجراء كان غير صحيح.
+3. تتم مراجعة الاستئنافات من قبل عضو فريق مختلف خلال **48 ساعة**.
+4. قرار الاستئناف نهائي.
+
+## ضوابط مسؤول المدرسة
+
+يمكن لمسؤولي المدرسة:
+
+- عرض جميع المحتوى المُبلَّغ عنه وإجراءات الإشراف لمدرستهم.
+- تجاوز أو تعديل مستويات الإنفاذ لحالات محددة.
+- تعيين فلاتر محتوى مخصصة لمدرستهم.` },
+
+      { title: 'What to do if a student feels unsafe', title_ar: 'ماذا تفعل إذا شعر طالب بعدم الأمان', summary: 'Clear steps for students, teachers, and parents to follow when a student feels unsafe on or off the platform.', summary_ar: 'خطوات واضحة للطلاب والمعلمين وأولياء الأمور لاتباعها عندما يشعر طالب بعدم الأمان على المنصة أو خارجها.', body: `## Overview
+
+If a student feels unsafe — whether due to cyberbullying, inappropriate contact, or any other concern — it is important to act quickly. This guide provides clear steps for everyone involved.
+
+## Steps for Students
+
+If you feel unsafe on String:
+
+1. **Do not respond** to the person or content making you feel unsafe.
+2. **Take a screenshot** of the concerning content for evidence.
+3. **Report it immediately** using the in-app report button (tap ⋯ > Report).
+4. **Tell a trusted adult** — this could be a parent, teacher, school counselor, or other trusted person.
+5. **Block the user** if applicable — go to their profile and tap **Block**.
+
+Remember: **You are not in trouble.** Reporting a concern is the right thing to do.
+
+## Steps for Teachers
+
+If a student reports feeling unsafe:
+
+1. **Listen carefully** — Give the student your full attention without judgment.
+2. **Document the concern** — Note what was said, when, and any evidence provided.
+3. **Report in String** — Use the teacher reporting tool to flag the content or behavior.
+4. **Follow school protocol** — Notify your school counselor, administrator, or designated safety officer.
+5. **Follow up** — Check in with the student to ensure they feel supported.
+
+### Do NOT:
+
+- Investigate the matter yourself.
+- Confront the other student or their parents directly.
+- Share details of the report with other students.
+
+## Steps for Parents
+
+If your child tells you they feel unsafe:
+
+1. **Stay calm and listen** — Your child needs to feel safe telling you.
+2. **Do not take away their device** as punishment — this discourages future reporting.
+3. **Review the evidence** together if your child is comfortable sharing.
+4. **Report through String** — Use the parent app's report feature or email **safety@stringedu.com**.
+5. **Contact the school** — Speak with the teacher, counselor, or principal.
+6. **Document everything** — Save screenshots, dates, and details.
+
+## When to Involve Authorities
+
+Contact local authorities or emergency services if:
+
+- A student has received threats of physical violence.
+- There is evidence of illegal activity.
+- A student expresses thoughts of self-harm.
+- An adult is contacting a minor inappropriately.
+
+## Support Resources
+
+- **School counselor** — Available during school hours.
+- **String safety team** — safety@stringedu.com (response within 24 hours).
+- **Crisis Text Line** — Text HOME to 741741 (US).
+- **Childhelp National Hotline** — 1-800-422-4453.
+
+## Important Reminders
+
+- Every report is taken seriously.
+- All reports are confidential.
+- No student will be punished for reporting a safety concern in good faith.
+- Early reporting prevents escalation.`, body_ar: `## نظرة عامة
+
+إذا شعر طالب بعدم الأمان — سواء بسبب التنمر الإلكتروني أو الاتصال غير المناسب أو أي مخاوف أخرى — فمن المهم التصرف بسرعة. يوفر هذا الدليل خطوات واضحة لكل المعنيين.
+
+## خطوات للطلاب
+
+إذا شعرت بعدم الأمان على سترينج:
+
+1. **لا ترد** على الشخص أو المحتوى الذي يجعلك تشعر بعدم الأمان.
+2. **التقط لقطة شاشة** للمحتوى المثير للقلق كدليل.
+3. **أبلغ فوراً** باستخدام زر الإبلاغ في التطبيق (اضغط ⋯ > إبلاغ).
+4. **أخبر شخصاً بالغاً تثق به** — قد يكون ولي أمر أو معلم أو مرشد مدرسي أو شخص آخر تثق به.
+5. **احجب المستخدم** إن أمكن — انتقل إلى ملفه الشخصي واضغط **حجب**.
+
+تذكر: **أنت لست في ورطة.** الإبلاغ عن مخاوفك هو الشيء الصحيح.
+
+## خطوات للمعلمين
+
+إذا أبلغ طالب بشعوره بعدم الأمان:
+
+1. **استمع بعناية** — أعطِ الطالب انتباهك الكامل بدون إصدار أحكام.
+2. **وثّق المخاوف** — سجّل ما قيل ومتى وأي أدلة مقدمة.
+3. **أبلغ في سترينج** — استخدم أداة إبلاغ المعلم للإشارة إلى المحتوى أو السلوك.
+4. **اتبع بروتوكول المدرسة** — أبلغ مرشد المدرسة أو المسؤول أو مسؤول السلامة المعين.
+5. **تابع** — تفقد الطالب للتأكد من شعوره بالدعم.
+
+### لا تقم بـ:
+
+- التحقيق في الأمر بنفسك.
+- مواجهة الطالب الآخر أو والديه مباشرة.
+- مشاركة تفاصيل البلاغ مع طلاب آخرين.
+
+## خطوات لأولياء الأمور
+
+إذا أخبرك طفلك أنه يشعر بعدم الأمان:
+
+1. **ابقَ هادئاً واستمع** — يحتاج طفلك أن يشعر بالأمان لإخبارك.
+2. **لا تصادر جهازه** كعقوبة — هذا يثبط الإبلاغ المستقبلي.
+3. **راجع الأدلة** معاً إذا كان طفلك مرتاحاً للمشاركة.
+4. **أبلغ عبر سترينج** — استخدم ميزة الإبلاغ في تطبيق الوالدين أو أرسل بريداً إلى **safety@stringedu.com**.
+5. **تواصل مع المدرسة** — تحدث مع المعلم أو المرشد أو المدير.
+6. **وثّق كل شيء** — احفظ لقطات الشاشة والتواريخ والتفاصيل.
+
+## متى تُشرك السلطات
+
+تواصل مع السلطات المحلية أو خدمات الطوارئ إذا:
+
+- تلقى طالب تهديدات بالعنف الجسدي.
+- هناك أدلة على نشاط غير قانوني.
+- عبّر طالب عن أفكار إيذاء النفس.
+- يتواصل شخص بالغ مع قاصر بشكل غير مناسب.
+
+## موارد الدعم
+
+- **مرشد المدرسة** — متاح خلال ساعات الدراسة.
+- **فريق الأمان في سترينج** — safety@stringedu.com (استجابة خلال 24 ساعة).
+- **خط الأزمات النصي** — أرسل رسالة نصية للحصول على المساعدة.
+
+## تذكيرات مهمة
+
+- كل بلاغ يُؤخذ على محمل الجد.
+- جميع البلاغات سرية.
+- لن يُعاقب أي طالب على الإبلاغ عن مخاوف أمان بحسن نية.
+- الإبلاغ المبكر يمنع التصعيد.` },
+
+      { title: 'Contact and support options', title_ar: 'خيارات الاتصال والدعم', summary: 'All the ways to reach String\'s support team for help with safety, technical issues, or general questions.', summary_ar: 'جميع طرق الوصول إلى فريق دعم سترينج للمساعدة في الأمان أو المشكلات التقنية أو الأسئلة العامة.', body: `## Overview
+
+String offers multiple support channels to ensure you can always get help when you need it. Choose the option that works best for your situation.
+
+## In-App Help Center
+
+The fastest way to find answers:
+
+1. Click the **?** icon in the top-right corner of any String page.
+2. Browse categories or search for your question.
+3. Most common issues are covered with step-by-step guides.
+
+## Email Support
+
+For detailed questions or issues that require investigation:
+
+- **General support:** support@stringedu.com
+- **Safety concerns:** safety@stringedu.com
+- **Data privacy requests:** privacy@stringedu.com
+- **Billing questions:** billing@stringedu.com
+
+### Response Times
+
+| Priority | Response Time |
+|---|---|
+| Safety/urgent | Within 4 hours |
+| Account issues | Within 24 hours |
+| General questions | Within 48 hours |
+| Feature requests | Within 1 week |
+
+## Submit a Request (In-App)
+
+For tracked support tickets:
+
+1. Click **Submit a Request** in the top navigation bar.
+2. Fill in your name, email, subject, and a detailed description.
+3. Attach screenshots or files if helpful.
+4. Click **Submit** — you will receive a confirmation email with your ticket number.
+5. Track your ticket status via the confirmation email link.
+
+## School Administrator Support
+
+School admins have access to priority support:
+
+- **Dedicated account representative** — Assigned during onboarding.
+- **Admin support hotline** — Available Monday to Friday, 8 AM to 6 PM (local time).
+- **Admin Dashboard > Support** — Direct access to submit and track tickets.
+
+## Social Media
+
+Follow String for updates, tips, and announcements:
+
+- Updates about platform features and maintenance.
+- Educational resources and tips for teachers and parents.
+
+> **Note:** Do not share personal or account information on social media. For account-specific help, always use email or the in-app system.
+
+## Accessibility Support
+
+If you need accessibility assistance:
+
+- Email **accessibility@stringedu.com** for screen reader compatibility, alternative formats, or other accommodation requests.
+- String aims to meet WCAG 2.1 AA standards across all features.
+
+## Feedback
+
+We value your input:
+
+- **Feature suggestions** — Submit via **Settings > Feedback > Suggest a Feature**.
+- **Bug reports** — Submit via **Settings > Feedback > Report a Bug**.
+- **General feedback** — Email feedback@stringedu.com.
+
+Every piece of feedback is reviewed by our product team.`, body_ar: `## نظرة عامة
+
+يوفر سترينج قنوات دعم متعددة لضمان حصولك على المساعدة متى احتجت إليها. اختر الخيار الأنسب لحالتك.
+
+## مركز المساعدة داخل التطبيق
+
+أسرع طريقة للعثور على الإجابات:
+
+1. انقر على أيقونة **؟** في الزاوية العلوية من أي صفحة في سترينج.
+2. تصفح الفئات أو ابحث عن سؤالك.
+3. معظم المشكلات الشائعة مغطاة بأدلة خطوة بخطوة.
+
+## الدعم عبر البريد الإلكتروني
+
+للأسئلة التفصيلية أو المشكلات التي تتطلب تحقيقاً:
+
+- **الدعم العام:** support@stringedu.com
+- **مخاوف الأمان:** safety@stringedu.com
+- **طلبات خصوصية البيانات:** privacy@stringedu.com
+- **أسئلة الفوترة:** billing@stringedu.com
+
+### أوقات الاستجابة
+
+| الأولوية | وقت الاستجابة |
+|---|---|
+| الأمان/عاجل | خلال 4 ساعات |
+| مشكلات الحساب | خلال 24 ساعة |
+| أسئلة عامة | خلال 48 ساعة |
+| طلبات الميزات | خلال أسبوع واحد |
+
+## تقديم طلب (داخل التطبيق)
+
+لتذاكر الدعم المتتبعة:
+
+1. انقر على **تقديم طلب** في شريط التنقل العلوي.
+2. املأ اسمك وبريدك الإلكتروني والموضوع ووصفاً تفصيلياً.
+3. أرفق لقطات شاشة أو ملفات إذا كان ذلك مفيداً.
+4. انقر **إرسال** — ستتلقى بريد تأكيد برقم تذكرتك.
+5. تتبع حالة تذكرتك عبر رابط بريد التأكيد.
+
+## دعم مسؤول المدرسة
+
+يتمتع مسؤولو المدارس بوصول إلى دعم ذي أولوية:
+
+- **ممثل حساب مخصص** — يُعيَّن أثناء عملية الإعداد.
+- **خط دعم المسؤولين** — متاح من الاثنين إلى الجمعة، 8 صباحاً إلى 6 مساءً (بالتوقيت المحلي).
+- **لوحة الإدارة > الدعم** — وصول مباشر لتقديم وتتبع التذاكر.
+
+## وسائل التواصل الاجتماعي
+
+تابع سترينج للتحديثات والنصائح والإعلانات:
+
+- تحديثات حول ميزات المنصة والصيانة.
+- موارد تعليمية ونصائح للمعلمين وأولياء الأمور.
+
+> **ملاحظة:** لا تشارك معلومات شخصية أو معلومات الحساب على وسائل التواصل الاجتماعي. للمساعدة المتعلقة بالحساب، استخدم دائماً البريد الإلكتروني أو النظام داخل التطبيق.
+
+## دعم إمكانية الوصول
+
+إذا كنت بحاجة إلى مساعدة في إمكانية الوصول:
+
+- أرسل بريداً إلى **accessibility@stringedu.com** لتوافق قارئ الشاشة أو التنسيقات البديلة أو طلبات التسهيلات الأخرى.
+- يهدف سترينج إلى تلبية معايير WCAG 2.1 AA عبر جميع الميزات.
+
+## الملاحظات
+
+نقدّر مساهماتكم:
+
+- **اقتراحات الميزات** — قدمها عبر **الإعدادات > الملاحظات > اقتراح ميزة**.
+- **تقارير الأخطاء** — قدمها عبر **الإعدادات > الملاحظات > الإبلاغ عن خطأ**.
+- **ملاحظات عامة** — أرسل بريداً إلى feedback@stringedu.com.
+
+كل ملاحظة تتم مراجعتها من قبل فريق المنتج لدينا.` },
     ],
   };
 
