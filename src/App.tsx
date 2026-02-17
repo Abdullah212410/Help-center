@@ -14,7 +14,14 @@ import ResourcesPage from './pages/ResourcesPage';
 import BlogFeed from './pages/BlogFeed';
 import BlogPostDetail from './pages/BlogPostDetail';
 import BlogEditor from './pages/BlogEditor';
+import TeacherLogin from './pages/TeacherLogin';
+import TeacherDashboard from './pages/TeacherDashboard';
+import Login from './pages/Login';
+import ForgotPassword from './pages/ForgotPassword';
+import Register from './pages/Register';
+import AccountSettings from './pages/AccountSettings';
 import { AdminRoute } from './components/AdminRoute';
+import { PrivateRoute } from './components/PrivateRoute';
 
 function App() {
   return (
@@ -43,6 +50,19 @@ function App() {
           <Route path="/blog/new" element={<AdminRoute><BlogEditor /></AdminRoute>} />
           <Route path="/blog/:postId" element={<BlogPostDetail />} />
           <Route path="/blog/:postId/edit" element={<AdminRoute><BlogEditor /></AdminRoute>} />
+
+          {/* Authentication routes */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/register" element={<Register />} />
+
+          {/* Account Settings - Protected Route */}
+          <Route path="/account" element={<PrivateRoute><AccountSettings /></PrivateRoute>} />
+
+          {/* Legacy teacher routes - redirect to new login */}
+          <Route path="/help/teacher/teacher-login" element={<Navigate to="/login" replace />} />
+          <Route path="/teacher/login" element={<Navigate to="/login" replace />} />
+          <Route path="/teacher/dashboard" element={<TeacherDashboard />} />
 
           {/* Role-based feature pages: /help/teacher/*, /help/student/* */}
           <Route path="/help/:role/:featureSlug" element={<RoleFeaturePage />} />

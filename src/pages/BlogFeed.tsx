@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Layout } from '../components/Layout';
 import { useAuth } from '../lib/auth';
 import { blogStore } from '../lib/blog';
+import { AccountDropdown } from '../components/AccountDropdown';
 import type { BlogPost } from '../types';
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
@@ -209,8 +210,8 @@ export default function BlogFeed() {
                 Insights, tips, and updates from the String team to help you make the most of education technology.
               </p>
             </div>
-            {isAdmin && (
-              <div className="flex items-center gap-3">
+            <div className="flex items-center gap-3">
+              {isAdmin && (
                 <Link
                   to="/blog/new"
                   className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-white transition-all duration-200"
@@ -224,8 +225,9 @@ export default function BlogFeed() {
                   </svg>
                   Write Post
                 </Link>
-              </div>
-            )}
+              )}
+              <AccountDropdown />
+            </div>
           </div>
 
           {/* Admin tabs: Published / Drafts */}
@@ -299,7 +301,7 @@ export default function BlogFeed() {
                 <div className="mt-6 p-4 rounded-xl bg-slate-50 border border-slate-100">
                   <p className="text-xs text-slate-500 mb-3">Sign in to like posts and join the conversation.</p>
                   <Link
-                    to="/help/teacher/teacher-login"
+                    to="/login"
                     className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#ED3B91] hover:underline"
                   >
                     Sign In
