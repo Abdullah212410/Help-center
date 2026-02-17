@@ -12,6 +12,7 @@ export const en = {
   brand: "Brand",
   newsroom: "Newsroom",
   resources: "Resources",
+  navResources: "Resources",
   stringIdeas: "String Ideas",
   teacherResources: "Teacher Resources",
   parentResources: "Parent Resources",

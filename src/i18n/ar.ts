@@ -12,6 +12,7 @@ export const ar = {
   brand: "العلامة التجارية",
   newsroom: "غرفة الأخبار",
   resources: "الموارد",
+  navResources: "الموارد",
   stringIdeas: "أفكار سترينج",
   teacherResources: "موارد المعلمين",
   parentResources: "موارد الآباء",

@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useI18n } from '../lib/i18n';
 import { SubmitRequestModal } from './SubmitRequestModal';
 import StringIcon from './icons/StringIcon';
@@ -63,6 +63,10 @@ export const Header = ({ onOpenRequest }: { onOpenRequest: () => void }) => {
 
         {/* Right: Links & Actions */}
         <div className="flex items-center gap-3 md:gap-5">
+          <Link to="/help/resources" className="hidden md:block text-sm font-medium text-slate-500 hover:text-[#ED3B91] transition-colors">
+            {t('navResources')}
+          </Link>
+
           <a href="https://string.education" target="_blank" rel="noreferrer" className="hidden md:block text-sm font-medium text-slate-500 hover:text-primary-600 transition-colors">
             {t('stringWebsite')}
           </a>
@@ -96,8 +100,8 @@ export const Footer = () => {
           </div>
           <div className="flex flex-col gap-3">
             <h3 className="font-semibold text-slate-900 text-sm uppercase tracking-wider">{t('resources')}</h3>
-            <a href="#" className="text-sm text-slate-500 hover:text-primary-600 transition-colors">{t('teacherResources')}</a>
-            <a href="#" className="text-sm text-slate-500 hover:text-primary-600 transition-colors">{t('parentResources')}</a>
+            <Link to="/help/resources" className="text-sm text-slate-500 hover:text-primary-600 transition-colors">{t('teacherResources')}</Link>
+            <Link to="/help/resources" className="text-sm text-slate-500 hover:text-primary-600 transition-colors">{t('parentResources')}</Link>
           </div>
           <div className="flex flex-col gap-3">
             <h3 className="font-semibold text-slate-900 text-sm uppercase tracking-wider">{t('support')}</h3>

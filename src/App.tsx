@@ -9,6 +9,7 @@ import ArticlePage from './pages/Article';
 import SearchPage from './pages/Search';
 import RoleFeaturePage from './pages/RoleFeaturePage';
 import NotFound from './pages/NotFound';
+import ResourcesPage from './pages/ResourcesPage';
 
 function App() {
   return (
@@ -28,6 +29,8 @@ function App() {
           <Route path="/help/category/:categorySlug/section/:sectionSlug" element={<HelpSectionLandingPage />} />
 
           <Route path="/help/article/:articleSlug" element={<ArticlePage />} />
+
+          <Route path="/help/resources" element={<ResourcesPage />} />
 
           {/* Role-based feature pages: /help/teacher/*, /help/student/* */}
           <Route path="/help/:role/:featureSlug" element={<RoleFeaturePage />} />
