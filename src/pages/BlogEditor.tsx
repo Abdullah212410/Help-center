@@ -15,9 +15,7 @@ function draftKey(userId: string, postId?: string): string {
 
 interface DraftData {
   title: string;
-  excerpt: string;
   body: string;
-  tags: string;
   savedAt: string;
 }
 
@@ -58,9 +56,7 @@ export default function BlogEditor() {
   const existing = useMemo(() => (postId ? blogStore.getById(postId) : undefined), [postId]);
 
   const [title, setTitle] = useState('');
-  const [excerpt, setExcerpt] = useState('');
   const [body, setBody] = useState('');
-  const [tags, setTags] = useState('');
   const [status, setStatus] = useState<'draft' | 'published'>('draft');
   const [preview, setPreview] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -76,9 +72,7 @@ export default function BlogEditor() {
 
     if (existing) {
       setTitle(existing.title);
-      setExcerpt(existing.excerpt);
       setBody(existing.body);
-      setTags(existing.tags?.join(', ') ?? '');
       setStatus(existing.status);
     }
 
@@ -91,9 +85,7 @@ export default function BlogEditor() {
       );
       if (restore) {
         setTitle(draft.title);
-        setExcerpt(draft.excerpt);
         setBody(draft.body);
-        setTags(draft.tags);
         setDraftRestored(true);
       } else {
         clearDraft(user.id, postId);
@@ -108,14 +100,10 @@ export default function BlogEditor() {
 
   // ── Autosave every 5 seconds ──
   const titleRef = useRef(title);
-  const excerptRef = useRef(excerpt);
   const bodyRef = useRef(body);
-  const tagsRef = useRef(tags);
 
   titleRef.current = title;
-  excerptRef.current = excerpt;
   bodyRef.current = body;
-  tagsRef.current = tags;
 
   useEffect(() => {
     if (!user) return;
@@ -123,15 +111,12 @@ export default function BlogEditor() {
       if (!initialised.current) return;
       const hasContent =
         titleRef.current.trim() ||
-        excerptRef.current.trim() ||
         (bodyRef.current.trim() && bodyRef.current !== '<p></p>');
       if (!hasContent) return;
 
       saveDraftToStorage(user.id, postId, {
         title: titleRef.current,
-        excerpt: excerptRef.current,
         body: bodyRef.current,
-        tags: tagsRef.current,
         savedAt: new Date().toISOString(),
       });
     }, AUTOSAVE_INTERVAL);
@@ -158,20 +143,13 @@ export default function BlogEditor() {
       }
       setSaving(true);
 
-      const tagList = tags
-        .split(',')
-        .map((t) => t.trim().toLowerCase())
-        .filter(Boolean);
-
       const cleanBody = sanitizeHtml(body.trim());
 
       try {
         if (isEditing && postId) {
           blogStore.update(user, postId, {
             title: title.trim(),
-            excerpt: excerpt.trim(),
             body: cleanBody,
-            tags: tagList,
             status: asStatus,
             publishedAt:
               asStatus === 'published' && existing?.status === 'draft'
@@ -183,9 +161,7 @@ export default function BlogEditor() {
         } else {
           const created = blogStore.create(user, {
             title: title.trim(),
-            excerpt: excerpt.trim(),
             body: cleanBody,
-            tags: tagList,
             publishedAt: new Date().toISOString(),
             status: asStatus,
           });
@@ -197,7 +173,7 @@ export default function BlogEditor() {
         setSaving(false);
       }
     },
-    [user, title, excerpt, body, tags, isEditing, postId, existing, navigate],
+    [user, title, body, isEditing, postId, existing, navigate],
   );
 
   // Not found when editing non-existent post
@@ -249,25 +225,9 @@ export default function BlogEditor() {
         {preview ? (
           /* ── Preview mode ── */
           <div>
-            {tags && (
-              <div className="flex flex-wrap gap-2 mb-4">
-                {tags.split(',').map((t) => t.trim()).filter(Boolean).map((t) => (
-                  <span
-                    key={t}
-                    className="inline-block px-3 py-1 text-xs font-medium rounded-full"
-                    style={{ background: 'rgba(237,59,145,0.08)', color: '#ED3B91' }}
-                  >
-                    {t}
-                  </span>
-                ))}
-              </div>
-            )}
             <h1 className="text-3xl md:text-4xl font-extrabold text-slate-900 mb-3 leading-tight">
               {title || 'Untitled Post'}
             </h1>
-            {excerpt && (
-              <p className="text-lg text-slate-500 mb-8 leading-relaxed">{excerpt}</p>
-            )}
             <div
               className="blog-prose"
               dangerouslySetInnerHTML={{ __html: sanitizeHtml(body) || '<p><em>No content yet...</em></p>' }}
@@ -286,45 +246,16 @@ export default function BlogEditor() {
                 value={title}
                 onChange={(e) => { setTitle(e.target.value); if (titleError) setTitleError(false); }}
                 placeholder="Enter a clear and descriptive title"
-                className={`w-full text-3xl md:text-4xl font-extrabold placeholder-slate-400 rounded-xl px-4 py-3 border outline-none transition-all ${
+                className={`w-full text-lg font-semibold placeholder-slate-400 rounded-xl px-3.5 py-2.5 border outline-none transition-all ${
                   titleError
                     ? 'border-red-400 focus:ring-2 focus:ring-red-200 focus:border-red-400'
                     : 'border-slate-200 focus:ring-2 focus:ring-[#ED3B91]/30 focus:border-[#ED3B91]'
                 }`}
-                style={{ lineHeight: 1.2, background: '#FFFFFF', color: '#111827' }}
+                style={{ lineHeight: 1.3, background: '#FFFFFF', color: '#111827', fontSize: '18px' }}
               />
               {titleError && (
                 <p className="mt-1.5 text-xs text-red-500">Post title is required</p>
               )}
-            </div>
-
-            {/* Excerpt / Summary */}
-            <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-1.5">
-                Summary
-              </label>
-              <input
-                type="text"
-                value={excerpt}
-                onChange={(e) => setExcerpt(e.target.value)}
-                placeholder="Write a brief summary of your post (optional)"
-                className="w-full text-lg text-slate-700 placeholder-slate-300 rounded-lg px-3.5 py-2.5 border outline-none transition-all border-slate-200 focus:ring-2 focus:ring-[#ED3B91]/30 focus:border-[#ED3B91]"
-              />
-              <p className="mt-1.5 text-xs text-slate-400">Optional short excerpt shown in previews</p>
-            </div>
-
-            {/* Tags */}
-            <div>
-              <label className="block text-xs font-semibold text-slate-400 uppercase tracking-wider mb-1.5">
-                Tags (comma separated)
-              </label>
-              <input
-                type="text"
-                value={tags}
-                onChange={(e) => setTags(e.target.value)}
-                placeholder="e.g. teaching, engagement, ai"
-                className="w-full rounded-lg border border-slate-200 px-3.5 py-2.5 text-sm text-slate-700 placeholder-slate-300 focus:outline-none focus:ring-2 focus:ring-[#ED3B91]/30 focus:border-[#ED3B91] transition-all"
-              />
             </div>
 
             {/* Body (Tiptap) */}

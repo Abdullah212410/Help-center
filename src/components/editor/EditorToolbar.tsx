@@ -1,8 +1,13 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import type { Editor } from '@tiptap/react';
 
 interface ToolbarProps {
   editor: Editor;
+}
+
+interface ToolbarPosition {
+  top: number;
+  left: number;
 }
 
 // ─── Small SVG icon helpers ──────────────────────────────────────────────────
@@ -102,6 +107,74 @@ const Divider = () => <div className="w-px h-5 bg-slate-200 mx-1" />;
 
 export const EditorToolbar: React.FC<ToolbarProps> = ({ editor }) => {
   const [showLinkModal, setShowLinkModal] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const [position, setPosition] = useState<ToolbarPosition>({ top: 0, left: 0 });
+  const toolbarRef = useRef<HTMLDivElement>(null);
+
+  // Calculate toolbar position based on text selection
+  const updateToolbarPosition = useCallback(() => {
+    const selection = window.getSelection();
+    if (!selection || selection.rangeCount === 0) {
+      setIsVisible(false);
+      return;
+    }
+
+    const range = selection.getRangeAt(0);
+    const rangeRect = range.getBoundingClientRect();
+
+    // Check if there's actual text selected (not just cursor position)
+    if (rangeRect.width === 0 || rangeRect.height === 0 || selection.toString().trim() === '') {
+      setIsVisible(false);
+      return;
+    }
+
+    // Get toolbar dimensions
+    const toolbarHeight = toolbarRef.current?.offsetHeight || 60;
+    const toolbarWidth = toolbarRef.current?.offsetWidth || 500;
+
+    // Calculate initial position (above the selection, centered)
+    let top = rangeRect.top + window.scrollY - toolbarHeight - 10;
+    let left = rangeRect.left + window.scrollX + rangeRect.width / 2 - toolbarWidth / 2;
+
+    // Prevent toolbar from going outside viewport horizontally
+    const padding = 16;
+    if (left < padding) {
+      left = padding;
+    } else if (left + toolbarWidth > window.innerWidth - padding) {
+      left = window.innerWidth - toolbarWidth - padding;
+    }
+
+    // If toolbar would go above viewport, position it below the selection instead
+    if (rangeRect.top - toolbarHeight - 10 < 0) {
+      top = rangeRect.bottom + window.scrollY + 10;
+    }
+
+    setPosition({ top, left });
+    setIsVisible(true);
+  }, []);
+
+  // Listen to selection changes
+  useEffect(() => {
+    const handleSelectionChange = () => {
+      // Delay to ensure selection is stable
+      requestAnimationFrame(() => {
+        updateToolbarPosition();
+      });
+    };
+
+    // Listen to editor selection updates
+    editor.on('selectionUpdate', handleSelectionChange);
+    editor.on('update', handleSelectionChange);
+
+    // Also listen to document selection changes
+    document.addEventListener('selectionchange', handleSelectionChange);
+
+    return () => {
+      editor.off('selectionUpdate', handleSelectionChange);
+      editor.off('update', handleSelectionChange);
+      document.removeEventListener('selectionchange', handleSelectionChange);
+    };
+  }, [editor, updateToolbarPosition]);
 
   const handleLink = useCallback(() => {
     const existing = editor.getAttributes('link').href || '';
@@ -129,7 +202,19 @@ export const EditorToolbar: React.FC<ToolbarProps> = ({ editor }) => {
 
   return (
     <>
-      <div className="flex items-center flex-wrap gap-0.5 px-3 py-2 border-b border-slate-200 bg-slate-50/80 rounded-t-xl">
+      <div
+        ref={toolbarRef}
+        className="flex items-center flex-wrap gap-0.5 px-3 py-2 border border-slate-200 bg-white rounded-xl shadow-lg transition-all duration-200"
+        style={{
+          position: 'fixed',
+          top: `${position.top}px`,
+          left: `${position.left}px`,
+          opacity: isVisible ? 1 : 0,
+          transform: isVisible ? 'translateY(0) scale(1)' : 'translateY(-8px) scale(0.95)',
+          pointerEvents: isVisible ? 'auto' : 'none',
+          zIndex: 50,
+        }}
+      >
         {/* Headings */}
         <ToolbarButton
           onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
