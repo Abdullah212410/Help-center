@@ -262,7 +262,7 @@ export const blogStore = {
     const newPost: BlogPost = {
       ...post,
       title: post.title.trim(),
-      excerpt: post.excerpt.trim(),
+      excerpt: post.excerpt?.trim(),
       body: post.body.trim(),
       id: `post-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
       authorId: user.id,

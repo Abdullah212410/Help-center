@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Layout } from '../components/Layout';
-import { BlogPreviewCard } from '../components/BlogPreviewCard';
 import { useI18n } from '../lib/i18n';
 
 /* ═══════════════════════════════════════════════════════
@@ -272,16 +271,6 @@ export default function Home() {
             </Link>
           ))}
         </div>
-      </section>
-
-      {/* ══════════════════════════════════════════════════════
-          BLOG PREVIEW
-          ══════════════════════════════════════════════════════ */}
-      <section
-        className="mx-auto px-6"
-        style={{ maxWidth: 1200, paddingTop: 32, paddingBottom: 0 }}
-      >
-        <BlogPreviewCard />
       </section>
 
       {/* ══════════════════════════════════════════════════════

@@ -54,18 +54,20 @@ const PostCard: React.FC<{ post: BlogPost }> = ({ post }) => (
       </h2>
 
       {/* Excerpt */}
-      <p
-        className="text-sm leading-relaxed mb-4"
-        style={{
-          color: '#64748b',
-          display: '-webkit-box',
-          WebkitLineClamp: 3,
-          WebkitBoxOrient: 'vertical',
-          overflow: 'hidden',
-        }}
-      >
-        {post.excerpt}
-      </p>
+      {post.excerpt && (
+        <p
+          className="text-sm leading-relaxed mb-4"
+          style={{
+            color: '#64748b',
+            display: '-webkit-box',
+            WebkitLineClamp: 3,
+            WebkitBoxOrient: 'vertical',
+            overflow: 'hidden',
+          }}
+        >
+          {post.excerpt}
+        </p>
+      )}
 
       {/* Meta */}
       <div className="flex items-center justify-between text-xs" style={{ color: '#94a3b8' }}>

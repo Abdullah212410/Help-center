@@ -85,7 +85,7 @@ export interface Material {
 export interface BlogPost {
   id: string;
   title: string;
-  excerpt: string;
+  excerpt?: string;
   body: string;
   coverImage?: string;
   tags?: string[];

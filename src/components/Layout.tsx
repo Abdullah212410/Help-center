@@ -63,6 +63,10 @@ export const Header = ({ onOpenRequest }: { onOpenRequest: () => void }) => {
 
         {/* Right: Links & Actions */}
         <div className="flex items-center gap-3 md:gap-5">
+          <Link to="/blog" className="hidden md:block text-sm font-medium text-slate-500 hover:text-[#ED3B91] transition-colors">
+            Blog
+          </Link>
+
           <Link to="/help/resources" className="hidden md:block text-sm font-medium text-slate-500 hover:text-[#ED3B91] transition-colors">
             {t('navResources')}
           </Link>

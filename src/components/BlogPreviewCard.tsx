@@ -181,18 +181,20 @@ export const BlogPreviewCard: React.FC = () => {
               </div>
 
               {/* Excerpt */}
-              <p
-                className="text-sm leading-relaxed"
-                style={{
-                  color: '#64748b',
-                  display: '-webkit-box',
-                  WebkitLineClamp: 2,
-                  WebkitBoxOrient: 'vertical',
-                  overflow: 'hidden',
-                }}
-              >
-                {latest.excerpt}
-              </p>
+              {latest.excerpt && (
+                <p
+                  className="text-sm leading-relaxed"
+                  style={{
+                    color: '#64748b',
+                    display: '-webkit-box',
+                    WebkitLineClamp: 2,
+                    WebkitBoxOrient: 'vertical',
+                    overflow: 'hidden',
+                  }}
+                >
+                  {latest.excerpt}
+                </p>
+              )}
             </div>
           ) : (
             <div
