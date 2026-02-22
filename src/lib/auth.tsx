@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import { supabase } from './supabase';
+import { supabase, safeGetSession } from './supabase';
 
 // ─── Public types (unchanged exports) ──────────────────────────────────────
 
@@ -152,7 +152,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     (async () => {
       try {
-        const { data: { session } } = await supabase.auth.getSession();
+        const { data: { session } } = await safeGetSession();
 
         if (import.meta.env.DEV) {
           console.log('[Auth] getSession() resolved:', {
@@ -211,32 +211,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
     });
 
-    // 3. Proactive token refresh when tab regains focus.
-    //    Browsers throttle timers in background tabs, so auto-refresh may not
-    //    fire on time. When the user comes back, re-validate immediately.
-    const handleVisibility = () => {
-      if (document.visibilityState === 'visible') {
-        supabase.auth.getSession().then(async ({ data: { session } }) => {
-          if (!session) return;
-          // Check if the access token is close to expiry (within 60s)
-          const expiresAt = session.expires_at ?? 0;
-          const nowSec = Math.floor(Date.now() / 1000);
-          if (expiresAt - nowSec < 60) {
-            if (import.meta.env.DEV) {
-              console.log('[Auth] Token near expiry on tab focus, refreshing…');
-            }
-            await supabase.auth.refreshSession();
-            // onAuthStateChange will propagate the new token
-          }
-        });
-      }
-    };
-    document.addEventListener('visibilitychange', handleVisibility);
-
     return () => {
       clearTimeout(timeout);
       subscription.unsubscribe();
-      document.removeEventListener('visibilitychange', handleVisibility);
     };
   }, [buildUser]);
 

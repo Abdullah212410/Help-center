@@ -1,8 +1,22 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
-import { supabase, testSupabaseConnection } from '../lib/supabase';
+import { supabase, testSupabaseConnection, isLockError, recoverFromLockError } from '../lib/supabase';
 import { setCmsAuthenticated, clearCmsSession } from '../lib/adminCms';
 import { useAuth } from '../lib/auth';
+
+// ── Sign-in helpers ───────────────────────────────────────────────────────
+
+/** True for auth errors that should NOT trigger a retry (bad credentials, etc.). */
+function isCredentialError(msg: string): boolean {
+  const l = msg.toLowerCase();
+  return (
+    l.includes('invalid login credentials') ||
+    l.includes('email not confirmed') ||
+    l.includes('email rate limit') ||
+    l.includes('user not found') ||
+    l.includes('signup is disabled')
+  );
+}
 
 export default function AdminCmsLogin() {
   const navigate = useNavigate();
@@ -20,14 +34,22 @@ export default function AdminCmsLogin() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [statusMsg, setStatusMsg] = useState('');
   const [envWarning, setEnvWarning] = useState('');
+  const [connStatus, setConnStatus] = useState<'checking' | 'connected' | 'error' | ''>('');
 
   // ── Connection health check (fire-and-forget, no auth lock contention) ──
   const healthChecked = useRef(false);
   useEffect(() => {
     if (healthChecked.current) return;
     healthChecked.current = true;
-    testSupabaseConnection().then(({ ok, error: connErr, hint }) => {
-      if (!ok) setEnvWarning([connErr, hint].filter(Boolean).join(' '));
+    setConnStatus('checking');
+    testSupabaseConnection().then((result) => {
+      if (result.ok) {
+        setConnStatus('connected');
+      } else {
+        setConnStatus('error');
+        setEnvWarning([result.error, result.hint].filter(Boolean).join(' '));
+        console.warn('[AdminLogin] Preflight:', result.status, result.error);
+      }
     });
   }, []);
 
@@ -90,48 +112,35 @@ export default function AdminCmsLogin() {
     if (isSubmitting) return;
     setIsSubmitting(true);
 
-    // ── 30-second overall timeout ──
-    // Free-tier Supabase projects pause after inactivity and take 20-30s to
-    // wake up. 15s was too aggressive — we now allow 30s and show progressive
-    // status so the user knows what's happening.
-    let timedOut = false;
-    const timeoutId = setTimeout(() => {
-      timedOut = true;
-      setStatusMsg('');
-      setError(
-        'Sign-in timed out after 30 seconds.\n\n' +
-        'Possible causes:\n' +
-        '• Supabase project may be paused (free tier) — open your Supabase Dashboard to wake it up, then try again.\n' +
-        '• Network or firewall blocking the connection.\n' +
-        '• VITE_SUPABASE_URL in .env may be incorrect.'
-      );
-      setIsSubmitting(false);
-    }, 30_000);
+    // Log resolved config for diagnostics (safe — no secrets)
+    console.log('[AdminLogin] Supabase URL:', import.meta.env.VITE_SUPABASE_URL);
+    console.log('[AdminLogin] Anon key prefix:', (import.meta.env.VITE_SUPABASE_ANON_KEY || '').substring(0, 12) + '…');
 
-    let adminVerified = false;
+    if (!import.meta.env.VITE_SUPABASE_URL || !import.meta.env.VITE_SUPABASE_ANON_KEY) {
+      setError('Supabase environment variables are missing.\n\nSet VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in your .env file and restart the dev server.');
+      setIsSubmitting(false);
+      return;
+    }
 
     try {
-      // ── Step 1: Connectivity preflight ──
-      // Test that Supabase is reachable BEFORE attempting auth.
-      // This gives a clear diagnostic instead of a generic timeout.
+      // ── Step 1: Quick connectivity preflight ──
       setStatusMsg('Connecting to Supabase…');
       console.log('[AdminLogin] Running connectivity preflight…');
 
       const preflight = await testSupabaseConnection();
-      if (timedOut) return;
 
       if (!preflight.ok) {
-        setError(
-          `Cannot reach Supabase server.\n\n` +
-          `${preflight.error || 'Connection failed.'}\n` +
-          `${preflight.hint || 'Check your internet connection and .env configuration.'}`
-        );
-        return;
+        const detail = [preflight.error, preflight.hint].filter(Boolean).join('\n');
+        console.error('[AdminLogin] Health check failed:', preflight.status, detail);
+        setConnStatus('error');
+        setError(detail);
+        return; // early exit — no point trying to sign in
       }
 
+      setConnStatus('connected');
       console.log('[AdminLogin] Preflight passed, calling signInWithPassword…');
 
-      // ── Step 2: Authenticate ──
+      // ── Step 2: Authenticate (NO timeout wrapper — surface real errors) ──
       setStatusMsg('Authenticating…');
 
       const { data, error: signInError } = await supabase.auth.signInWithPassword({
@@ -139,16 +148,20 @@ export default function AdminCmsLogin() {
         password,
       });
 
-      if (timedOut) return;
-
       console.log('[AdminLogin] signInWithPassword result:', {
         hasSession: !!data.session,
         userId: data.user?.id ?? null,
         error: signInError?.message ?? null,
+        status: (signInError as any)?.status ?? null,
       });
 
       if (signInError) {
-        setError(friendlyAuthError(signInError.message));
+        console.error('[AdminLogin] Sign-in error:', signInError.message);
+        if (isCredentialError(signInError.message)) {
+          setError(friendlyAuthError(signInError.message));
+        } else {
+          setError(signInError.message);
+        }
         return;
       }
 
@@ -159,7 +172,6 @@ export default function AdminCmsLogin() {
 
       // ── Step 3: Verify session persisted ──
       const { data: { session } } = await supabase.auth.getSession();
-      if (timedOut) return;
 
       if (!session) {
         setError('Session was not persisted after login. Please try again.');
@@ -176,16 +188,12 @@ export default function AdminCmsLogin() {
         .eq('id', data.user.id)
         .single();
 
-      if (timedOut) return;
-
       // Auto-create profile if missing (PGRST116 = no rows from .single())
       if (profileError?.code === 'PGRST116') {
         console.log('[AdminLogin] No profile found, creating default profile…');
         await supabase
           .from('profiles')
           .insert({ id: data.user.id, name: data.user.email?.split('@')[0] || '', role: 'student' });
-
-        if (timedOut) return;
 
         const refetch = await supabase
           .from('profiles')
@@ -219,22 +227,22 @@ export default function AdminCmsLogin() {
       setStatusMsg('Redirecting…');
       console.log('[AdminLogin] Admin verified → navigating to', redirectTo);
       setCmsAuthenticated();
-      adminVerified = true;
       navigate(redirectTo, { replace: true });
-    } catch (err: any) {
-      if (timedOut) return;
-      if (err instanceof TypeError && /fetch/i.test(err.message)) {
-        setError(
-          'Cannot reach the Supabase server.\n\n' +
-          'Check your internet connection and verify VITE_SUPABASE_URL in .env points to a real Supabase project.'
-        );
-      } else {
-        setError(err.message || 'An unexpected error occurred.');
+
+    } catch (err: unknown) {
+      // ── LockManager error → clear state and reload once ──
+      if (isLockError(err)) {
+        console.error('[AdminLogin] LockManager conflict detected:', (err as Error).message);
+        recoverFromLockError(); // clears keys & reloads (once)
+        return;
       }
+      // ── Any other unexpected error → show to user ──
+      const msg = err instanceof Error ? err.message : 'An unexpected error occurred.';
+      console.error('[AdminLogin] Unexpected error:', msg);
+      setError(msg);
     } finally {
-      clearTimeout(timeoutId);
       setStatusMsg('');
-      if (!timedOut && !adminVerified) setIsSubmitting(false);
+      setIsSubmitting(false);
     }
   };
 
@@ -415,6 +423,19 @@ export default function AdminCmsLogin() {
                 </button>
               </div>
             </div>
+
+            {/* Connection status */}
+            {connStatus && !isSubmitting && (
+              <p className={`text-xs text-center mt-1 ${
+                connStatus === 'connected' ? 'text-green-600' :
+                connStatus === 'checking' ? 'text-slate-400' :
+                'text-red-500'
+              }`}>
+                {connStatus === 'checking' && 'Checking connection…'}
+                {connStatus === 'connected' && 'Connected to Supabase'}
+                {connStatus === 'error' && 'Cannot reach server'}
+              </p>
+            )}
 
             <button
               type="submit"
