@@ -1,13 +1,27 @@
-import React, { useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../lib/auth';
 import { blogStore } from '../lib/blog';
 import { useI18n } from '../lib/i18n';
+import type { BlogPost } from '../types';
 
 export const BlogPreviewCard: React.FC = () => {
   const { isAdmin } = useAuth();
   const { t } = useI18n();
-  const latest = useMemo(() => blogStore.getLatestPublished(), []);
+  const [latest, setLatest] = useState<BlogPost | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const data = await blogStore.getLatestPublished();
+        if (!cancelled) setLatest(data);
+      } catch {
+        // fail silently
+      }
+    })();
+    return () => { cancelled = true; };
+  }, []);
 
   const formatDate = (iso: string) => {
     const d = new Date(iso);

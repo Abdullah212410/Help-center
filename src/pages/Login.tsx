@@ -12,16 +12,19 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   /** Redirect destination based on role */
-  const getRedirect = (role: string) =>
-    role === 'teacher' || role === 'admin' ? '/teacher/dashboard' : '/help';
+  const getRedirect = (role: string) => {
+    const r = role.toLowerCase().trim();
+    return r === 'teacher' || r === 'admin' ? '/teacher/dashboard' : '/help';
+  };
 
   useEffect(() => {
     if (user) navigate(getRedirect(user.role), { replace: true });
   }, [user, navigate]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
 
@@ -30,11 +33,18 @@ export default function Login() {
       return;
     }
 
-    const result = login(email, password);
-    if (!result.success) {
-      setError('Invalid credentials. Try: teacher@string.education / teacher123');
+    setIsSubmitting(true);
+    try {
+      const result = await login(email.trim().toLowerCase(), password);
+      if (!result.success) {
+        setError(result.error || 'Invalid credentials. Please try again.');
+      }
+      // On success, the useEffect above handles redirect once user state updates
+    } catch (err: any) {
+      setError(err.message || 'An unexpected error occurred. Please try again.');
+    } finally {
+      setIsSubmitting(false);
     }
-    // On success, the useEffect above handles redirect once user state updates
   };
 
   return (
@@ -146,15 +156,18 @@ export default function Login() {
               {/* Log In Button */}
               <button
                 type="submit"
-                className="w-full mt-6 py-3.5 rounded-xl text-white font-semibold text-sm inline-flex items-center justify-center gap-2 transition-all duration-200 shadow-lg shadow-pink-500/30 hover:shadow-xl hover:shadow-pink-500/40 hover:scale-[1.02] active:scale-[0.98]"
+                disabled={isSubmitting}
+                className="w-full mt-6 py-3.5 rounded-xl text-white font-semibold text-sm inline-flex items-center justify-center gap-2 transition-all duration-200 shadow-lg shadow-pink-500/30 hover:shadow-xl hover:shadow-pink-500/40 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50"
                 style={{
                   background: 'linear-gradient(135deg, #ff4da6 0%, #ED3B91 100%)'
                 }}
               >
-                Log In
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
-                </svg>
+                {isSubmitting ? 'Signing in...' : 'Log In'}
+                {!isSubmitting && (
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                  </svg>
+                )}
               </button>
             </form>
           )}

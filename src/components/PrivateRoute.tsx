@@ -8,7 +8,9 @@ import { Layout } from './Layout';
  * Unauthenticated users see a "Sign In Required" message.
  */
 export const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
+
+  if (loading) return null;
 
   if (!user) {
     return (

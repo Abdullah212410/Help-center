@@ -25,28 +25,14 @@ export const AccountDropdown: React.FC = () => {
     };
   }, [isOpen]);
 
-  const handleLogout = () => {
-    logout();
+  const handleLogout = async () => {
+    await logout();
     setIsOpen(false);
     navigate('/login', { replace: true });
   };
 
   if (!user) {
-    return (
-      <Link
-        to="/login"
-        className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold text-white transition-all duration-200"
-        style={{
-          background: 'linear-gradient(135deg, #ff4da6, #ED3B91)',
-          boxShadow: '0 2px 8px rgba(237,59,145,0.25)',
-        }}
-      >
-        <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75" />
-        </svg>
-        Sign In
-      </Link>
-    );
+    return null;
   }
 
   return (

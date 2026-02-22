@@ -35,7 +35,7 @@ const TABS: { key: Tab; labelKey: string; iconPath: string }[] = [
 
 export default function TeacherDashboard() {
   const { t, dir } = useI18n();
-  const { user, isTeacher, logout } = useAuth();
+  const { user, isTeacher, isAdmin, logout } = useAuth();
   const navigate = useNavigate();
 
   const [activeTab, setActiveTab] = useState<Tab>('materials');
@@ -47,8 +47,8 @@ export default function TeacherDashboard() {
   const [previewMaterial, setPreviewMaterial] = useState<Material | null>(null);
 
   useEffect(() => {
-    if (!isTeacher) navigate('/login', { replace: true });
-  }, [isTeacher, navigate]);
+    if (!isTeacher && !isAdmin) navigate('/login', { replace: true });
+  }, [isTeacher, isAdmin, navigate]);
 
   const refreshMaterials = useCallback(() => {
     if (user) {

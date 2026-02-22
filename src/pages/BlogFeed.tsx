@@ -1,9 +1,8 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { Layout } from '../components/Layout';
-import { useAuth } from '../lib/auth';
 import { blogStore } from '../lib/blog';
-import { AccountDropdown } from '../components/AccountDropdown';
+import { useDataRefresh } from '../lib/dataEvents';
 import type { BlogPost } from '../types';
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
@@ -179,18 +178,24 @@ const TopicsWidget: React.FC<{
 // ─── Main feed page ─────────────────────────────────────────────────────────
 
 export default function BlogFeed() {
-  const { user, isAdmin, canWriteBlog } = useAuth();
   const [activeTopic, setActiveTopic] = useState<string | null>(null);
-  const [showDrafts, setShowDrafts] = useState(false);
+  const [published, setPublished] = useState<BlogPost[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  const published = useMemo(() => blogStore.getPublished(), []);
-  const drafts = useMemo(() => blogStore.getDrafts(user), [user]);
+  const fetchPosts = useCallback(() => {
+    blogStore.getPublished()
+      .then(setPublished)
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, []);
+
+  useEffect(() => { fetchPosts(); }, [fetchPosts]);
+  useDataRefresh(['blog_posts'], fetchPosts);
 
   const displayPosts = useMemo(() => {
-    const base = showDrafts && canWriteBlog ? drafts : published;
-    if (!activeTopic) return base;
-    return base.filter((p) => p.tags?.includes(activeTopic));
-  }, [published, drafts, activeTopic, showDrafts, canWriteBlog]);
+    if (!activeTopic) return published;
+    return published.filter((p) => p.tags?.includes(activeTopic));
+  }, [published, activeTopic]);
 
   return (
     <Layout>
@@ -212,53 +217,8 @@ export default function BlogFeed() {
                 Insights, tips, and updates from the String team to help you make the most of education technology.
               </p>
             </div>
-            <div className="flex items-center gap-3">
-              {canWriteBlog && (
-                <Link
-                  to="/blog/new"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold text-white transition-all duration-200"
-                  style={{
-                    background: 'linear-gradient(135deg, #ff4da6, #ED3B91)',
-                    boxShadow: '0 2px 8px rgba(237,59,145,0.25)',
-                  }}
-                >
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                  </svg>
-                  Write Post
-                </Link>
-              )}
-              <AccountDropdown />
-            </div>
+            {/* Account actions removed from public blog header */}
           </div>
-
-          {/* Admin tabs: Published / Drafts */}
-          {canWriteBlog && (
-            <div className="flex gap-1 mt-6 bg-white/60 rounded-xl p-1 w-fit border border-slate-100">
-              <button
-                onClick={() => setShowDrafts(false)}
-                className="px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200"
-                style={
-                  !showDrafts
-                    ? { background: '#fff', color: '#0f172a', boxShadow: '0 1px 3px rgba(0,0,0,0.08)' }
-                    : { color: '#64748b' }
-                }
-              >
-                Published ({published.length})
-              </button>
-              <button
-                onClick={() => setShowDrafts(true)}
-                className="px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200"
-                style={
-                  showDrafts
-                    ? { background: '#fff', color: '#0f172a', boxShadow: '0 1px 3px rgba(0,0,0,0.08)' }
-                    : { color: '#64748b' }
-                }
-              >
-                Drafts ({drafts.length})
-              </button>
-            </div>
-          )}
         </div>
       </div>
 
@@ -298,27 +258,17 @@ export default function BlogFeed() {
                 </Link>
               </nav>
 
-              {/* Sign in prompt for guests */}
-              {!user && (
-                <div className="mt-6 p-4 rounded-xl bg-slate-50 border border-slate-100">
-                  <p className="text-xs text-slate-500 mb-3">Sign in to like posts and join the conversation.</p>
-                  <Link
-                    to="/login"
-                    className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#ED3B91] hover:underline"
-                  >
-                    Sign In
-                    <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
-                    </svg>
-                  </Link>
-                </div>
-              )}
             </div>
           </aside>
 
           {/* Center feed */}
           <main className="lg:col-span-7">
-            {displayPosts.length === 0 ? (
+            {loading ? (
+              <div className="text-center py-20">
+                <div className="w-8 h-8 border-2 border-slate-200 border-t-[#ED3B91] rounded-full animate-spin mx-auto mb-4" />
+                <p className="text-sm text-slate-500">Loading posts...</p>
+              </div>
+            ) : displayPosts.length === 0 ? (
               <div className="text-center py-20">
                 <div className="flex items-center justify-center w-16 h-16 rounded-2xl bg-slate-50 text-slate-300 mx-auto mb-4">
                   <svg className="w-8 h-8" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">

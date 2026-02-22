@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../lib/auth';
 
 export default function Register() {
+  const { register } = useAuth();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -10,11 +13,52 @@ export default function Register() {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  /** Only @string.education emails are allowed. */
+  const ALLOWED_DOMAIN = '@string.education';
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Registration logic would go here
-    console.log('Registration submitted:', formData);
+    setError('');
+    setSuccess('');
+
+    // Name validation
+    if (!formData.name.trim()) {
+      setError('Please enter your full name.');
+      return;
+    }
+
+    // Domain restriction — reject non-string.education emails
+    const emailLower = formData.email.trim().toLowerCase();
+    if (!emailLower.endsWith(ALLOWED_DOMAIN)) {
+      setError('Only @string.education emails are allowed.');
+      return;
+    }
+
+    // Password validation
+    if (formData.password.length < 6) {
+      setError('Password must be at least 6 characters.');
+      return;
+    }
+    if (formData.password !== formData.confirmPassword) {
+      setError('Passwords do not match.');
+      return;
+    }
+
+    setIsSubmitting(true);
+    const result = await register(emailLower, formData.password, formData.name.trim());
+    setIsSubmitting(false);
+
+    if (!result.success) {
+      setError(result.error || 'Registration failed. Please try again.');
+      return;
+    }
+
+    setSuccess('Account created! Check your email to confirm, then log in.');
+    setTimeout(() => navigate('/login'), 3000);
   };
 
   return (
@@ -43,6 +87,18 @@ export default function Register() {
             <h1 className="text-3xl font-bold text-slate-900 mb-2">Create account</h1>
             <p className="text-sm text-slate-500">Get started with String today.</p>
           </div>
+
+          {error && (
+            <div className="mb-6 p-3.5 rounded-xl bg-red-50 border border-red-100 text-sm text-red-600">
+              {error}
+            </div>
+          )}
+
+          {success && (
+            <div className="mb-6 p-3.5 rounded-xl bg-emerald-50 border border-emerald-100 text-sm text-emerald-600">
+              {success}
+            </div>
+          )}
 
           <form onSubmit={handleSubmit} className="space-y-5">
             {/* Name */}
@@ -161,12 +217,13 @@ export default function Register() {
 
             <button
               type="submit"
-              className="w-full mt-6 py-3.5 rounded-xl text-white font-semibold text-sm transition-all duration-200 shadow-lg shadow-pink-500/30 hover:shadow-xl hover:shadow-pink-500/40 hover:scale-[1.02] active:scale-[0.98]"
+              disabled={isSubmitting}
+              className="w-full mt-6 py-3.5 rounded-xl text-white font-semibold text-sm transition-all duration-200 shadow-lg shadow-pink-500/30 hover:shadow-xl hover:shadow-pink-500/40 hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50"
               style={{
                 background: 'linear-gradient(135deg, #ff4da6 0%, #ED3B91 100%)'
               }}
             >
-              Create Account
+              {isSubmitting ? 'Creating Account...' : 'Create Account'}
             </button>
           </form>
 

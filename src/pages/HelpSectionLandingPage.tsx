@@ -154,12 +154,12 @@ export default function HelpSectionLandingPage() {
                 <select
                   className="w-full p-2.5 border border-slate-200 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-primary-300/50"
                   onChange={(e) => {
-                    const path = e.target.value;
-                    if (path) window.location.hash = path;
+                    const id = e.target.value;
+                    if (id) scrollToHash(id);
                   }}
                 >
                   <option value="">{t('jumpToTopic')}</option>
-                  {groups.map(g => <option key={g.id} value={`#/help/category/${category.slug}/section/${section.slug}#group-${g.id}`}>{localize(g, 'title')}</option>)}
+                  {groups.map(g => <option key={g.id} value={`group-${g.id}`}>{localize(g, 'title')}</option>)}
                 </select>
               </div>
 

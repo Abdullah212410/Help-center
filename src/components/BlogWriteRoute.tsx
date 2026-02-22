@@ -8,7 +8,9 @@ import { Layout } from './Layout';
  * Students/family see "Not Authorized". Guests see "Sign In Required".
  */
 export const BlogWriteRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { user, canWriteBlog } = useAuth();
+  const { user, canWriteBlog, loading } = useAuth();
+
+  if (loading) return null;
 
   if (!user) {
     return (

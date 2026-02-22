@@ -8,7 +8,9 @@ import { Layout } from './Layout';
  * Non-admin users see a "Not Authorized" message.
  */
 export const AdminRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { user, isAdmin } = useAuth();
+  const { user, isAdmin, loading } = useAuth();
+
+  if (loading) return null;
 
   if (!user) {
     return (

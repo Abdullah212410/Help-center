@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Layout } from '../components/Layout';
 import { useI18n } from '../lib/i18n';
+import TutorialsSection from '../components/TutorialsSection';
 
 /* ═══════════════════════════════════════════════════════
    Category cards configuration
@@ -215,55 +216,68 @@ export default function Home() {
 
         <div
           className="relative z-10 mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4"
-          style={{ maxWidth: 1200, gap: 20 }}
+          style={{ maxWidth: 1200, gap: 24 }}
         >
           {mainCategories.map((cat, idx) => (
             <Link
               key={cat.slug}
               to={`/help/category/${cat.slug}`}
-              className="group card-modern flex flex-col text-left fade-up"
+              className="group card-modern flex flex-col fade-up cursor-pointer"
               style={{
                 padding: 0,
-                minHeight: 260,
+                minHeight: 270,
                 animationDelay: `${0.1 + idx * 0.08}s`,
+                textDecoration: 'none',
               }}
             >
-              {/* Gradient accent bar */}
+              {/* Floating gradient accent glow */}
               <div
-                className={`w-full h-1 bg-gradient-to-r ${cat.gradient}`}
-                style={{ borderRadius: '20px 20px 0 0' }}
+                className={`card-accent-glow bg-gradient-to-r ${cat.gradient}`}
               />
 
-              <div style={{ padding: '24px 24px 28px' }}>
-                {/* Icon */}
+              <div style={{ padding: '28px 28px 32px' }}>
+                {/* Icon in soft rounded gradient container */}
                 <div
-                  className={`flex items-center justify-center rounded-2xl ${cat.iconBg} ${cat.iconColor} transition-all duration-300 group-hover:scale-110 group-hover:shadow-lg`}
+                  className={`icon-container-glow flex items-center justify-center ${cat.iconBg} ${cat.iconColor}`}
                   style={{
                     width: 56,
                     height: 56,
-                    marginBottom: 18,
+                    marginBottom: 20,
+                    boxShadow: `0 2px 10px ${cat.accentColor}15`,
                   }}
                 >
                   {cat.icon}
                 </div>
 
-                {/* Title */}
+                {/* Title — strong bold */}
                 <h2
-                  className="text-lg font-bold text-slate-900 group-hover:text-primary-600 transition-colors duration-200"
-                  style={{ marginBottom: 8, lineHeight: 1.3 }}
+                  className="text-[17px] font-extrabold text-slate-900 group-hover:text-primary-600 transition-colors duration-200"
+                  style={{ marginBottom: 10, lineHeight: 1.35, letterSpacing: '-0.01em' }}
                 >
                   {t(cat.titleKey)}
                 </h2>
 
-                {/* Description */}
-                <p className="text-sm leading-relaxed" style={{ color: '#64748b' }}>
+                {/* Description — subtle with reduced opacity */}
+                <p
+                  className="text-sm leading-relaxed"
+                  style={{ color: '#64748b', opacity: 0.78, lineHeight: 1.65 }}
+                >
                   {t(cat.descKey)}
                 </p>
 
-                {/* Arrow indicator */}
-                <div className="mt-5 flex items-center gap-2 text-sm font-medium text-primary-500 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-x-0 group-hover:translate-x-1">
-                  <span>Explore</span>
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                {/* Arrow indicator — micro-interaction */}
+                <div
+                  className="mt-6 flex items-center gap-2 text-sm font-semibold opacity-0 group-hover:opacity-100 transition-all duration-300"
+                  style={{ color: cat.accentColor }}
+                >
+                  <span>{t('explore') || 'Explore'}</span>
+                  <svg
+                    className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1 rtl:rotate-180 rtl:group-hover:-translate-x-1"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                    viewBox="0 0 24 24"
+                  >
                     <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
                   </svg>
                 </div>
@@ -272,6 +286,11 @@ export default function Home() {
           ))}
         </div>
       </section>
+
+      {/* ══════════════════════════════════════════════════════
+          VIDEO TUTORIALS (from Supabase)
+          ══════════════════════════════════════════════════════ */}
+      <TutorialsSection />
 
       {/* ══════════════════════════════════════════════════════
           NEED MORE HELP?
