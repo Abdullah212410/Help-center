@@ -12,6 +12,8 @@ import RoleFeaturePage from './pages/RoleFeaturePage';
 import NotFound from './pages/NotFound';
 import Unauthorized from './pages/Unauthorized';
 import ResourcesPage from './pages/ResourcesPage';
+import TeacherResourcesPage from './pages/TeacherResourcesPage';
+import StudentResourcesPage from './pages/StudentResourcesPage';
 import BlogFeed from './pages/BlogFeed';
 import BlogPostDetail from './pages/BlogPostDetail';
 import BlogEditor from './pages/BlogEditor';
@@ -42,6 +44,7 @@ import AdminBlogList from './admin/pages/AdminBlogList';
 import AdminBlogEditor from './admin/pages/AdminBlogEditor';
 import AdminTutorials from './admin/pages/AdminTutorials';
 import HelpCenterSection from './pages/HelpCenterSection';
+import TutorialsPage from './pages/TutorialsPage';
 
 function App() {
   return (
@@ -64,10 +67,15 @@ function App() {
           <Route path="/help/article/:articleSlug" element={<ArticlePage />} />
 
           <Route path="/help/resources" element={<ResourcesPage />} />
+          <Route path="/help/resources/teachers" element={<TeacherResourcesPage />} />
+          <Route path="/help/resources/students" element={<StudentResourcesPage />} />
 
           {/* Blog (public: read-only) */}
           <Route path="/blog" element={<BlogFeed />} />
           <Route path="/blog/:postId" element={<BlogPostDetail />} />
+
+          {/* Tutorials (public: read-only) */}
+          <Route path="/tutorials" element={<TutorialsPage />} />
 
           {/* Authentication routes */}
           <Route path="/login" element={<Login />} />

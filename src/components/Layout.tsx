@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useI18n } from '../lib/i18n';
 import { SubmitRequestModal } from './SubmitRequestModal';
+import { ResourcesDropdown } from './ResourcesDropdown';
 import StringIcon from './icons/StringIcon';
 
 interface LayoutProps {
@@ -67,9 +68,7 @@ export const Header = ({ onOpenRequest }: { onOpenRequest: () => void }) => {
             Blog
           </Link>
 
-          <Link to="/help/resources" className="hidden md:block text-sm font-medium text-slate-500 hover:text-[#ED3B91] transition-colors">
-            {t('navResources')}
-          </Link>
+          <ResourcesDropdown />
 
           <a href="https://string.education" target="_blank" rel="noreferrer" className="hidden md:block text-sm font-medium text-slate-500 hover:text-primary-600 transition-colors">
             {t('stringWebsite')}
@@ -104,8 +103,8 @@ export const Footer = () => {
           </div>
           <div className="flex flex-col gap-3">
             <h3 className="font-semibold text-slate-900 text-sm uppercase tracking-wider">{t('resources')}</h3>
-            <Link to="/help/resources" className="text-sm text-slate-500 hover:text-primary-600 transition-colors">{t('teacherResources')}</Link>
-            <Link to="/help/resources" className="text-sm text-slate-500 hover:text-primary-600 transition-colors">{t('parentResources')}</Link>
+            <Link to="/help/resources/teachers" className="text-sm text-slate-500 hover:text-primary-600 transition-colors">{t('teacherResources')}</Link>
+            <Link to="/help/resources/students" className="text-sm text-slate-500 hover:text-primary-600 transition-colors">{t('forStudents')}</Link>
           </div>
           <div className="flex flex-col gap-3">
             <h3 className="font-semibold text-slate-900 text-sm uppercase tracking-wider">{t('support')}</h3>
