@@ -344,6 +344,49 @@
         50% { opacity: 1; transform: scale(1.2); }
       }
 
+      /* ── Admin card accent line (hover-reveal) ── */
+      .admin-card-accent {
+        position: absolute;
+        top: 0; left: 0; right: 0;
+        height: 2px;
+        border-radius: 16px 16px 0 0;
+        opacity: 0;
+        transition: opacity 260ms ease, height 260ms ease;
+      }
+      .admin-card-accent::after {
+        content: '';
+        position: absolute;
+        top: 0; left: 10%; right: 10%;
+        height: 16px;
+        border-radius: 0 0 50% 50%;
+        filter: blur(10px);
+        opacity: 0;
+        background: inherit;
+        transition: opacity 260ms ease;
+      }
+      .glass-card:hover .admin-card-accent {
+        opacity: 0.85;
+        height: 3px;
+      }
+      .glass-card:hover .admin-card-accent::after {
+        opacity: 0.5;
+      }
+
+      /* ── Admin header badge ── */
+      .admin-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 0.05em;
+        padding: 2px 8px;
+        border-radius: 6px;
+        background: rgba(99,102,241,0.07);
+        color: #6366f1;
+        border: 1px solid rgba(99,102,241,0.13);
+      }
+
       /* ── Shimmer line ── */
       .shimmer-line {
         background: linear-gradient(90deg, transparent, rgba(99,102,241,0.15), transparent);

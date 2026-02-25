@@ -92,9 +92,9 @@ export default function AdminBlogList() {
   }, [posts, search, statusFilter]);
 
   return (
-    <div className="min-h-screen" style={{ background: '#fafbfc' }}>
+    <div className="min-h-screen glass-bg">
       {/* Top Bar */}
-      <header className="bg-white border-b border-slate-200 sticky top-0 z-30">
+      <header className="glass-header sticky top-0 z-40">
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Link to="/admin" className="flex items-center gap-2">
@@ -107,7 +107,8 @@ export default function AdminBlogList() {
                 </svg>
               </div>
             </Link>
-            <span className="text-lg font-bold text-slate-900">Blog Management</span>
+            <span className="text-lg font-bold text-slate-900">Blog</span>
+            <span className="admin-badge">ADMIN</span>
           </div>
           <div className="flex items-center gap-4">
             <Link
@@ -148,7 +149,7 @@ export default function AdminBlogList() {
         {/* Header + New Post Button */}
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h1 className="text-2xl font-bold text-slate-900">Blog Posts</h1>
+            <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">Blog Posts</h1>
             <p className="text-sm text-slate-500 mt-1">
               {posts.length} post{posts.length !== 1 ? 's' : ''} total.
             </p>
@@ -167,7 +168,7 @@ export default function AdminBlogList() {
 
         {/* Search + Filters */}
         <div className="flex items-center gap-4 mb-6">
-          <div className="relative flex-1 max-w-sm">
+          <div className="relative flex-1 max-w-sm search-glow rounded-xl border border-slate-200/60">
             <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
             </svg>
@@ -176,7 +177,7 @@ export default function AdminBlogList() {
               placeholder="Search posts..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 text-sm rounded-xl border border-slate-200 focus:border-indigo-300 focus:ring-4 focus:ring-indigo-50 outline-none transition-all"
+              className="w-full pl-10 pr-4 py-2.5 text-sm rounded-xl bg-transparent outline-none transition-all placeholder-slate-400"
             />
           </div>
           <div className="flex items-center gap-2">
@@ -232,8 +233,9 @@ export default function AdminBlogList() {
             {filtered.map((post) => (
               <div
                 key={post.id}
-                className="bg-white rounded-2xl border border-slate-100 p-5 flex items-center justify-between hover:shadow-sm transition-shadow"
+                className="glass-card rounded-2xl p-5 flex items-center justify-between hover:shadow-lg transition-all relative overflow-hidden"
               >
+                <div className="admin-card-accent" style={{ background: 'linear-gradient(135deg, #ED3B91, #ff4da6)' }} />
                 <div className="flex items-center gap-4 flex-1 min-w-0">
                   <div
                     className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"

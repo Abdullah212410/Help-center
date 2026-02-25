@@ -1,65 +1,39 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import { Layout } from '../components/Layout';
 import { Link } from 'react-router-dom';
-import { VideoGrid, VideoItem } from '../components/VideoGrid';
 import { useI18n } from '../lib/i18n';
+import { TEACHER_VIDEOS } from '../data/resourceVideos';
+import type { ResourceVideo } from '../data/resourceVideos';
+import { TutorialCarousel } from '../components/resources/TutorialCarousel';
+import { VideoPlayerModal } from '../components/resources/VideoPlayerModal';
 
-/* ──────────────────────────────────────────────────────────
-   TEACHER VIDEOS — URLs only. Titles & descriptions come
-   from the i18n system (en.ts / ar.ts).
-   To add a video: add the URL here AND the matching
-   tVidNTitle / tVidNDesc keys in both translation files.
-   ────────────────────────────────────────────────────────── */
+/* ══════════════════════════════════════════════════════════
+   TeacherResourcesPage — Static videos, ClassDojo carousel
+   Hero section preserved, videos from static data + i18n.
+   ══════════════════════════════════════════════════════════ */
 
-const teacherVideoUrls = [
-  'https://www.youtube.com/watch?v=GzLir4E8Vh4&list=PLkAvXM4rJZpHxX1DC6seelaWLd_qPj01i',
-  'https://www.youtube.com/watch?v=pQfqDQx8iK0&list=PLkAvXM4rJZpHxX1DC6seelaWLd_qPj01i&index=2',
-  'https://www.youtube.com/watch?v=sD18A7RboNw&list=PLkAvXM4rJZpHxX1DC6seelaWLd_qPj01i&index=3',
-  'https://www.youtube.com/watch?v=u4vfaboX27Q&list=PLkAvXM4rJZpHxX1DC6seelaWLd_qPj01i&index=4',
-  'https://www.youtube.com/watch?v=61pdyunvGBs&list=PLkAvXM4rJZpHxX1DC6seelaWLd_qPj01i&index=5',
-  'https://www.youtube.com/watch?v=GLQRd3ytVUc&list=PLkAvXM4rJZpHxX1DC6seelaWLd_qPj01i&index=6',
-  'https://www.youtube.com/watch?v=_qCykYlTBDw&list=PLkAvXM4rJZpHxX1DC6seelaWLd_qPj01i&index=7',
-  'https://www.youtube.com/watch?v=N73ASQyVOb0&list=PLkAvXM4rJZpHxX1DC6seelaWLd_qPj01i&index=8',
-  'https://www.youtube.com/watch?v=E2cRWtKIJCk&list=PLkAvXM4rJZpHxX1DC6seelaWLd_qPj01i&index=9',
-  'https://www.youtube.com/watch?v=idPiwcXdyMg&list=PLkAvXM4rJZpHxX1DC6seelaWLd_qPj01i&index=10',
-  'https://www.youtube.com/watch?v=5oIGW2mUI1g&list=PLkAvXM4rJZpHxX1DC6seelaWLd_qPj01i&index=11',
-] as const;
-
-// i18n key pairs for each video (title key, description key)
-const teacherVideoKeys = [
-  ['tVid1Title', 'tVid1Desc'],
-  ['tVid2Title', 'tVid2Desc'],
-  ['tVid3Title', 'tVid3Desc'],
-  ['tVid4Title', 'tVid4Desc'],
-  ['tVid5Title', 'tVid5Desc'],
-  ['tVid6Title', 'tVid6Desc'],
-  ['tVid7Title', 'tVid7Desc'],
-  ['tVid8Title', 'tVid8Desc'],
-  ['tVid9Title', 'tVid9Desc'],
-  ['tVid10Title', 'tVid10Desc'],
-  ['tVid11Title', 'tVid11Desc'],
-] as const;
-
-/* ──────────────────────────────────────────────────────────
-   COMPONENT
-   ────────────────────────────────────────────────────────── */
+const PINK = '#EC4899';
+const PINK_HOVER = '#DB2777';
+const PINK_ACTIVE = '#BE185D';
 
 export default function TeacherResourcesPage() {
-  const { t, locale } = useI18n();
+  const { t, lang } = useI18n();
+  const [playerVideo, setPlayerVideo] = useState<ResourceVideo | null>(null);
 
-  const teacherVideos: VideoItem[] = useMemo(
-    () => teacherVideoUrls.map((url, i) => ({
-      url,
-      title: t(teacherVideoKeys[i][0]),
-      description: t(teacherVideoKeys[i][1]),
+  const videos: ResourceVideo[] = useMemo(
+    () => TEACHER_VIDEOS.map((v) => ({
+      id: v.id,
+      url: v.url,
+      title: t(v.titleKey),
+      description: t(v.descKey),
     })),
-    [locale],
+    [t],
   );
 
   return (
     <Layout>
       <div style={{ position: 'relative', zIndex: 1, minHeight: '100vh' }}>
-        {/* Hero */}
+        {/* ── Hero (preserved exactly) ── */}
         <section
           style={{
             position: 'relative',
@@ -103,7 +77,7 @@ export default function TeacherResourcesPage() {
               fontSize: 'clamp(2rem, 5vw, 3.5rem)', fontWeight: 800,
               letterSpacing: '-0.02em', lineHeight: 1.1, color: '#0f172a', marginBottom: 20,
             }}>
-              {t('resTeacherTitle')}{' '}
+              <span className="gradient-text">{t('resTeacherTitle')}</span>{' '}
               <span style={{
                 background: 'linear-gradient(135deg, #ED3B91, #c026a8)',
                 WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
@@ -128,11 +102,67 @@ export default function TeacherResourcesPage() {
           </div>
         </section>
 
-        {/* Video Guides */}
-        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '64px 24px 80px' }}>
-          <VideoGrid videos={teacherVideos} />
+        {/* ── Carousel Section ── */}
+        <div style={{ padding: '64px 0 24px' }}>
+          {videos.length === 0 ? (
+            <div style={{ textAlign: 'center', padding: '40px 24px', color: '#94a3b8' }}>
+              <svg style={{ width: 48, height: 48, margin: '0 auto 16px', opacity: 0.5 }} fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="m15.75 10.5 4.72-4.72a.75.75 0 0 1 1.28.53v11.38a.75.75 0 0 1-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 0 0 2.25-2.25v-9a2.25 2.25 0 0 0-2.25-2.25h-9A2.25 2.25 0 0 0 2.25 7.5v9a2.25 2.25 0 0 0 2.25 2.25Z" />
+              </svg>
+              <p style={{ fontSize: 15 }}>
+                {lang === 'ar' ? 'لا توجد دروس تعليمية حتى الآن.' : 'No tutorials available yet.'}
+              </p>
+            </div>
+          ) : (
+            <TutorialCarousel
+              videos={videos}
+              onPlayVideo={setPlayerVideo}
+              heading={t('videoGuidesHeading')}
+              subtitle={t('videoGuidesSubtitle')}
+            />
+          )}
         </div>
+
+        {/* ── "See all" CTA ── */}
+        {videos.length > 0 && (
+          <div style={{ textAlign: 'center', padding: '16px 24px 80px' }}>
+            <Link
+              to="/help/resources/teachers/all"
+              style={{
+                display: 'inline-flex', alignItems: 'center', gap: 8,
+                padding: '14px 32px', borderRadius: 9999,
+                background: PINK, color: '#fff',
+                fontSize: 15, fontWeight: 700,
+                textDecoration: 'none',
+                boxShadow: '0 4px 16px rgba(236,72,153,0.3)',
+                transition: 'background 0.2s, transform 0.2s, box-shadow 0.2s',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.background = PINK_HOVER;
+                e.currentTarget.style.boxShadow = '0 8px 24px rgba(236,72,153,0.4)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.background = PINK;
+                e.currentTarget.style.boxShadow = '0 4px 16px rgba(236,72,153,0.3)';
+              }}
+              onMouseDown={(e) => { e.currentTarget.style.background = PINK_ACTIVE; }}
+              onMouseUp={(e) => { e.currentTarget.style.background = PINK_HOVER; }}
+            >
+              {lang === 'ar' ? 'عرض جميع دروس المعلمين' : 'See all teacher tutorials'}
+            </Link>
+          </div>
+        )}
       </div>
+
+      {/* Player modal */}
+      {playerVideo && (
+        <VideoPlayerModal
+          video={playerVideo}
+          onClose={() => setPlayerVideo(null)}
+        />
+      )}
     </Layout>
   );
 }

@@ -15,7 +15,7 @@ export default function ForgotPassword() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-8" style={{ background: '#fafbfc' }}>
+    <div className="min-h-screen flex items-center justify-center px-4 py-8 glass-bg">
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="mb-8">

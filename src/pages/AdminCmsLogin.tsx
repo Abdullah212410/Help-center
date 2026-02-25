@@ -247,7 +247,7 @@ export default function AdminCmsLogin() {
   // Loading state while AuthProvider is hydrating the session
   if (authLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: '#fafbfc' }}>
+      <div className="min-h-screen flex items-center justify-center glass-bg">
         <div className="flex flex-col items-center gap-4">
           <div
             className="w-10 h-10 rounded-xl flex items-center justify-center animate-pulse"
@@ -266,7 +266,7 @@ export default function AdminCmsLogin() {
   // Access denied — signed in but not admin
   if (accessDenied) {
     return (
-      <div className="min-h-screen flex items-center justify-center px-4 py-8" style={{ background: '#fafbfc' }}>
+      <div className="min-h-screen flex items-center justify-center px-4 py-8 glass-bg">
         <div className="w-full max-w-md">
           <div className="mb-8">
             <Link to="/help" className="inline-flex items-center gap-2">
@@ -318,7 +318,7 @@ export default function AdminCmsLogin() {
 
   // Login form
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-8" style={{ background: '#fafbfc' }}>
+    <div className="min-h-screen flex items-center justify-center px-4 py-8 glass-bg">
       <div className="w-full max-w-md">
         {/* Logo */}
         <div className="mb-8">

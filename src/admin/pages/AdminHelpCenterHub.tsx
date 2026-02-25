@@ -123,9 +123,9 @@ export default function AdminHelpCenterHub() {
   }, [categories, search, filterActive]);
 
   return (
-    <div className="min-h-screen" style={{ background: '#fafbfc' }}>
+    <div className="min-h-screen glass-bg">
       {/* Top Bar */}
-      <header className="bg-white border-b border-slate-200 sticky top-0 z-30">
+      <header className="glass-header sticky top-0 z-40">
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Link to="/admin" className="flex items-center gap-2">
@@ -138,7 +138,8 @@ export default function AdminHelpCenterHub() {
                 </svg>
               </div>
             </Link>
-            <span className="text-lg font-bold text-slate-900">Help Center CMS</span>
+            <span className="text-lg font-bold text-slate-900">Help Center</span>
+            <span className="admin-badge">ADMIN</span>
           </div>
           <div className="flex items-center gap-4">
             <Link
@@ -177,22 +178,22 @@ export default function AdminHelpCenterHub() {
         )}
 
         {/* Tab Navigation */}
-        <div className="flex items-center gap-1 mb-6 border-b border-slate-200">
+        <div className="flex items-center gap-1 mb-6 glass-card rounded-xl p-1 w-fit">
           <Link
             to="/admin/help-center/categories"
-            className="px-4 py-2.5 text-sm font-semibold text-indigo-600 border-b-2 border-indigo-600 -mb-px"
+            className="px-5 py-2 text-sm font-semibold bg-indigo-600 text-white rounded-lg shadow-sm"
           >
             Categories
           </Link>
           <Link
             to="/admin/help-center/sections"
-            className="px-4 py-2.5 text-sm font-medium text-slate-400 hover:text-slate-600 transition-colors"
+            className="px-5 py-2 text-sm font-medium text-slate-500 hover:text-slate-700 hover:bg-white/60 rounded-lg transition-all"
           >
             Sections
           </Link>
           <Link
             to="/admin/help-center/articles"
-            className="px-4 py-2.5 text-sm font-medium text-slate-400 hover:text-slate-600 transition-colors"
+            className="px-5 py-2 text-sm font-medium text-slate-500 hover:text-slate-700 hover:bg-white/60 rounded-lg transition-all"
           >
             All Articles
           </Link>
@@ -201,7 +202,7 @@ export default function AdminHelpCenterHub() {
         {/* Header + New Category Button */}
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h1 className="text-2xl font-bold text-slate-900">Categories</h1>
+            <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">Categories</h1>
             <p className="text-sm text-slate-500 mt-1">
               Manage help center categories and their articles.
             </p>
@@ -220,7 +221,7 @@ export default function AdminHelpCenterHub() {
 
         {/* Search + Filters */}
         <div className="flex items-center gap-4 mb-6">
-          <div className="relative flex-1 max-w-sm">
+          <div className="relative flex-1 max-w-sm search-glow rounded-xl border border-slate-200/60">
             <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
             </svg>
@@ -229,7 +230,7 @@ export default function AdminHelpCenterHub() {
               placeholder="Search categories..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 text-sm rounded-xl border border-slate-200 focus:border-indigo-300 focus:ring-4 focus:ring-indigo-50 outline-none transition-all"
+              className="w-full pl-10 pr-4 py-2.5 text-sm rounded-xl bg-transparent outline-none transition-all placeholder-slate-400"
             />
           </div>
           <div className="flex items-center gap-2">
@@ -257,7 +258,10 @@ export default function AdminHelpCenterHub() {
         )}
 
         {loading ? (
-          <div className="text-center py-20 text-slate-400">Loading categories...</div>
+          <div className="text-center py-20">
+            <div className="w-8 h-8 border-2 border-slate-200 border-t-indigo-500 rounded-full animate-spin mx-auto mb-4" />
+            <p className="text-sm text-slate-500">Loading categories...</p>
+          </div>
         ) : filtered.length === 0 ? (
           <div className="text-center py-20">
             <div className="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center mx-auto mb-4">
@@ -282,8 +286,9 @@ export default function AdminHelpCenterHub() {
             {filtered.map((cat) => (
               <div
                 key={cat.id}
-                className="bg-white rounded-2xl border border-slate-100 p-5 flex items-center justify-between hover:shadow-sm transition-shadow"
+                className="glass-card rounded-2xl p-5 flex items-center justify-between hover:shadow-lg transition-all relative overflow-hidden"
               >
+                <div className="admin-card-accent" style={{ background: 'linear-gradient(135deg, #6366f1, #8b5cf6)' }} />
                 <div className="flex items-center gap-4 flex-1 min-w-0">
                   <div className="w-10 h-10 rounded-xl bg-indigo-50 flex items-center justify-center text-indigo-500 flex-shrink-0">
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">

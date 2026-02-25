@@ -188,16 +188,19 @@ export default function AdminArticleEditorFlat() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: '#fafbfc' }}>
-        <p className="text-slate-400">Loading...</p>
+      <div className="min-h-screen flex items-center justify-center glass-bg">
+        <div className="text-center">
+          <div className="w-8 h-8 border-2 border-slate-200 border-t-indigo-500 rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-sm text-slate-500">Loading...</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen" style={{ background: '#fafbfc' }}>
+    <div className="min-h-screen glass-bg">
       {/* Top Bar */}
-      <header className="bg-white border-b border-slate-200 sticky top-0 z-30">
+      <header className="glass-header sticky top-0 z-40">
         <div className="max-w-4xl mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Link
@@ -242,7 +245,8 @@ export default function AdminArticleEditorFlat() {
 
         <div className="space-y-6">
           {/* Basic Info Card */}
-          <div className="bg-white rounded-2xl border border-slate-100 p-8 space-y-6">
+          <div className="glass-card rounded-2xl p-8 space-y-6 relative overflow-hidden">
+            <div className="admin-card-accent" style={{ background: 'linear-gradient(135deg, #6366f1, #8b5cf6)' }} />
             <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wider">Basic Info</h2>
 
             {/* Cascading Category → Section selectors */}
@@ -364,7 +368,8 @@ export default function AdminArticleEditorFlat() {
           </div>
 
           {/* Body Card */}
-          <div className="bg-white rounded-2xl border border-slate-100 p-8 space-y-6">
+          <div className="glass-card rounded-2xl p-8 space-y-6 relative overflow-hidden">
+            <div className="admin-card-accent" style={{ background: 'linear-gradient(135deg, #6366f1, #8b5cf6)' }} />
             <h2 className="text-sm font-semibold text-slate-400 uppercase tracking-wider">Content (Markdown)</h2>
 
             <div>

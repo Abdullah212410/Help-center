@@ -1,25 +1,70 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useCallback } from 'react';
 import { Layout } from '../components/Layout';
 import { ResourceSection } from '../components/ResourceSection';
-import { sectionsMeta, getResourcesBySection } from '../resourcesData';
+import { teacherSectionsMeta, studentSectionsMeta } from '../resourcesData';
+import type { Resource } from '../resourcesData';
+import { TEACHER_VIDEOS, STUDENT_VIDEOS } from '../data/resourceVideos';
+import { useI18n } from '../lib/i18n';
+import { extractYouTubeId, youTubeThumbnail } from '../lib/tutorialsApi';
+
+const PINK = '#EC4899';
+const BLUE = '#08B8FB';
 
 export default function ResourcesPage() {
-  const groupedResources = useMemo(() => getResourcesBySection(), []);
+  const { t } = useI18n();
 
-  const scrollToResources = () => {
-    const el = document.getElementById('resource-sections');
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  };
+  /* ── Convert static RawVideo[] → Resource[] with i18n + YouTube thumbs ── */
+  const teacherResources = useMemo<Resource[]>(() =>
+    TEACHER_VIDEOS.map((v) => {
+      const videoId = extractYouTubeId(v.url);
+      return {
+        id: v.id,
+        section: 'teacher-videos',
+        audience: 'teacher' as const,
+        title: t(v.titleKey),
+        description: t(v.descKey),
+        type: 'watch' as const,
+        thumbnail: videoId ? youTubeThumbnail(videoId) : '',
+        link: v.url,
+      };
+    }),
+  [t]);
+
+  const studentResources = useMemo<Resource[]>(() =>
+    STUDENT_VIDEOS.map((v) => {
+      const videoId = extractYouTubeId(v.url);
+      return {
+        id: v.id,
+        section: 'student-videos',
+        audience: 'student' as const,
+        title: t(v.titleKey),
+        description: t(v.descKey),
+        type: 'watch' as const,
+        thumbnail: videoId ? youTubeThumbnail(videoId) : '',
+        link: v.url,
+      };
+    }),
+  [t]);
+
+  const groupedResources = useMemo(() => {
+    const map = new Map<string, Resource[]>();
+    map.set('teacher-videos', teacherResources);
+    map.set('student-videos', studentResources);
+    return map;
+  }, [teacherResources, studentResources]);
+
+  const scrollTo = useCallback((id: string) => {
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, []);
 
   return (
     <Layout>
-      {/* Page wrapper — explicit stacking context with guaranteed dimensions */}
+      {/* Page wrapper */}
       <div style={{ position: 'relative', zIndex: 1, display: 'block', minHeight: '100vh' }}>
 
         {/* ══════════════════════════════════════════════════════
-            HERO SECTION
+            HERO SECTION (preserved exactly)
             ══════════════════════════════════════════════════════ */}
         <section
           style={{
@@ -29,7 +74,6 @@ export default function ResourcesPage() {
             background: 'linear-gradient(135deg, #fdf2f8 0%, #fce7f3 25%, #f8fafc 50%, #eff6ff 75%, #f0f9ff 100%)',
           }}
         >
-          {/* Subtle decorative circles */}
           <div
             aria-hidden="true"
             style={{
@@ -56,8 +100,6 @@ export default function ResourcesPage() {
               background: 'radial-gradient(circle, #08B8FB 0%, transparent 70%)',
             }}
           />
-
-          {/* Bottom fade */}
           <div
             aria-hidden="true"
             style={{
@@ -70,7 +112,6 @@ export default function ResourcesPage() {
             }}
           />
 
-          {/* Hero content — inline styles guarantee layout regardless of Tailwind CDN timing */}
           <div
             style={{
               position: 'relative',
@@ -151,7 +192,7 @@ export default function ResourcesPage() {
 
             {/* CTA Button */}
             <button
-              onClick={scrollToResources}
+              onClick={() => scrollTo('resource-sections')}
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
@@ -194,18 +235,137 @@ export default function ResourcesPage() {
             margin: '0 auto',
             paddingLeft: 24,
             paddingRight: 24,
-            paddingTop: 64,
+            paddingTop: 48,
             paddingBottom: 80,
             scrollMarginTop: 90,
           }}
         >
-          {sectionsMeta.map((meta) => (
-            <ResourceSection
-              key={meta.key}
-              meta={meta}
-              resources={groupedResources.get(meta.key) || []}
-            />
-          ))}
+          {/* ── Audience Tabs ── */}
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              gap: 12,
+              marginBottom: 48,
+            }}
+          >
+            <button
+              onClick={() => scrollTo('section-teacher')}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 8,
+                padding: '10px 24px',
+                borderRadius: 9999,
+                border: 'none',
+                cursor: 'pointer',
+                fontSize: 14,
+                fontWeight: 600,
+                background: PINK,
+                color: '#fff',
+                boxShadow: `0 2px 10px ${PINK}40`,
+                transition: 'transform 0.2s, box-shadow 0.2s',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-1px)';
+                e.currentTarget.style.boxShadow = `0 4px 16px ${PINK}50`;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = `0 2px 10px ${PINK}40`;
+              }}
+            >
+              <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342" />
+              </svg>
+              Teacher Resources
+            </button>
+            <button
+              onClick={() => scrollTo('section-student')}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 8,
+                padding: '10px 24px',
+                borderRadius: 9999,
+                border: 'none',
+                cursor: 'pointer',
+                fontSize: 14,
+                fontWeight: 600,
+                background: BLUE,
+                color: '#fff',
+                boxShadow: `0 2px 10px ${BLUE}40`,
+                transition: 'transform 0.2s, box-shadow 0.2s',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translateY(-1px)';
+                e.currentTarget.style.boxShadow = `0 4px 16px ${BLUE}50`;
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = `0 2px 10px ${BLUE}40`;
+              }}
+            >
+              <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+              </svg>
+              Student Resources
+            </button>
+          </div>
+
+          {/* ── Teacher Resources ── */}
+          <div id="section-teacher" style={{ scrollMarginTop: 90, marginBottom: 64 }}>
+            <div style={{ marginBottom: 32, paddingBottom: 16, borderBottom: `3px solid ${PINK}` }}>
+              <div style={{
+                display: 'inline-flex', alignItems: 'center', gap: 8,
+                padding: '5px 14px', borderRadius: 9999, marginBottom: 12,
+                background: `${PINK}12`, border: `1px solid ${PINK}25`,
+              }}>
+                <span style={{ width: 7, height: 7, borderRadius: '50%', background: PINK, display: 'inline-block' }} />
+                <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' as const, color: PINK }}>
+                  For Teachers
+                </span>
+              </div>
+              <h2 style={{ fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontWeight: 800, color: '#0f172a', lineHeight: 1.2 }}>
+                <span className="gradient-text">Teacher</span> Resources
+              </h2>
+            </div>
+
+            {teacherSectionsMeta.map((meta) => (
+              <ResourceSection
+                key={meta.key}
+                meta={meta}
+                resources={groupedResources.get(meta.key) || []}
+              />
+            ))}
+          </div>
+
+          {/* ── Student Resources ── */}
+          <div id="section-student" style={{ scrollMarginTop: 90 }}>
+            <div style={{ marginBottom: 32, paddingBottom: 16, borderBottom: `3px solid ${BLUE}` }}>
+              <div style={{
+                display: 'inline-flex', alignItems: 'center', gap: 8,
+                padding: '5px 14px', borderRadius: 9999, marginBottom: 12,
+                background: `${BLUE}12`, border: `1px solid ${BLUE}25`,
+              }}>
+                <span style={{ width: 7, height: 7, borderRadius: '50%', background: BLUE, display: 'inline-block' }} />
+                <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase' as const, color: BLUE }}>
+                  For Students
+                </span>
+              </div>
+              <h2 style={{ fontSize: 'clamp(1.5rem, 3vw, 2rem)', fontWeight: 800, color: '#0f172a', lineHeight: 1.2 }}>
+                <span className="gradient-text">Student</span> Resources
+              </h2>
+            </div>
+
+            {studentSectionsMeta.map((meta) => (
+              <ResourceSection
+                key={meta.key}
+                meta={meta}
+                resources={groupedResources.get(meta.key) || []}
+              />
+            ))}
+          </div>
         </div>
 
       </div>

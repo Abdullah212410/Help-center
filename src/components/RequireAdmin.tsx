@@ -15,7 +15,7 @@ export const RequireAdmin: React.FC<{ children: React.ReactNode }> = ({ children
   // AuthProvider still hydrating session — show spinner
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: '#fafbfc' }}>
+      <div className="min-h-screen flex items-center justify-center glass-bg">
         <p className="text-sm text-slate-400">Verifying admin access…</p>
       </div>
     );

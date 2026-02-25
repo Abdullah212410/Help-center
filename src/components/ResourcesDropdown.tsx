@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useI18n } from '../lib/i18n';
 
 const DROPDOWN_ID = 'resources-dropdown-menu';
@@ -7,9 +7,10 @@ const DROPDOWN_ID = 'resources-dropdown-menu';
 export const ResourcesDropdown: React.FC = () => {
   const { t } = useI18n();
   const navigate = useNavigate();
+  const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
+  const [isPinned, setIsPinned] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
-  const closeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const isTouchDevice = useRef(false);
 
   // Track if user is on touch device
@@ -24,6 +25,7 @@ export const ResourcesDropdown: React.FC = () => {
     const handler = (e: MouseEvent | TouchEvent) => {
       if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
         setIsOpen(false);
+        setIsPinned(false);
       }
     };
     document.addEventListener('mousedown', handler);
@@ -34,39 +36,70 @@ export const ResourcesDropdown: React.FC = () => {
     };
   }, []);
 
-  // Hover open (desktop only)
+  // Close on ESC
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpen) {
+        setIsOpen(false);
+        setIsPinned(false);
+        (containerRef.current?.querySelector('button') as HTMLButtonElement)?.focus();
+      }
+    };
+    document.addEventListener('keydown', handler);
+    return () => document.removeEventListener('keydown', handler);
+  }, [isOpen]);
+
+  // Close on route change
+  useEffect(() => {
+    setIsOpen(false);
+    setIsPinned(false);
+  }, [location.pathname]);
+
+  // Hover open (desktop only) — only when NOT pinned
   const handleMouseEnter = useCallback(() => {
     if (isTouchDevice.current) return;
-    if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
-    setIsOpen(true);
-  }, []);
+    if (!isPinned) {
+      setIsOpen(true);
+    }
+  }, [isPinned]);
 
   const handleMouseLeave = useCallback(() => {
     if (isTouchDevice.current) return;
-    closeTimerRef.current = setTimeout(() => setIsOpen(false), 150);
-  }, []);
+    if (!isPinned) {
+      setIsOpen(false);
+    }
+  }, [isPinned]);
 
-  // Toggle on click/tap
-  const handleToggle = useCallback(() => {
-    setIsOpen((prev) => !prev);
-  }, []);
+  // Click: always open + pin. Never close on click.
+  const handleClick = useCallback(() => {
+    if (!isPinned) {
+      setIsOpen(true);
+      setIsPinned(true);
+    }
+    // If already pinned, do nothing (don't close)
+  }, [isPinned]);
 
   // Navigate and close
   const goTo = useCallback((path: string) => {
     navigate(path);
     setIsOpen(false);
+    setIsPinned(false);
   }, [navigate]);
 
-  // Keyboard handler
+  // Keyboard handler on trigger button
   const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
     if (e.key === 'Escape') {
       setIsOpen(false);
+      setIsPinned(false);
       (containerRef.current?.querySelector('button') as HTMLButtonElement)?.focus();
       return;
     }
-    if ((e.key === 'Enter' || e.key === ' ') && !isOpen) {
+    if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
-      setIsOpen(true);
+      if (!isPinned) {
+        setIsOpen(true);
+        setIsPinned(true);
+      }
       return;
     }
     if (e.key === 'ArrowDown' && isOpen) {
@@ -74,7 +107,7 @@ export const ResourcesDropdown: React.FC = () => {
       const first = containerRef.current?.querySelector('[role="menuitem"]') as HTMLElement;
       first?.focus();
     }
-  }, [isOpen]);
+  }, [isOpen, isPinned]);
 
   const handleItemKeyDown = useCallback((e: React.KeyboardEvent, path: string) => {
     if (e.key === 'Enter' || e.key === ' ') {
@@ -84,6 +117,7 @@ export const ResourcesDropdown: React.FC = () => {
     }
     if (e.key === 'Escape') {
       setIsOpen(false);
+      setIsPinned(false);
       (containerRef.current?.querySelector('button') as HTMLButtonElement)?.focus();
       return;
     }
@@ -114,7 +148,7 @@ export const ResourcesDropdown: React.FC = () => {
     >
       <button
         type="button"
-        onClick={handleToggle}
+        onClick={handleClick}
         onKeyDown={handleKeyDown}
         aria-expanded={isOpen}
         aria-controls={DROPDOWN_ID}

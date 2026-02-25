@@ -211,7 +211,7 @@ export default function AdminBlogEditor() {
   // Loading state while fetching existing post
   if (loadingPost) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: '#fafbfc' }}>
+      <div className="min-h-screen flex items-center justify-center glass-bg">
         <div className="text-center">
           <div className="w-8 h-8 border-2 border-slate-200 border-t-[#ED3B91] rounded-full animate-spin mx-auto mb-4" />
           <p className="text-sm text-slate-500">Loading post...</p>
@@ -223,7 +223,7 @@ export default function AdminBlogEditor() {
   // Not found when editing non-existent post
   if (isEditing && !existing) {
     return (
-      <div className="min-h-screen flex items-center justify-center" style={{ background: '#fafbfc' }}>
+      <div className="min-h-screen flex items-center justify-center glass-bg">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-slate-900 mb-2">Post Not Found</h1>
           <p className="text-sm text-slate-500 mb-6">Cannot edit a post that doesn't exist.</p>
@@ -240,9 +240,9 @@ export default function AdminBlogEditor() {
   }
 
   return (
-    <div className="min-h-screen" style={{ background: '#fafbfc' }}>
+    <div className="min-h-screen glass-bg">
       {/* Admin Top Bar */}
-      <header className="bg-white border-b border-slate-200 sticky top-0 z-30">
+      <header className="glass-header sticky top-0 z-40">
         <div className="max-w-[900px] mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Link

@@ -321,9 +321,9 @@ export default function AdminTutorials() {
      ═══════════════════════════════════════════════════ */
 
   return (
-    <div className="min-h-screen" style={{ background: '#fafbfc' }}>
+    <div className="min-h-screen glass-bg">
       {/* Top Bar */}
-      <header className="bg-white border-b border-slate-200 sticky top-0 z-30">
+      <header className="glass-header sticky top-0 z-40">
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <Link to="/admin" className="flex items-center gap-2">
@@ -337,7 +337,7 @@ export default function AdminTutorials() {
               </div>
             </Link>
             <span className="text-lg font-bold text-slate-900">Tutorials</span>
-            <span className="text-lg text-slate-400 font-light">CMS</span>
+            <span className="admin-badge">ADMIN</span>
           </div>
           <div className="flex items-center gap-4">
             <Link to="/help" target="_blank" className="text-sm text-slate-500 hover:text-slate-700 transition-colors">
@@ -369,7 +369,7 @@ export default function AdminTutorials() {
         )}
 
         {/* ── Audience Tabs ── */}
-        <div className="flex items-center gap-1 mb-6 bg-white rounded-xl border border-slate-200 p-1 w-fit">
+        <div className="flex items-center gap-1 mb-6 glass-card rounded-xl p-1 w-fit">
           {AUDIENCES.map((a) => (
             <button
               key={a.key}
@@ -388,7 +388,7 @@ export default function AdminTutorials() {
         {/* Header + New Tutorial Button */}
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h1 className="text-2xl font-bold text-slate-900">
+            <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">
               {AUDIENCES.find((a) => a.key === audience)?.label} Tutorials
             </h1>
             <p className="text-sm text-slate-500 mt-1">
@@ -416,7 +416,10 @@ export default function AdminTutorials() {
 
         {/* Tutorial List */}
         {loading ? (
-          <div className="text-center py-20 text-slate-400">Loading tutorials...</div>
+          <div className="text-center py-20">
+            <div className="w-8 h-8 border-2 border-slate-200 border-t-[#8b5cf6] rounded-full animate-spin mx-auto mb-4" />
+            <p className="text-sm text-slate-500">Loading tutorials...</p>
+          </div>
         ) : tutorials.length === 0 ? (
           <div className="text-center py-20">
             <div className="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center mx-auto mb-4">
@@ -435,10 +438,11 @@ export default function AdminTutorials() {
               <div key={t.id}>
                 {/* Tutorial Row */}
                 <div
-                  className={`bg-white rounded-2xl border p-5 flex items-center justify-between hover:shadow-sm transition-shadow ${
-                    expandedId === t.id ? 'border-indigo-200 shadow-sm' : 'border-slate-100'
+                  className={`glass-card rounded-2xl p-5 flex items-center justify-between hover:shadow-lg transition-all relative overflow-hidden ${
+                    expandedId === t.id ? 'border-indigo-200 shadow-sm' : ''
                   }`}
                 >
+                  <div className="admin-card-accent" style={{ background: 'linear-gradient(135deg, #8b5cf6, #a78bfa)' }} />
                   <div
                     className="flex items-center gap-4 flex-1 min-w-0 cursor-pointer"
                     onClick={() => toggleExpand(t.id)}
@@ -520,7 +524,7 @@ export default function AdminTutorials() {
 
                 {/* ── Expanded Items Panel ── */}
                 {expandedId === t.id && (
-                  <div className="ml-8 mt-2 mb-4 bg-slate-50 rounded-xl border border-slate-200 p-5">
+                  <div className="ml-8 mt-2 mb-4 glass-card rounded-xl p-5">
                     <div className="flex items-center justify-between mb-4">
                       <h4 className="text-sm font-bold text-slate-700">
                         Tutorial Items ({items.length})
@@ -550,7 +554,7 @@ export default function AdminTutorials() {
                         {items.map((item) => (
                           <div
                             key={item.id}
-                            className="bg-white rounded-xl border border-slate-100 p-4 flex items-center justify-between"
+                            className="glass-card rounded-xl p-4 flex items-center justify-between"
                           >
                             <div className="flex items-center gap-3 flex-1 min-w-0">
                               {item.thumbnail_url && (
