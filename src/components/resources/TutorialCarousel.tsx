@@ -136,7 +136,7 @@ export const TutorialCarousel: React.FC<TutorialCarouselProps> = ({
                 video={v}
                 displayIndex={i + 1}
                 onPlay={() => onPlayVideo(v)}
-                {...(customThumbnails?.[v.id] ? { customThumbnail: customThumbnails[v.id], inlinePlay: true } : {})}
+                {...(customThumbnails?.[v.id] ? { customThumbnail: customThumbnails[v.id] } : {})}
               />
             </div>
           ))}

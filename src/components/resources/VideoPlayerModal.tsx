@@ -3,9 +3,10 @@ import { extractYouTubeId } from '../../lib/tutorialsApi';
 import type { ResourceVideo } from '../../data/resourceVideos';
 
 /* ═══════════════════════════════════════════════════
-   VideoPlayerModal — fullscreen YouTube player
-   Escape closes, overlay click closes, body scroll locked.
-   Copy-link button in top-right, above iframe.
+   VideoPlayerModal — centered YouTube player modal.
+   Uses enablejsapi=1 + postMessage for proper
+   stop/pause control. key={videoId} on iframe
+   forces a clean remount when switching videos.
    ═══════════════════════════════════════════════════ */
 
 interface VideoPlayerModalProps {
@@ -13,27 +14,55 @@ interface VideoPlayerModalProps {
   onClose: () => void;
 }
 
+/** Send a YouTube IFrame API command via postMessage. */
+function ytCommand(iframe: HTMLIFrameElement | null, func: string) {
+  try {
+    iframe?.contentWindow?.postMessage(
+      JSON.stringify({ event: 'command', func, args: '' }),
+      '*',
+    );
+  } catch {
+    /* cross-origin error — iframe will be destroyed on unmount anyway */
+  }
+}
+
 export const VideoPlayerModal: React.FC<VideoPlayerModalProps> = ({ video, onClose }) => {
   const overlayRef = useRef<HTMLDivElement>(null);
+  const iframeRef = useRef<HTMLIFrameElement>(null);
   const videoId = extractYouTubeId(video.url);
   const [copied, setCopied] = useState(false);
 
-  useEffect(() => {
-    const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
-    document.addEventListener('keydown', handler);
-    return () => document.removeEventListener('keydown', handler);
+  /** Stop the YouTube player and close the modal. */
+  const handleClose = useCallback(() => {
+    ytCommand(iframeRef.current, 'stopVideo');
+    onClose();
   }, [onClose]);
 
+  /* ── Escape key ── */
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') handleClose(); };
+    document.addEventListener('keydown', handler);
+    return () => document.removeEventListener('keydown', handler);
+  }, [handleClose]);
+
+  /* ── Body scroll lock ── */
   useEffect(() => {
     const prev = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
     return () => { document.body.style.overflow = prev; };
   }, []);
 
-  const handleOverlay = useCallback((e: React.MouseEvent) => {
-    if (e.target === overlayRef.current) onClose();
-  }, [onClose]);
+  /* ── Stop video on unmount (safety net) ── */
+  useEffect(() => {
+    return () => { ytCommand(iframeRef.current, 'stopVideo'); };
+  }, []);
 
+  /* ── Click outside closes ── */
+  const handleOverlay = useCallback((e: React.MouseEvent) => {
+    if (e.target === overlayRef.current) handleClose();
+  }, [handleClose]);
+
+  /* ── Copy link ── */
   const handleCopy = useCallback(async () => {
     const url = video.url;
     if (!url) return;
@@ -65,7 +94,7 @@ export const VideoPlayerModal: React.FC<VideoPlayerModalProps> = ({ video, onClo
       style={{
         position: 'fixed', inset: 0, zIndex: 9999,
         display: 'flex', alignItems: 'center', justifyContent: 'center',
-        background: 'rgba(0,0,0,0.8)', backdropFilter: 'blur(4px)',
+        background: 'rgba(0,0,0,0.80)', backdropFilter: 'blur(6px)',
         padding: 24,
         animation: 'resFadeIn 200ms ease',
       }}
@@ -77,9 +106,9 @@ export const VideoPlayerModal: React.FC<VideoPlayerModalProps> = ({ video, onClo
 
       <div style={{
         position: 'relative', width: '100%', maxWidth: 900,
-        borderRadius: 16, overflow: 'hidden', background: '#000',
+        borderRadius: 20, overflow: 'hidden', background: '#000',
         animation: 'resSlideUp 250ms ease',
-        boxShadow: '0 25px 50px rgba(0,0,0,0.5)',
+        boxShadow: '0 25px 60px rgba(0,0,0,0.6)',
       }}>
         {/*
           Button bar — sits ABOVE the iframe via absolute positioning + z-index.
@@ -141,29 +170,31 @@ export const VideoPlayerModal: React.FC<VideoPlayerModalProps> = ({ video, onClo
 
           {/* Close button */}
           <button
-            onClick={onClose}
+            onClick={handleClose}
             aria-label="Close"
             style={{
-              width: 36, height: 36, borderRadius: '50%',
+              width: 40, height: 40, borderRadius: '50%',
               border: 'none', background: 'rgba(255,255,255,0.15)',
               color: '#fff', cursor: 'pointer',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               transition: 'background 0.2s',
               pointerEvents: 'auto',
             }}
-            onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.25)'; }}
+            onMouseEnter={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.30)'; }}
             onMouseLeave={(e) => { e.currentTarget.style.background = 'rgba(255,255,255,0.15)'; }}
           >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5}>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
         </div>
 
-        {/* 16:9 YouTube embed */}
+        {/* 16:9 YouTube embed — key forces remount when video changes */}
         <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0 }}>
           <iframe
-            src={`https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`}
+            key={videoId}
+            ref={iframeRef}
+            src={`https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&enablejsapi=1`}
             title={video.title}
             loading="lazy"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"

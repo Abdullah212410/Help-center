@@ -1,9 +1,13 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Layout } from '../components/Layout';
 import { useI18n } from '../lib/i18n';
 import { getPublishedTutorials, extractYouTubeId } from '../lib/tutorialsApi';
 import { useDataRefresh } from '../lib/dataEvents';
+import { useGuidedTour } from '../hooks/useGuidedTour';
+import GuidedTour from '../components/ui/GuidedTour';
+import { tutorialsTourSteps, TUTORIALS_TOUR_ID } from '../tours/tutorialsTour';
 import type { Tutorial } from '../types';
+import type { TourStep } from '../hooks/useGuidedTour';
 
 export default function TutorialsPage() {
   const { localize, t, lang } = useI18n();
@@ -20,10 +24,31 @@ export default function TutorialsPage() {
   useEffect(() => { fetchTutorials(); }, [fetchTutorials]);
   useDataRefresh(['tutorials'], fetchTutorials);
 
+  // Resolve tour step translations
+  const resolvedSteps: TourStep[] = useMemo(
+    () =>
+      tutorialsTourSteps.map((s) => ({
+        id: s.id,
+        title: t(s.titleKey),
+        description: t(s.descriptionKey),
+        selector: s.selector,
+        placement: s.placement,
+        padding: s.padding,
+      })),
+    [t],
+  );
+
+  const tour = useGuidedTour({
+    tourId: TUTORIALS_TOUR_ID,
+    steps: resolvedSteps,
+    autoStart: !loading,
+  });
+
   return (
     <Layout>
       {/* Header */}
       <div
+        data-tour="tutorials-header"
         className="w-full"
         style={{
           background: 'linear-gradient(135deg, #f5f3ff 0%, #ede9fe 50%, #f0f9ff 100%)',
@@ -31,14 +56,31 @@ export default function TutorialsPage() {
         }}
       >
         <div className="mx-auto px-6 py-10 md:py-14" style={{ maxWidth: 1100 }}>
-          <h1 className="text-3xl md:text-4xl font-extrabold text-slate-900 mb-2">
-            {lang === 'ar' ? 'الدروس التعليمية' : 'Video Tutorials'}
-          </h1>
-          <p className="text-base text-slate-500 max-w-lg">
-            {lang === 'ar'
-              ? 'شاهد دروسًا تعليمية خطوة بخطوة لمساعدتك على البدء.'
-              : 'Watch step-by-step video tutorials to help you get started.'}
-          </p>
+          <div className="flex items-start justify-between gap-4 flex-wrap">
+            <div>
+              <h1 className="text-3xl md:text-4xl font-extrabold text-slate-900 mb-2">
+                {lang === 'ar' ? 'الدروس التعليمية' : 'Video Tutorials'}
+              </h1>
+              <p className="text-base text-slate-500 max-w-lg">
+                {lang === 'ar'
+                  ? 'شاهد دروسًا تعليمية خطوة بخطوة لمساعدتك على البدء.'
+                  : 'Watch step-by-step video tutorials to help you get started.'}
+              </p>
+            </div>
+
+            {/* Replay Tour button */}
+            <button
+              onClick={tour.startTour}
+              className="inline-flex items-center gap-1.5 text-xs text-slate-400 hover:text-[#8b5cf6] transition-colors mt-1"
+              style={{ background: 'none', border: 'none', cursor: 'pointer' }}
+              aria-label={t('tourReplay' as any)}
+            >
+              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182" />
+              </svg>
+              {t('tourReplay' as any)}
+            </button>
+          </div>
         </div>
       </div>
 
@@ -63,8 +105,11 @@ export default function TutorialsPage() {
             </p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {tutorials.map((tutorial) => {
+          <div
+            data-tour="tutorials-grid"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+          >
+            {tutorials.map((tutorial, idx) => {
               const videoId = extractYouTubeId(tutorial.youtube_url);
               const title = localize(tutorial, 'title') || tutorial.title;
               const description = localize(tutorial, 'description') || tutorial.description;
@@ -75,6 +120,7 @@ export default function TutorialsPage() {
                   href={tutorial.youtube_url}
                   target="_blank"
                   rel="noopener noreferrer"
+                  {...(idx === 0 ? { 'data-tour': 'tutorials-card' } : {})}
                   className="group block bg-white rounded-2xl border border-slate-100 overflow-hidden transition-all duration-200 hover:shadow-lg hover:border-slate-200 hover:-translate-y-0.5"
                 >
                   {/* Thumbnail */}
@@ -96,7 +142,10 @@ export default function TutorialsPage() {
                     </div>
                   )}
 
-                  <div className="p-5">
+                  <div
+                    className="p-5"
+                    {...(idx === 0 ? { 'data-tour': 'tutorials-card-info' } : {})}
+                  >
                     <h3 className="text-base font-bold text-slate-900 group-hover:text-[#8b5cf6] transition-colors mb-1.5 leading-snug">
                       {title}
                     </h3>
@@ -120,6 +169,19 @@ export default function TutorialsPage() {
           </div>
         )}
       </div>
+
+      {/* Guided Tour overlay */}
+      <GuidedTour
+        isOpen={tour.isOpen}
+        step={tour.step}
+        currentIndex={tour.currentIndex}
+        totalSteps={tour.totalSteps}
+        isFirstStep={tour.isFirstStep}
+        isLastStep={tour.isLastStep}
+        onNext={tour.nextStep}
+        onPrev={tour.prevStep}
+        onSkip={tour.skipTour}
+      />
     </Layout>
   );
 }

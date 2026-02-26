@@ -265,6 +265,18 @@ export const en = {
   sVid7Title: "Virtual Classrooms",
   sVid7Desc: "Navigate and use virtual classrooms on String.",
 
+  // Video Tutorials Tour
+  vTourWelcomeTitle: "Welcome to Video Tutorials!",
+  vTourWelcomeDesc: "This is your library of step-by-step video guides. We'll show you how to make the most of it.",
+  vTourGridTitle: "Browse Tutorials",
+  vTourGridDesc: "All available video tutorials are displayed here in an easy-to-browse grid layout.",
+  vTourCardTitle: "Watch a Tutorial",
+  vTourCardDesc: "Click on any video card to open it on YouTube and start watching right away.",
+  vTourDetailsTitle: "Video Details",
+  vTourDetailsDesc: "Each card shows the title and a short description to help you quickly find what you need.",
+  tourDone: "Done",
+  tourReplay: "Replay Tour",
+
   // Blog
   blogTitle: "String Blog",
   blogSubtitle: "Latest updates, teaching tips, and product announcements.",

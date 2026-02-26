@@ -265,6 +265,18 @@ export const ar = {
   sVid7Title: "الصفوف الافتراضية",
   sVid7Desc: "تصفّح واستخدم الصفوف الافتراضية في String.",
 
+  // Video Tutorials Tour
+  vTourWelcomeTitle: "مرحبًا بك في الدروس التعليمية!",
+  vTourWelcomeDesc: "هذه مكتبتك لدروس الفيديو خطوة بخطوة. سنوضح لك كيفية تحقيق أقصى استفادة منها.",
+  vTourGridTitle: "تصفح الدروس",
+  vTourGridDesc: "جميع الدروس التعليمية المتاحة معروضة هنا في شبكة سهلة التصفح.",
+  vTourCardTitle: "شاهد درسًا تعليميًا",
+  vTourCardDesc: "اضغط على أي بطاقة فيديو لفتحها على YouTube ومشاهدة الدرس مباشرة.",
+  vTourDetailsTitle: "تفاصيل الفيديو",
+  vTourDetailsDesc: "تعرض كل بطاقة العنوان ووصفًا مختصرًا لمساعدتك في العثور بسرعة على ما تحتاجه.",
+  tourDone: "تم",
+  tourReplay: "إعادة الجولة",
+
   // Blog
   blogTitle: "مدونة سترينج",
   blogSubtitle: "آخر التحديثات ونصائح التدريس وإعلانات المنتجات.",
