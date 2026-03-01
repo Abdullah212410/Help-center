@@ -50,9 +50,9 @@ export const Header = ({ onOpenRequest }: { onOpenRequest: () => void }) => {
   const { t, dir } = useI18n();
   const location = useLocation();
 
-  const isResourcesRoute = location.pathname.startsWith('/resources');
+  const isResourcesRoute = location.pathname === '/' || location.pathname.startsWith('/resources');
   const brandLabel = isResourcesRoute ? 'Resources' : t('helpCenter');
-  const brandLink = isResourcesRoute ? '/resources' : '/help';
+  const brandLink = isResourcesRoute ? '/' : '/help-center';
 
   return (
     <header className="sticky top-0 z-50 w-full glass-header h-[70px]">
@@ -68,6 +68,21 @@ export const Header = ({ onOpenRequest }: { onOpenRequest: () => void }) => {
 
         {/* Right: Links & Actions */}
         <div className="flex items-center gap-3 md:gap-5">
+          <Link
+            to="/"
+            className={`hidden md:block text-sm font-medium transition-colors ${isResourcesRoute ? 'text-primary-600' : 'text-slate-500 hover:text-primary-600'}`}
+          >
+            {t('resources')}
+          </Link>
+          <Link
+            to="/help-center"
+            className={`hidden md:block text-sm font-medium transition-colors ${!isResourcesRoute ? 'text-primary-600' : 'text-slate-500 hover:text-primary-600'}`}
+          >
+            {t('helpCenter')}
+          </Link>
+
+          <div className="hidden md:block w-px h-4 bg-slate-200"></div>
+
           <a href="https://string.education" target="_blank" rel="noreferrer" className="hidden md:block text-sm font-medium text-slate-500 hover:text-primary-600 transition-colors">
             {t('stringWebsite')}
           </a>
