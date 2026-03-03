@@ -72,3 +72,31 @@ export const I18nProvider: React.FC<{ children: React.ReactNode }> = ({ children
 };
 
 export const useI18n = () => useContext(I18nContext);
+
+/* ── Language-aware field selector ───────────────────────────────
+   Prevents wrong-language display when _ar fields contain English
+   or EN fields contain Arabic text.                              */
+
+const ARABIC_RE = /[\u0600-\u06FF]/;
+
+export function localizedField(
+  lang: 'en' | 'ar',
+  en: string,
+  ar: string | null | undefined,
+): string {
+  if (lang === 'ar') {
+    // Prefer AR field only if it actually contains Arabic characters
+    if (ar && ARABIC_RE.test(ar)) return ar;
+    return en || '';
+  }
+  // English mode
+  if (en) {
+    const sample = en.substring(0, 200);
+    const arChars = (sample.match(/[\u0600-\u06FF]/g) || []).length;
+    const enChars = (sample.match(/[a-zA-Z]/g) || []).length;
+    // EN field is mainly Arabic — try AR field as fallback (might be English)
+    if (arChars > enChars && ar && !ARABIC_RE.test(ar.substring(0, 200))) return ar;
+    return en;
+  }
+  return ar || '';
+}

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import type { HcCategory } from '../../lib/helpCenterApi';
+import { localizedField } from '../../lib/i18n';
 
 /* ── Admin action descriptors ─────────────────────────────────────────────── */
 
@@ -48,7 +49,7 @@ export function CategoryCard({
   const clickTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const localized = (en: string, ar: string | null | undefined) =>
-    lang === 'ar' ? (ar || en) : (en || ar || '');
+    localizedField(lang as 'en' | 'ar', en, ar);
 
   // Cleanup click timer on unmount
   useEffect(() => {

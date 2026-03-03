@@ -1,4 +1,5 @@
 import { useI18n } from '../lib/i18n';
+import { CornerTag } from './ui/CardRibbon';
 
 /* ═══════════════════════════════════════════════════
    Suggested Videos — 4 curated YouTube cards
@@ -11,6 +12,7 @@ const SUGGESTED_VIDEOS = [
     titleKey: 'suggestedVideos.general.title' as const,
     descKey: 'suggestedVideos.general.description' as const,
     url: 'https://www.youtube.com/watch?v=fwPxu9cFMKo',
+    ribbonType: 'student' as const,
   },
   {
     id: 'sv-chat-ai',
@@ -18,6 +20,7 @@ const SUGGESTED_VIDEOS = [
     titleKey: 'videos.chatWithAI' as const,
     descKey: 'suggestedVideos.chatAI.description' as const,
     url: 'https://youtu.be/peeqNm4KzKo',
+    ribbonType: 'student' as const,
   },
   {
     id: 'sv-add-students',
@@ -25,6 +28,7 @@ const SUGGESTED_VIDEOS = [
     titleKey: 'videos.addingStudents' as const,
     descKey: 'suggestedVideos.addStudents.description' as const,
     url: 'https://youtu.be/GzLir4E8Vh4',
+    ribbonType: 'teacher' as const,
   },
   {
     id: 'sv-create-series',
@@ -32,6 +36,7 @@ const SUGGESTED_VIDEOS = [
     titleKey: 'videos.creatingSeries' as const,
     descKey: 'suggestedVideos.createSeries.description' as const,
     url: 'https://youtu.be/idPiwcXdyMg',
+    ribbonType: 'teacher' as const,
   },
 ];
 
@@ -71,7 +76,7 @@ export default function TutorialsSection() {
             className="group bg-white rounded-2xl overflow-hidden border border-slate-100 transition-all duration-200 hover:shadow-lg hover:border-slate-200 hover:-translate-y-0.5 flex flex-col"
             style={{ textDecoration: 'none', color: 'inherit' }}
           >
-            {/* Thumbnail + play overlay */}
+            {/* Thumbnail + play overlay + corner tag */}
             <div className="relative aspect-video overflow-hidden bg-slate-100">
               <img
                 src={`https://img.youtube.com/vi/${v.videoId}/maxresdefault.jpg`}
@@ -96,6 +101,10 @@ export default function TutorialsSection() {
                   </svg>
                 </div>
               </div>
+              {/* Account type tag */}
+              {'ribbonType' in v && v.ribbonType && (
+                <CornerTag type={v.ribbonType} />
+              )}
             </div>
 
             {/* Content */}

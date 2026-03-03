@@ -1,7 +1,9 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react';
+import React, { useEffect, useState, useRef, useCallback, useMemo } from 'react';
 import { useParams, Navigate, Link } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import rehypeRaw from 'rehype-raw';
+import DOMPurify from 'dompurify';
 import { Layout } from '../components/Layout';
 import { Breadcrumbs } from '../components/Breadcrumbs';
 import { useI18n } from '../lib/i18n';
@@ -18,8 +20,45 @@ import { HelpCenterShell } from '../components/theme/HelpCenterShell';
 import { ResourcesShell } from '../components/resources/ResourcesShell';
 import { COLORS } from '../theme/colors';
 
+/* ── HTML detection & sanitisation ──────────────────────────────── */
+
+const HTML_TAG_RE = /<\/?\s*(?:img|h[1-6]|p|ul|ol|li|strong|em|br|blockquote|pre|code|hr|a|div|span)\b/i;
+
+function isHtmlContent(text: string): boolean {
+  return HTML_TAG_RE.test(text);
+}
+
+function sanitizeHtml(dirty: string): string {
+  return DOMPurify.sanitize(dirty, {
+    ALLOWED_TAGS: [
+      'img', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'strong', 'em',
+      'b', 'i', 'ul', 'ol', 'li', 'br', 'a', 'blockquote', 'code', 'pre',
+      'hr', 'span', 'div',
+    ],
+    ALLOWED_ATTR: ['src', 'alt', 'style', 'href', 'target', 'rel', 'class'],
+    ADD_ATTR: ['target'],
+  });
+}
+
+DOMPurify.addHook('afterSanitizeAttributes', (node) => {
+  if (node.tagName === 'A' && node.getAttribute('href')?.startsWith('http')) {
+    node.setAttribute('target', '_blank');
+    node.setAttribute('rel', 'noopener noreferrer');
+  }
+});
+
+/* ── Pick a field with cross-language fallback ──────────────────── */
+
+function pickField(obj: any, field: string, isArabic: boolean): string {
+  if (isArabic) {
+    return obj[`${field}_ar`] || obj[field] || '';
+  }
+  return obj[field] || obj[`${field}_ar`] || '';
+}
+
 // ── Stable references (defined outside component to prevent re-renders) ──
 const REMARK_PLUGINS = [remarkGfm];
+const REHYPE_PLUGINS = [rehypeRaw];
 const MARKDOWN_COMPONENTS = {
   h2: ({node, ...props}: any) => <h2 className="text-2xl font-bold mt-8 mb-4 scroll-mt-32" {...props} />,
   h3: ({node, ...props}: any) => <h3 className="text-xl font-semibold mt-6 mb-3 scroll-mt-32" {...props} />,
@@ -28,8 +67,51 @@ const MARKDOWN_COMPONENTS = {
   p: ({node, ...props}: any) => <p className="mb-4 text-slate-700 leading-relaxed" {...props} />,
 };
 
+/* ── Article body: HTML vs Markdown, with cross-language fallback ── */
+
+function ArticleBody({ article, lang, localize }: { article: any; lang: string; localize: (obj: any, field: string) => string }) {
+  const isArabic = lang === 'ar';
+
+  const title   = pickField(article, 'title', isArabic);
+  const summary = pickField(article, 'summary', isArabic);
+  const body    = isArabic
+    ? (article.bodyMarkdown_ar || article.body_markdown_ar || article.bodyMarkdown || article.body_markdown || '')
+    : (article.bodyMarkdown || article.body_markdown || article.bodyMarkdown_ar || article.body_markdown_ar || '');
+
+  const bodyHtml = useMemo(
+    () => isHtmlContent(body) ? sanitizeHtml(body) : '',
+    [body],
+  );
+
+  return (
+    <article className="prose prose-slate max-w-none prose-headings:text-slate-900 prose-a:text-[#ed3b91] prose-a:no-underline hover:prose-a:underline">
+      <h1 className="text-4xl font-extrabold text-slate-900 mb-5 leading-tight tracking-tight">
+        {title}
+      </h1>
+
+      {summary && (
+        <p className="text-lg text-slate-500 leading-relaxed mb-10 border-b border-slate-200/50 pb-10">
+          {summary}
+        </p>
+      )}
+
+      <div className="markdown-body">
+        {!body ? (
+          <p className="text-slate-400 italic">No content available for this article.</p>
+        ) : bodyHtml ? (
+          <div dangerouslySetInnerHTML={{ __html: bodyHtml }} />
+        ) : (
+          <ReactMarkdown remarkPlugins={REMARK_PLUGINS} rehypePlugins={REHYPE_PLUGINS} components={MARKDOWN_COMPONENTS}>
+            {body}
+          </ReactMarkdown>
+        )}
+      </div>
+    </article>
+  );
+}
+
 export default function ArticlePage() {
-  const { t, localize } = useI18n();
+  const { t, localize, lang } = useI18n();
   const { articleSlug } = useParams();
 
   useEffect(() => { console.log('[HC_ARTICLE_PAGE] mounted, slug:', articleSlug); }, []);
@@ -375,21 +457,11 @@ export default function ArticlePage() {
                  </div>
               )}
 
-              <article className="prose prose-slate max-w-none prose-headings:text-slate-900 prose-a:text-[#ed3b91] prose-a:no-underline hover:prose-a:underline">
-                 <h1 className="text-4xl font-extrabold text-slate-900 mb-5 leading-tight tracking-tight">{localize(article, 'title')}</h1>
-
-                 {/* Intro / Summary */}
-                 <p className="text-lg text-slate-500 leading-relaxed mb-10 border-b border-slate-200/50 pb-10">
-                   {localize(article, 'summary')}
-                 </p>
-
-                 {/* Main Markdown Body */}
-                 <div className="markdown-body">
-                   <ReactMarkdown remarkPlugins={REMARK_PLUGINS} components={MARKDOWN_COMPONENTS}>
-                     {localize(article, 'bodyMarkdown')}
-                   </ReactMarkdown>
-                 </div>
-              </article>
+              <ArticleBody
+                article={article}
+                lang={lang}
+                localize={localize}
+              />
 
               <div className="mt-16 pt-8 border-t border-slate-200 text-sm text-slate-500 flex justify-between items-center">
                  <span>{t('lastUpdated')}: {formatDate(article.updatedAt)}</span>

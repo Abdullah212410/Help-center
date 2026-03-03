@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Layout } from '../components/Layout';
-import { useI18n } from '../lib/i18n';
+import { useI18n, localizedField } from '../lib/i18n';
 import {
   getHcCategoryBySlug,
   getHcSectionsByCategory,
@@ -130,7 +130,7 @@ export default function HelpCenterSection() {
   useDataRefresh(['hc_sections', 'hc_articles'], fetchData);
 
   const localized = (en: string, ar: string | null) =>
-    lang === 'ar' && ar ? ar : en;
+    localizedField(lang, en, ar);
 
   if (loading) {
     return (

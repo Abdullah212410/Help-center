@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { Layout } from '../components/Layout';
-import { useI18n } from '../lib/i18n';
+import { useI18n, localizedField } from '../lib/i18n';
 import { getHcCategories, type HcCategory } from '../lib/helpCenterApi';
 import { useDataRefresh } from '../lib/dataEvents';
 import { HelpCenterShell } from '../components/theme/HelpCenterShell';
@@ -26,7 +26,7 @@ export default function HelpCenterHome() {
   useDataRefresh(['hc_categories'], fetchData);
 
   const localized = (en: string, ar: string | null) =>
-    lang === 'ar' && ar ? ar : en;
+    localizedField(lang, en, ar);
 
   // Visual ordering of cards (does not modify data)
   const SLUG_ORDER = ['for-students', 'for-teachers', 'for-schools-and-districts', 'for-families'];

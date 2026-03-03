@@ -253,6 +253,10 @@ export const en = {
   tVid10Desc: "Learn how to create a content series for organized learning.",
   tVid11Title: "Adding a New Class",
   tVid11Desc: "How to set up and add a new class to your account.",
+  tVid12Title: "String – How to Create a Classroom on the Platform",
+  tVid12Desc: "Step-by-step guide on how to create a classroom on the String platform.",
+  tVid13Title: "Creating a Classroom by Filling Out the Form",
+  tVid13Desc: "How to create a classroom by filling out the required form.",
 
   // Student Resources page
   resStudentBadge: "For Students",
@@ -320,9 +324,15 @@ export const en = {
   "videos.chatWithAi": "Chat with AI",
   "videos.accountSettings": "Account Settings",
   "videos.virtualClassrooms": "Virtual Classrooms",
-  "videos.chatWithAI": "Chat with AI (Student Account)",
-  "videos.addingStudents": "Adding Students to Classrooms (Teacher Account)",
-  "videos.creatingSeries": "Creating a Series (Teacher Account)",
+  "videos.chatWithAI": "Chat with AI",
+  "videos.addingStudents": "Adding Students to Classrooms",
+  "videos.creatingSeries": "Creating a Series",
+  "videos.creatingClassroomOnPlatform": "String – How to Create a Classroom on the Platform",
+  "videos.creatingClassroomByForm": "Creating a Classroom by Filling Out the Form",
+
+  // Card ribbon labels
+  "ribbon.student": "Student Account",
+  "ribbon.teacher": "Teacher Account",
 
   // Suggested Videos (Home page)
   "suggestedVideos.title": "Suggested Videos",

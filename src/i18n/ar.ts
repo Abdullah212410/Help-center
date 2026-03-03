@@ -253,6 +253,10 @@ export const ar = {
   tVid10Desc: "تعلّم كيفية إنشاء سلسلة محتوى للتعلم المنظم.",
   tVid11Title: "إضافة فصل جديد",
   tVid11Desc: "كيفية إعداد وإضافة فصل جديد إلى حسابك.",
+  tVid12Title: "String شرح طريقة انشاء صف دراسي في منصة",
+  tVid12Desc: "شرح خطوة بخطوة لطريقة إنشاء صف دراسي في منصة String.",
+  tVid13Title: "انشاء صف دراسي عبر تعبئة الفورمات",
+  tVid13Desc: "كيفية إنشاء صف دراسي عن طريق تعبئة النموذج المطلوب.",
 
   // Student Resources page
   resStudentBadge: "للطلاب",
@@ -320,9 +324,15 @@ export const ar = {
   "videos.chatWithAi": "التحدث مع الذكاء الاصطناعي",
   "videos.accountSettings": "إعدادات الحساب",
   "videos.virtualClassrooms": "الغرف الصفية الافتراضية",
-  "videos.chatWithAI": "التحدث مع الذكاء الاصطناعي (حساب الطالب)",
-  "videos.addingStudents": "إضافة الطلاب إلى الغرف الصفية (حساب المعلم)",
-  "videos.creatingSeries": "إنشاء سلسلة تعليمية (حساب المعلم)",
+  "videos.chatWithAI": "التحدث مع الذكاء الاصطناعي",
+  "videos.addingStudents": "إضافة الطلاب إلى الغرف الصفية",
+  "videos.creatingSeries": "إنشاء سلسلة تعليمية",
+  "videos.creatingClassroomOnPlatform": "String شرح طريقة انشاء صف دراسي في منصة",
+  "videos.creatingClassroomByForm": "انشاء صف دراسي عبر تعبئة الفورمات",
+
+  // Card ribbon labels
+  "ribbon.student": "حساب الطالب",
+  "ribbon.teacher": "حساب المعلم",
 
   // Suggested Videos (Home page)
   "suggestedVideos.title": "فيديوهات مقترحة",

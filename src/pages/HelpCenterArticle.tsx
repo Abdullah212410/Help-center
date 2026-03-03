@@ -1,9 +1,11 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import rehypeRaw from 'rehype-raw';
+import DOMPurify from 'dompurify';
 import { Layout } from '../components/Layout';
-import { useI18n } from '../lib/i18n';
+import { useI18n, localizedField } from '../lib/i18n';
 import { getHcArticleBySlug, type HcArticleWithSection } from '../lib/helpCenterApi';
 import { useDataRefresh } from '../lib/dataEvents';
 import { HelpCenterShell } from '../components/theme/HelpCenterShell';
@@ -14,6 +16,34 @@ import {
   sections as staticSections,
   articles as staticArticles,
 } from '../data';
+
+/* ── HTML detection & sanitisation ──────────────────────────────── */
+
+const HTML_TAG_RE = /<(?:img|h[1-4]|p|strong|em|ul|ol|li|br|blockquote|div|span)[\s>\/]/i;
+
+function isHtmlContent(text: string): boolean {
+  return HTML_TAG_RE.test(text);
+}
+
+function sanitize(dirty: string): string {
+  return DOMPurify.sanitize(dirty, {
+    ALLOWED_TAGS: [
+      'img', 'h1', 'h2', 'h3', 'h4', 'p', 'strong', 'em', 'b', 'i',
+      'ul', 'ol', 'li', 'br', 'a', 'blockquote', 'code', 'pre', 'hr',
+      'span', 'div',
+    ],
+    ALLOWED_ATTR: ['src', 'alt', 'style', 'href', 'target', 'rel', 'class'],
+    ADD_ATTR: ['target'],
+  });
+}
+
+// After DOMPurify runs, force safe target/rel on external links
+DOMPurify.addHook('afterSanitizeAttributes', (node) => {
+  if (node.tagName === 'A' && node.getAttribute('href')?.startsWith('http')) {
+    node.setAttribute('target', '_blank');
+    node.setAttribute('rel', 'noopener noreferrer');
+  }
+});
 
 export default function HelpCenterArticle() {
   const { categorySlug, sectionSlug, articleSlug } = useParams<{
@@ -83,7 +113,7 @@ export default function HelpCenterArticle() {
   useDataRefresh(['hc_articles'], fetchData);
 
   const localized = (en: string, ar: string | null) =>
-    lang === 'ar' && ar ? ar : en;
+    localizedField(lang, en, ar);
 
   if (loading) {
     return (
@@ -127,6 +157,11 @@ export default function HelpCenterArticle() {
   const secTitle = sec ? localized(sec.title, sec.title_ar) : 'Section';
 
   const body = localized(article.body_markdown, article.body_markdown_ar);
+  const bodyIsHtml = useMemo(() => isHtmlContent(body), [body]);
+  const sanitizedHtml = useMemo(
+    () => (bodyIsHtml ? sanitize(body) : ''),
+    [body, bodyIsHtml],
+  );
 
   return (
     <Layout>
@@ -194,7 +229,13 @@ export default function HelpCenterArticle() {
             )}
 
             <div className="prose prose-slate max-w-none prose-headings:font-bold prose-a:text-primary-500 prose-code:bg-slate-100 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded-md prose-code:text-sm">
-              <ReactMarkdown remarkPlugins={[remarkGfm]}>{body}</ReactMarkdown>
+              {bodyIsHtml ? (
+                <div dangerouslySetInnerHTML={{ __html: sanitizedHtml }} />
+              ) : (
+                <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]}>
+                  {body}
+                </ReactMarkdown>
+              )}
             </div>
 
             {article.updated_at && (

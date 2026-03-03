@@ -42,6 +42,8 @@ const TITLE_KEY_MAP: Record<string, string> = {
   "Chat with AI": "chatWithAi",
   "Account Settings": "accountSettings",
   "Virtual Classrooms": "virtualClassrooms",
+  "String – How to Create a Classroom on the Platform": "creatingClassroomOnPlatform",
+  "Creating a Classroom by Filling Out the Form": "creatingClassroomByForm",
 };
 
 /** Look up the i18n titleKey for a given English title. */
@@ -62,6 +64,8 @@ export const TEACHER_VIDEOS: RawVideo[] = [
   { id: 't9',  url: 'https://www.youtube.com/watch?v=E2cRWtKIJCk&list=PLkAvXM4rJZpHxX1DC6seelaWLd_qPj01i&index=9',   titleKey: 'tVid9Title',  descKey: 'tVid9Desc' },
   { id: 't10', url: 'https://www.youtube.com/watch?v=idPiwcXdyMg&list=PLkAvXM4rJZpHxX1DC6seelaWLd_qPj01i&index=10',  titleKey: 'tVid10Title', descKey: 'tVid10Desc' },
   { id: 't11', url: 'https://www.youtube.com/watch?v=5oIGW2mUI1g&list=PLkAvXM4rJZpHxX1DC6seelaWLd_qPj01i&index=11',  titleKey: 'tVid11Title', descKey: 'tVid11Desc' },
+  { id: 't12', url: 'https://www.youtube.com/watch?v=xRndg5oameE',  titleKey: 'tVid12Title', descKey: 'tVid12Desc' },
+  { id: 't13', url: 'https://www.youtube.com/watch?v=UFfvyS2VHIc',  titleKey: 'tVid13Title', descKey: 'tVid13Desc' },
 ];
 
 /* ── Student videos (7) ── */
