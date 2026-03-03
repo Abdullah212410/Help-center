@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { extractYouTubeId } from '../../lib/tutorialsApi';
 import type { ResourceVideo } from '../../data/resourceVideos';
+import { useI18n } from '../../lib/i18n';
 
 /* ═══════════════════════════════════════════════════
    VideoPlayerModal — centered YouTube player modal.
@@ -29,6 +30,7 @@ function ytCommand(iframe: HTMLIFrameElement | null, func: string) {
 export const VideoPlayerModal: React.FC<VideoPlayerModalProps> = ({ video, onClose }) => {
   const overlayRef = useRef<HTMLDivElement>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  const { t } = useI18n();
   const videoId = extractYouTubeId(video.url);
   const [copied, setCopied] = useState(false);
 
@@ -195,7 +197,7 @@ export const VideoPlayerModal: React.FC<VideoPlayerModalProps> = ({ video, onClo
             key={videoId}
             ref={iframeRef}
             src={`https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&enablejsapi=1`}
-            title={video.title}
+            title={t(`videos.${video.titleKey}` as any)}
             loading="lazy"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
             allowFullScreen

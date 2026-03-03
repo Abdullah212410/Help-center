@@ -17,6 +17,11 @@ import { useDataRefresh } from '../lib/dataEvents';
 import { HelpCenterShell } from '../components/theme/HelpCenterShell';
 import { ResourcesShell } from '../components/resources/ResourcesShell';
 import { COLORS } from '../theme/colors';
+import {
+  categories as staticCategories,
+  sections as staticSections,
+  articles as staticArticles,
+} from '../data';
 
 export default function HelpCenterSection() {
   const { categorySlug, sectionSlug } = useParams<{
@@ -34,19 +39,70 @@ export default function HelpCenterSection() {
     if (!categorySlug || !sectionSlug) return;
     setLoading(true);
     console.log('[HelpCenterSection] fetching — categorySlug:', categorySlug, 'sectionSlug:', sectionSlug);
+
+    // Helper: convert static Category → HcCategory shape
+    const toHcCategory = (sc: typeof staticCategories[0]): HcCategory => ({
+      id: sc.id, slug: sc.slug, title: sc.title,
+      title_ar: sc.title_ar ?? null, description: sc.description,
+      description_ar: sc.description_ar ?? null, icon: sc.icon,
+      sort_order: sc.order, is_published: true,
+      created_at: '', updated_at: '',
+    });
+
+    // Helper: convert static Section → HcSectionWithCategory shape
+    const toHcSection = (
+      ss: typeof staticSections[0],
+      catData: { slug: string; title: string; title_ar?: string },
+    ): HcSectionWithCategory => ({
+      id: ss.id, category_id: ss.categoryId, slug: ss.slug,
+      title: ss.title, title_ar: ss.title_ar ?? null,
+      description: ss.description, description_ar: ss.description_ar ?? null,
+      icon: ss.icon ?? '', sort_order: ss.order,
+      is_published: true, created_at: '', updated_at: '',
+      hc_categories: { slug: catData.slug, title: catData.title, title_ar: catData.title_ar ?? null },
+    });
+
+    // Helper: convert static Article → HcArticle shape
+    const toHcArticle = (a: typeof staticArticles[0], catId: string): HcArticle => ({
+      id: a.id, category_id: catId, section_id: a.sectionId,
+      slug: a.slug, title: a.title, title_ar: a.title_ar ?? null,
+      excerpt: a.summary, excerpt_ar: a.summary_ar ?? null,
+      content: a.bodyMarkdown, content_ar: a.bodyMarkdown_ar ?? null,
+      summary: a.summary, summary_ar: a.summary_ar ?? null,
+      body_markdown: a.bodyMarkdown, body_markdown_ar: a.bodyMarkdown_ar ?? null,
+      sort_order: 0, is_published: true, tags: a.tags,
+      role: a.role?.[0] ?? null, is_top: a.isTop ?? false,
+      is_featured: a.isFeatured ?? false,
+      created_at: '', updated_at: a.updatedAt ?? '',
+    });
+
     getHcCategoryBySlug(categorySlug)
       .then(async (cat) => {
-        if (!cat) {
+        // Fallback: if Supabase has no category, try static data
+        let effectiveCat: HcCategory | null = cat;
+        if (!effectiveCat) {
+          const sc = staticCategories.find(c => c.slug === categorySlug);
+          if (sc) effectiveCat = toHcCategory(sc);
+        }
+        if (!effectiveCat) {
           setError('Category not found.');
           return;
         }
-        setCategory(cat);
+        setCategory(effectiveCat);
 
-        let sec = await getHcSectionBySlug(cat.id, sectionSlug);
+        let sec = await getHcSectionBySlug(effectiveCat.id, sectionSlug);
         // Fallback: if category-scoped lookup fails, try slug-only
         if (!sec) {
           console.warn('[HelpCenterSection] category-scoped lookup returned null, trying slug-only for:', sectionSlug);
           sec = await getHcSectionBySlugOnly(sectionSlug) as any;
+        }
+        // Fallback: if Supabase has no section, try static data
+        if (!sec) {
+          const staticCat = staticCategories.find(c => c.slug === categorySlug);
+          if (staticCat) {
+            const ss = staticSections.find(s => s.categoryId === staticCat.id && s.slug === sectionSlug);
+            if (ss) sec = toHcSection(ss, staticCat);
+          }
         }
         if (!sec) {
           setError('Section not found.');
@@ -55,7 +111,14 @@ export default function HelpCenterSection() {
         console.log('[HelpCenterSection] section found — id:', sec.id, 'slug:', sec.slug);
         setSection(sec);
 
-        const arts = await getHcArticlesBySection(sec.id);
+        let arts = await getHcArticlesBySection(sec.id);
+
+        // Fallback: if Supabase returned no articles, use static articles
+        if (arts.length === 0) {
+          arts = staticArticles
+            .filter(a => a.sectionId === sec!.id)
+            .map(a => toHcArticle(a, effectiveCat!.id));
+        }
         console.log('[HelpCenterSection] articles loaded:', arts.length);
         setArticles(arts);
       })

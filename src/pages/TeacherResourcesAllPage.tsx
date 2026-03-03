@@ -4,7 +4,7 @@ import { Layout } from '../components/Layout';
 import { ResourcesGridView } from '../components/resources/ResourcesGridView';
 import { useI18n } from '../lib/i18n';
 import { getHcResourceVideos, type HcResourceVideo } from '../lib/helpCenterApi';
-import type { ResourceVideo } from '../data/resourceVideos';
+import { type ResourceVideo, getTitleKey } from '../data/resourceVideos';
 import { COLORS } from '../theme/colors';
 import { ResourcesShell } from '../components/resources/ResourcesShell';
 
@@ -37,7 +37,7 @@ export default function TeacherResourcesAllPage() {
     () => rawVideos.map((v) => ({
       id: v.id,
       url: v.youtube_url,
-      title: localize(v, 'title'),
+      titleKey: getTitleKey(v.title),
       description: localize(v, 'description'),
     })),
     [rawVideos, localize],

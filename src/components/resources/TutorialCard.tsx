@@ -27,7 +27,7 @@ export const TutorialCard: React.FC<TutorialCardProps> = ({
   onPlay,
   customThumbnail,
 }) => {
-  const { dir } = useI18n();
+  const { dir, t } = useI18n();
   const isRTL = dir === 'rtl';
   const videoId = extractYouTubeId(video.url);
   const thumb = customThumbnail || (videoId ? youTubeThumbnail(videoId) : '');
@@ -75,7 +75,7 @@ export const TutorialCard: React.FC<TutorialCardProps> = ({
             <>
               <img
                 src={thumb}
-                alt={video.title}
+                alt={t(`videos.${video.titleKey}` as any)}
                 loading="lazy"
                 style={{
                   position: 'absolute',
@@ -160,7 +160,7 @@ export const TutorialCard: React.FC<TutorialCardProps> = ({
             WebkitLineClamp: 2,
             WebkitBoxOrient: 'vertical',
           } as React.CSSProperties}>
-            {video.title}
+            {t(`videos.${video.titleKey}` as any)}
           </h3>
           {video.description && (
             <p style={{

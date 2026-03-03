@@ -98,6 +98,7 @@ export const en = {
   stringTutor: "String Tutor",
   stringTutorDesc: "Learn how one-to-one support helps kids flourish.",
 
+  comingSoon: "Coming Soon",
   forStudents: "For Students",
   forStudentsDesc: "Tips and resources for students.",
   forTeachers: "For Teachers",
@@ -217,6 +218,14 @@ export const en = {
   videoCloseLabel: "Close video",
   backToResources: "Back to all resources",
 
+  // Hero section titles (per-section pages only)
+  "hero.teacherResources": "Teacher Account Resources",
+  "hero.teacherTitle": "Teacher Account",
+  "hero.teacherAccent": "Resources",
+  "hero.studentResources": "Student Account Resources",
+  "hero.studentTitle": "Student Account",
+  "hero.studentAccent": "Resources",
+
   // Teacher Resources page
   resTeacherBadge: "For Teachers",
   resTeacherTitle: "Teacher",
@@ -277,8 +286,11 @@ export const en = {
   tourDone: "Done",
   tourReplay: "Replay Tour",
 
-  // Resources Landing page
+  // Resources Landing / Hero titles
   resLandingTitle: "Resources",
+  resHeroTitleDefault: "Resources",
+  resHeroTitleTeacher: "Teacher Account Resources",
+  resHeroTitleStudent: "Student Account Resources",
   resLandingSubtitle: "Choose your role to explore curated video tutorials and guides.",
   resTeacherCardDesc: "Guides, tutorials & classroom tools",
   resStudentCardDesc: "Learning tips & how-to videos",
@@ -288,6 +300,41 @@ export const en = {
   resRetry: "Retry",
   resNoVideos: "No videos yet for this audience",
   resInvalidAudience: "Invalid audience",
+
+  // Video title keys (videos namespace)
+  "videos.addingStudentsToClassrooms": "Adding Students to Classrooms",
+  "videos.usingTheWhiteboard": "Using the Whiteboard",
+  "videos.creatingClassrooms": "Creating Classrooms",
+  "videos.messagesAndInteraction": "Messages & Interaction",
+  "videos.addingAPost": "Adding a Post",
+  "videos.addingAStudent": "Adding a Student",
+  "videos.usingAiPersonalAssistant": "Using AI Personal Assistant",
+  "videos.creatingAQuiz": "Creating a Quiz",
+  "videos.creatingAnAssignment": "Creating an Assignment",
+  "videos.creatingASeries": "Creating a Series",
+  "videos.addingANewClass": "Adding a New Class",
+  "videos.studentAccountOverview": "Student Account Overview",
+  "videos.dailyQuests": "Daily Quests",
+  "videos.generalOverview": "General Overview",
+  "videos.studentCalendar": "Student Calendar",
+  "videos.chatWithAi": "Chat with AI",
+  "videos.accountSettings": "Account Settings",
+  "videos.virtualClassrooms": "Virtual Classrooms",
+  "videos.chatWithAI": "Chat with AI (Student Account)",
+  "videos.addingStudents": "Adding Students to Classrooms (Teacher Account)",
+  "videos.creatingSeries": "Creating a Series (Teacher Account)",
+
+  // Suggested Videos (Home page)
+  "suggestedVideos.title": "Suggested Videos",
+  "suggestedVideos.watchBtn": "Watch",
+  "suggestedVideos.general.title": "General Video",
+  "suggestedVideos.general.description": "A general introduction and overview of the String platform.",
+  "suggestedVideos.chatAI.title": "Chat with AI",
+  "suggestedVideos.chatAI.description": "Learn how students can use the AI chat feature for learning support.",
+  "suggestedVideos.addStudents.title": "Adding Students to Classrooms",
+  "suggestedVideos.addStudents.description": "How teachers can add students to their virtual classrooms on String.",
+  "suggestedVideos.createSeries.title": "Creating a Series",
+  "suggestedVideos.createSeries.description": "A step-by-step guide for teachers on creating content series for organized learning.",
 
   // Blog
   blogTitle: "String Blog",

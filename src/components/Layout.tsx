@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useI18n } from '../lib/i18n';
-import { SubmitRequestModal } from './SubmitRequestModal';
 import StringIcon from './icons/StringIcon';
 
 interface LayoutProps {
@@ -46,7 +45,7 @@ const LanguageDropdown = () => {
   );
 };
 
-export const Header = ({ onOpenRequest }: { onOpenRequest: () => void }) => {
+export const Header = () => {
   const { t, dir } = useI18n();
   const location = useLocation();
 
@@ -74,13 +73,6 @@ export const Header = ({ onOpenRequest }: { onOpenRequest: () => void }) => {
           <div className="hidden md:block w-px h-4 bg-slate-200"></div>
 
           <LanguageDropdown />
-
-          <button
-            onClick={onOpenRequest}
-            className="inline-flex items-center justify-center px-5 py-2.5 rounded-xl text-white font-medium bg-gradient-to-r from-[#ff4da6] to-[#ed3b91] shadow-md hover:from-[#ff66b5] hover:to-[#d81b78] hover:shadow-lg transition-all duration-200"
-          >
-            {t('submitRequest')}
-          </button>
         </div>
       </div>
     </header>
@@ -128,17 +120,14 @@ export const Footer = () => {
 };
 
 export const Layout: React.FC<LayoutProps> = ({ children, hero }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  
   return (
     <div className="flex min-h-screen flex-col font-sans">
-      <Header onOpenRequest={() => setIsModalOpen(true)} />
+      <Header />
       {hero}
       <main className="flex-1">
         {children}
       </main>
       <Footer />
-      <SubmitRequestModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </div>
   );
 };

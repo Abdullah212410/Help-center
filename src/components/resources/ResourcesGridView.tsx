@@ -33,7 +33,7 @@ export const ResourcesGridView: React.FC<ResourcesGridViewProps> = ({
   customThumbnails,
   loading,
 }) => {
-  const { lang } = useI18n();
+  const { lang, t } = useI18n();
   const [search, setSearch] = useState('');
   const [playerVideo, setPlayerVideo] = useState<ResourceVideo | null>(null);
 
@@ -41,10 +41,10 @@ export const ResourcesGridView: React.FC<ResourcesGridViewProps> = ({
     if (!search.trim()) return videos;
     const q = search.toLowerCase();
     return videos.filter((v) =>
-      v.title.toLowerCase().includes(q) ||
+      t(`videos.${v.titleKey}` as any).toLowerCase().includes(q) ||
       v.description.toLowerCase().includes(q)
     );
-  }, [videos, search]);
+  }, [videos, search, t]);
 
   return (
     <Layout>

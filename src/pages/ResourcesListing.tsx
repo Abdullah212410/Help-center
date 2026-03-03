@@ -5,7 +5,7 @@ import { getResourceVideos, getLocalizedText, HcVideo } from '../lib/resourcesAp
 import { TutorialCarousel } from '../components/resources/TutorialCarousel';
 import { VideoPlayerModal } from '../components/resources/VideoPlayerModal';
 import { ResourcesShell } from '../components/resources/ResourcesShell';
-import type { ResourceVideo } from '../data/resourceVideos';
+import { type ResourceVideo, getTitleKey } from '../data/resourceVideos';
 import { useI18n } from '../lib/i18n';
 
 // ─── Constants ────────────────────────────────────────────────
@@ -22,13 +22,13 @@ export default function ResourcesListing() {
 
   const AUDIENCE_META: Record<Audience, { title: string; accent: string; subtitle: string }> = {
     teacher: {
-      title: t('resTeacherTitle'),
-      accent: t('resTeacherTitleAccent'),
+      title: t('resHeroTitleTeacher'),
+      accent: '',
       subtitle: t('resTeacherSubtitle'),
     },
     student: {
-      title: t('resStudentTitle'),
-      accent: t('resStudentTitleAccent'),
+      title: t('resHeroTitleStudent'),
+      accent: '',
       subtitle: t('resStudentSubtitle'),
     },
   };
@@ -92,7 +92,7 @@ export default function ResourcesListing() {
   const mapped: ResourceVideo[] = videos.map((v) => ({
     id: String(v.id),
     url: v.youtube_url,
-    title: getLocalizedText(v, 'title', lang),
+    titleKey: getTitleKey(v.title),
     description: getLocalizedText(v, 'description', lang),
   }));
 

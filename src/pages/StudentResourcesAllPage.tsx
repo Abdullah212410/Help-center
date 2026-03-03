@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { ResourcesGridView } from '../components/resources/ResourcesGridView';
 import { useI18n } from '../lib/i18n';
 import { getHcResourceVideos, type HcResourceVideo } from '../lib/helpCenterApi';
-import type { ResourceVideo } from '../data/resourceVideos';
+import { type ResourceVideo, getTitleKey } from '../data/resourceVideos';
 import { COLORS } from '../theme/colors';
 
 export default function StudentResourcesAllPage() {
@@ -34,7 +34,7 @@ export default function StudentResourcesAllPage() {
     () => rawVideos.map((v) => ({
       id: v.id,
       url: v.youtube_url,
-      title: localize(v, 'title'),
+      titleKey: getTitleKey(v.title),
       description: localize(v, 'description'),
     })),
     [rawVideos, localize],

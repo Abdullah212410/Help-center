@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Layout } from '../components/Layout';
 import { useI18n } from '../lib/i18n';
 import { HelpCenterShell } from '../components/theme/HelpCenterShell';
@@ -16,6 +16,15 @@ const ROUTE_DEBUG = false;
 export default function ResourcesLanding() {
   const navigate = useNavigate();
   const { t } = useI18n();
+  const location = useLocation();
+
+  // Detect role from current URL path
+  const path = location.pathname.toLowerCase();
+  const heroTitle = path.includes('teacher')
+    ? t('resHeroTitleTeacher')
+    : path.includes('student')
+      ? t('resHeroTitleStudent')
+      : t('resHeroTitleDefault');
 
   return (
     <Layout>
@@ -41,7 +50,7 @@ export default function ResourcesLanding() {
         {/* ═══ Content ═══ */}
         <div className="rl-content">
           {/* ── Hero ── */}
-          <h1 className="rl-title">{t('resLandingTitle')}</h1>
+          <h1 className="rl-title">{heroTitle}</h1>
           <p className="rl-subtitle">
             {t('resLandingSubtitle')}
           </p>

@@ -9,6 +9,11 @@ import { useDataRefresh } from '../lib/dataEvents';
 import { HelpCenterShell } from '../components/theme/HelpCenterShell';
 import { ResourcesShell } from '../components/resources/ResourcesShell';
 import { COLORS } from '../theme/colors';
+import {
+  categories as staticCategories,
+  sections as staticSections,
+  articles as staticArticles,
+} from '../data';
 
 export default function HelpCenterArticle() {
   const { categorySlug, sectionSlug, articleSlug } = useParams<{
@@ -26,11 +31,49 @@ export default function HelpCenterArticle() {
     setLoading(true);
     getHcArticleBySlug(articleSlug)
       .then((art) => {
-        if (!art) {
+        if (art) {
+          setArticle(art);
+          return;
+        }
+        // Fallback: try static data
+        const sa = staticArticles.find(a => a.slug === articleSlug);
+        if (!sa) {
           setError('Article not found.');
           return;
         }
-        setArticle(art);
+        const ss = staticSections.find(s => s.id === sa.sectionId);
+        const sc = ss ? staticCategories.find(c => c.id === ss.categoryId) : null;
+        const fallback: HcArticleWithSection = {
+          id: sa.id,
+          category_id: sc?.id ?? '',
+          section_id: sa.sectionId,
+          slug: sa.slug,
+          title: sa.title,
+          title_ar: sa.title_ar ?? null,
+          excerpt: sa.summary,
+          excerpt_ar: sa.summary_ar ?? null,
+          content: sa.bodyMarkdown,
+          content_ar: sa.bodyMarkdown_ar ?? null,
+          summary: sa.summary,
+          summary_ar: sa.summary_ar ?? null,
+          body_markdown: sa.bodyMarkdown,
+          body_markdown_ar: sa.bodyMarkdown_ar ?? null,
+          sort_order: 0,
+          is_published: true,
+          tags: sa.tags,
+          role: sa.role?.[0] ?? null,
+          is_top: sa.isTop ?? false,
+          is_featured: sa.isFeatured ?? false,
+          created_at: '',
+          updated_at: sa.updatedAt,
+          hc_sections: ss ? {
+            slug: ss.slug,
+            title: ss.title,
+            title_ar: ss.title_ar ?? null,
+            hc_categories: sc ? { slug: sc.slug, title: sc.title, title_ar: sc.title_ar ?? null } : null,
+          } : null,
+        };
+        setArticle(fallback);
       })
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));

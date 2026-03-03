@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { Layout } from '../components/Layout';
 import { Link } from 'react-router-dom';
 import { useI18n } from '../lib/i18n';
-import type { ResourceVideo } from '../data/resourceVideos';
+import { type ResourceVideo, getTitleKey } from '../data/resourceVideos';
 import { TutorialCarousel } from '../components/resources/TutorialCarousel';
 import { VideoPlayerModal } from '../components/resources/VideoPlayerModal';
 import { getHcResourceVideos, type HcResourceVideo } from '../lib/helpCenterApi';
@@ -49,7 +49,7 @@ export default function TeacherResourcesPage() {
     () => rawVideos.map((v) => ({
       id: v.id,
       url: v.youtube_url,
-      title: localize(v, 'title'),
+      titleKey: getTitleKey(v.title),
       description: localize(v, 'description'),
     })),
     [rawVideos, localize],
@@ -112,12 +112,12 @@ export default function TeacherResourcesPage() {
               fontSize: 'clamp(2rem, 5vw, 3.5rem)', fontWeight: 800,
               letterSpacing: '-0.02em', lineHeight: 1.1, color: COLORS.neutral, marginBottom: 20,
             }}>
-              <span className="gradient-text">{t('resTeacherTitle')}</span>{' '}
+              <span className="gradient-text">{t('hero.teacherTitle' as any)}</span>{' '}
               <span style={{
                 background: 'linear-gradient(135deg, #ed3b91, #c026a8)',
                 WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text',
               }}>
-                {t('resTeacherTitleAccent')}
+                {t('hero.teacherAccent' as any)}
               </span>
             </h1>
 

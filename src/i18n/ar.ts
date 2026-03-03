@@ -98,6 +98,7 @@ export const ar = {
   stringTutor: "معلم سترينج",
   stringTutorDesc: "تعرف على كيف يساعد الدعم الفردي الأطفال على الازدهار.",
 
+  comingSoon: "قريباً",
   forStudents: "للطلاب",
   forStudentsDesc: "نصائح وموارد للطلاب.",
   forTeachers: "للمعلمين",
@@ -217,6 +218,14 @@ export const ar = {
   videoCloseLabel: "إغلاق الفيديو",
   backToResources: "العودة إلى جميع الموارد",
 
+  // Hero section titles (per-section pages only)
+  "hero.teacherResources": "موارد حساب المعلم",
+  "hero.teacherTitle": "موارد حساب",
+  "hero.teacherAccent": "المعلم",
+  "hero.studentResources": "موارد حساب الطالب",
+  "hero.studentTitle": "موارد حساب",
+  "hero.studentAccent": "الطالب",
+
   // Teacher Resources page
   resTeacherBadge: "للمعلمين",
   resTeacherTitle: "موارد",
@@ -277,8 +286,11 @@ export const ar = {
   tourDone: "تم",
   tourReplay: "إعادة الجولة",
 
-  // Resources Landing page
+  // Resources Landing / Hero titles
   resLandingTitle: "الموارد",
+  resHeroTitleDefault: "الموارد",
+  resHeroTitleTeacher: "موارد حساب المعلم",
+  resHeroTitleStudent: "موارد حساب الطالب",
   resLandingSubtitle: "اختر دورك لاستكشاف دروس الفيديو والأدلة المنسقة.",
   resTeacherCardDesc: "أدلة ودروس وأدوات صفية",
   resStudentCardDesc: "نصائح تعليمية وفيديوهات إرشادية",
@@ -288,6 +300,41 @@ export const ar = {
   resRetry: "إعادة المحاولة",
   resNoVideos: "لا توجد فيديوهات لهذا الجمهور حتى الآن",
   resInvalidAudience: "جمهور غير صالح",
+
+  // Video title keys (videos namespace)
+  "videos.addingStudentsToClassrooms": "إضافة الطلاب إلى الغرف الصفية",
+  "videos.usingTheWhiteboard": "استخدام اللوح التفاعلي",
+  "videos.creatingClassrooms": "إنشاء الغرف الصفية",
+  "videos.messagesAndInteraction": "الرسائل والتفاعل",
+  "videos.addingAPost": "إضافة منشور",
+  "videos.addingAStudent": "إضافة طالب",
+  "videos.usingAiPersonalAssistant": "استخدام المساعد الذكي",
+  "videos.creatingAQuiz": "إنشاء اختبار",
+  "videos.creatingAnAssignment": "إنشاء واجب",
+  "videos.creatingASeries": "إنشاء سلسلة",
+  "videos.addingANewClass": "إضافة صف جديد",
+  "videos.studentAccountOverview": "نظرة عامة على حساب الطالب",
+  "videos.dailyQuests": "المهام اليومية",
+  "videos.generalOverview": "نظرة عامة",
+  "videos.studentCalendar": "تقويم الطالب",
+  "videos.chatWithAi": "التحدث مع الذكاء الاصطناعي",
+  "videos.accountSettings": "إعدادات الحساب",
+  "videos.virtualClassrooms": "الغرف الصفية الافتراضية",
+  "videos.chatWithAI": "التحدث مع الذكاء الاصطناعي (حساب الطالب)",
+  "videos.addingStudents": "إضافة الطلاب إلى الغرف الصفية (حساب المعلم)",
+  "videos.creatingSeries": "إنشاء سلسلة تعليمية (حساب المعلم)",
+
+  // Suggested Videos (Home page)
+  "suggestedVideos.title": "فيديوهات مقترحة",
+  "suggestedVideos.watchBtn": "مشاهدة",
+  "suggestedVideos.general.title": "فيديو عام",
+  "suggestedVideos.general.description": "مقدمة عامة ونظرة شاملة على منصة String.",
+  "suggestedVideos.chatAI.title": "التحدث مع الذكاء الاصطناعي",
+  "suggestedVideos.chatAI.description": "تعرّف على كيفية استخدام الطلاب لميزة الدردشة بالذكاء الاصطناعي للدعم التعليمي.",
+  "suggestedVideos.addStudents.title": "إضافة الطلاب إلى الغرف الصفية",
+  "suggestedVideos.addStudents.description": "كيف يمكن للمعلمين إضافة الطلاب إلى غرفهم الصفية الافتراضية على String.",
+  "suggestedVideos.createSeries.title": "إنشاء سلسلة",
+  "suggestedVideos.createSeries.description": "دليل خطوة بخطوة للمعلمين حول إنشاء سلاسل المحتوى للتعلم المنظم.",
 
   // Blog
   blogTitle: "مدونة سترينج",

@@ -11,12 +11,42 @@ export interface RawVideo {
   descKey: string;
 }
 
-/** Resolved video ready for components (title/desc already translated). */
+/** Resolved video ready for components — titleKey resolved via t() at render time. */
 export interface ResourceVideo {
   id: string;
   url: string;
-  title: string;
+  titleKey: string;
   description: string;
+}
+
+/**
+ * Maps English video titles (as stored in Supabase) to stable i18n keys.
+ * Used when converting Supabase rows to ResourceVideo objects.
+ */
+const TITLE_KEY_MAP: Record<string, string> = {
+  "Adding Students to Classrooms": "addingStudentsToClassrooms",
+  "Using the Whiteboard": "usingTheWhiteboard",
+  "Creating Classrooms": "creatingClassrooms",
+  "Messages & Interaction": "messagesAndInteraction",
+  "Adding a Post": "addingAPost",
+  "Adding a Student": "addingAStudent",
+  "Using AI Personal Assistant": "usingAiPersonalAssistant",
+  "Creating a Quiz": "creatingAQuiz",
+  "Creating an Assignment": "creatingAnAssignment",
+  "Creating a Series": "creatingASeries",
+  "Adding a New Class": "addingANewClass",
+  "Student Account Overview": "studentAccountOverview",
+  "Daily Quests": "dailyQuests",
+  "General Overview": "generalOverview",
+  "Student Calendar": "studentCalendar",
+  "Chat with AI": "chatWithAi",
+  "Account Settings": "accountSettings",
+  "Virtual Classrooms": "virtualClassrooms",
+};
+
+/** Look up the i18n titleKey for a given English title. */
+export function getTitleKey(englishTitle: string): string {
+  return TITLE_KEY_MAP[englishTitle] ?? englishTitle;
 }
 
 /* ── Teacher videos (11) ── */
