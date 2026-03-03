@@ -100,8 +100,8 @@ export const Footer = () => {
           </div>
           <div className="flex flex-col gap-3">
             <h3 className="font-semibold text-slate-900 text-sm uppercase tracking-wider">{t('resources')}</h3>
-            <Link to="/help/resources/teachers" className="text-sm text-slate-500 hover:text-primary-600 transition-colors">{t('teacherResources')}</Link>
-            <Link to="/help/resources/students" className="text-sm text-slate-500 hover:text-primary-600 transition-colors">{t('forStudents')}</Link>
+            <Link to="/resources/teacher" className="text-sm text-slate-500 hover:text-primary-600 transition-colors">{t('teacherResources')}</Link>
+            <Link to="/resources" className="text-sm text-slate-500 hover:text-primary-600 transition-colors">{t('forStudents')}</Link>
           </div>
           <div className="flex flex-col gap-3">
             <h3 className="font-semibold text-slate-900 text-sm uppercase tracking-wider">{t('support')}</h3>
