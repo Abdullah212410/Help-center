@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useI18n } from '../lib/i18n';
 import StringIcon from './icons/StringIcon';
 
@@ -48,6 +48,7 @@ const LanguageDropdown = () => {
 export const Header = () => {
   const { t, dir } = useI18n();
   const location = useLocation();
+  const navigate = useNavigate();
 
   const isResourcesRoute = location.pathname === '/' || location.pathname.startsWith('/resources');
   const brandLabel = isResourcesRoute ? 'Resources' : t('helpCenter');
@@ -66,6 +67,13 @@ export const Header = () => {
 
         {/* Right: Links & Actions */}
         <div className="flex items-center gap-3 md:gap-5">
+          <span
+            onClick={() => navigate("/resources")}
+            className="hidden md:block text-sm font-medium text-slate-500 hover:text-primary-600 transition-colors cursor-pointer"
+          >
+            Resources
+          </span>
+
           <a href="https://string.education" target="_blank" rel="noreferrer" className="hidden md:block text-sm font-medium text-slate-500 hover:text-primary-600 transition-colors">
             {t('stringWebsite')}
           </a>
